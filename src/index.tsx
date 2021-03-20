@@ -5,6 +5,7 @@ import { QueryClient, QueryClientProvider } from 'react-query';
 import { ReactQueryDevtools } from 'react-query/devtools';
 import reportWebVitals from './reportWebVitals';
 import { configureForage } from './utilities/forage';
+import 'bootstrap/dist/css/bootstrap.min.css';
 import App from './App';
 
 configureForage();

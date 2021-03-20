@@ -6,8 +6,8 @@ import { AuthContext } from '../context/AuthContext';
 
 const PublicRoute = ({
   component: Component,
-  showHeader = false,
-  showSideMenu = false,
+  showHeader = true,
+  showFooter = true,
   onComponent = {},
   path,
   meta,
@@ -17,7 +17,7 @@ const PublicRoute = ({
     <Route
       {...rest}
       render={(props: any) => (
-        <Container showHeader={showHeader} showSideMenu={showSideMenu} meta={meta}>
+        <Container showHeader={showHeader} showFooter={showFooter} meta={meta}>
           <Component {...props} {...onComponent} />
         </Container>
       )}
@@ -29,7 +29,7 @@ const RestrictedRoute = ({
   component: Component,
   allowNavigation = false,
   showHeader = true,
-  showSideMenu = true,
+  showFooter = true,
   onComponent,
   path,
   meta,
@@ -40,7 +40,7 @@ const RestrictedRoute = ({
       {...rest}
       render={(props) =>
         allowNavigation ? (
-          <Container showHeader={showHeader} showSideMenu={showSideMenu} meta={meta}>
+          <Container showHeader={showHeader} showFooter={showFooter} meta={meta}>
             <Component {...props} {...onComponent} />
           </Container>
         ) : (
@@ -55,7 +55,7 @@ const PrivateRoute = ({
   component: Component,
   allowNavigation = false,
   showHeader = true,
-  showSideMenu = true,
+  showFooter = true,
   onComponent,
   path,
   meta,
@@ -70,7 +70,7 @@ const PrivateRoute = ({
       render={(props) =>
         isSignedIn !== null &&
         (isSignedIn ? (
-          <Container showHeader={showHeader} showSideMenu={showSideMenu} meta={meta}>
+          <Container showHeader={showHeader} showFooter={showFooter} meta={meta}>
             <Component {...props} {...onComponent} />
           </Container>
         ) : (

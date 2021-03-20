@@ -14,9 +14,17 @@ const StyledContainer = styled.div`
   position: relative;
 
   main {
+    display: flex;
+    flex-direction: column;
     flex: 1 100%;
     height: 100vh;
-    overflow: hidden;
+    overflow-x: hidden;
+    overflow-y: auto;
+
+    > section {
+      padding: 0;
+      flex: 1;
+    }
   }
 `;
 

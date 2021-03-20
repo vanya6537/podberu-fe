@@ -1,0 +1,148 @@
+import { useState } from 'react';
+import styled from 'styled-components';
+import { Button as BButton } from 'react-bootstrap';
+import { ButtonGroup as MButtonGroup } from '@material-ui/core';
+import Loader from './Loader';
+import Icon from './Icon';
+
+const sizes: any = {
+  lg: 40,
+  md: 36,
+  sm: 26,
+  default: 32,
+};
+
+const StyledButton = styled.div`
+  ${({ center }: any) => (center ? `display: flex; justify-content: center;` : '')};
+
+  button {
+    font-weight: 600;
+    font-size: 13px;
+    margin: ${(props: any) => props.margin};
+    padding: ${(props: any) => props.padding || '0 24px'};
+    height: ${(props: any) => `${sizes[props.size] || sizes.default}px`};
+    width: ${({ width }: any) =>
+      width ? (typeof width === 'string' ? width : `${width}px`) : 'auto'};
+    border-radius: ${(props: any) =>
+      props.radius === 0 ? '0px' : `${(sizes[props.size] || sizes.default) / 2}px`};
+    border: none;
+  }
+
+  button.primary {
+    background: #4185e9;
+    color: #ffffff;
+  }
+
+  button.secondary {
+    background: #2758a2;
+    color: #2758a2;
+  }
+
+  button.outline {
+    background: #ffffff;
+    border: 1px solid #2758a2;
+    color: #2758a2;
+  }
+
+  button.round {
+    border-radius: 16px;
+  }
+`;
+
+const Button = ({
+  type = 'button',
+  group = 'primary',
+  icon,
+  value,
+  children,
+  size,
+  width,
+  margin = [],
+  padding = [],
+  submit = false,
+  center,
+  loading,
+  disabled,
+  radius,
+  style,
+  ...rest
+}: any) => {
+  return (
+    <StyledButton
+      {...{
+        size,
+        width,
+        center,
+        radius,
+        margin: margin.length > 0 && `${margin.join('px ')}px;`,
+        padding: padding.length > 0 && `${padding.join('px ')}px;`,
+      }}
+      style={style}
+    >
+      <BButton type={type} className={group} disabled={loading || disabled} {...rest}>
+        {icon && <Icon name={icon} style={{ fontSize: 16, marginRight: 5 }} width={14} />}
+        {!loading && (value || children)}
+        {loading && <Loader color="white" />}
+      </BButton>
+    </StyledButton>
+  );
+};
+
+const StyledButtonGroup = styled.div`
+  margin-bottom: 20px;
+
+  > div {
+    width: 100%;
+    border: 1px solid #4185e9;
+
+    > div {
+      flex: 1;
+    }
+  }
+`;
+
+export const ButtonGroup = ({
+  type = 'button',
+  group = 'primary',
+  icon,
+  size,
+  width,
+  defaultActive,
+  margin = [],
+  padding = [],
+  submit = false,
+  options = [],
+  center,
+  loading,
+  disabled,
+  style,
+  onActiveClick,
+  ...rest
+}: any) => {
+  const [active, setActive] = useState(defaultActive || 0);
+
+  const handleClick = (index: number, onClick: any) => {
+    setActive(index);
+
+    if (onClick) {
+      onClick();
+    }
+  };
+
+  return (
+    <StyledButtonGroup>
+      <MButtonGroup>
+        {options.map(({ value, onClick, ...r }: any, index: number) => (
+          <Button
+            value={value}
+            {...r}
+            onClick={() => handleClick(index, onClick)}
+            className={active === index ? 'primary' : ''}
+          />
+        ))}
+      </MButtonGroup>
+    </StyledButtonGroup>
+  );
+};
+
+export default Button;

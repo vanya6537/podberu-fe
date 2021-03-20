@@ -4,10 +4,16 @@ import { isMobile } from 'react-device-detect';
 
 const GlobalStyle = createGlobalStyle`
     ${normalize}
+    *, *:before, *:after {
+        -webkit-box-sizing: inherit;
+        -moz-box-sizing: inherit;
+        box-sizing: inherit;
+    }
     *::before,
     *::after,
     * {
-      box-sizing: border-box;
+        font-family: var(--primary-font) !important;
+        box-sizing: border-box !important;
     }
     html {
         width: 100vw;
@@ -22,7 +28,6 @@ const GlobalStyle = createGlobalStyle`
         font-weight: 400;
     }
     body {
-        font-family: var(--primary-font);
         width: 100%;
         height: 100vh;
     }
@@ -37,7 +42,7 @@ const GlobalStyle = createGlobalStyle`
         --primary-black: #000000;
         --secondary-color: #0ED5FF;
         --placeholder-grey: #736C6C;
-        --primary-font: 'IBM Plex Sans', sans-serif;
+        --primary-font: 'SF Pro Display', sans-serif;
         --off-white: #F4F4F2;
         --lemon-green: #7EC544;
         --lighter-grey: #828282;
@@ -45,9 +50,6 @@ const GlobalStyle = createGlobalStyle`
     h1,h2,h3,h4,h5,h6,p,ul{
       padding: 0;
       margin: 0;
-    }
-    h1,h2,h3,h4,h5,h6{
-        font-family: var(--primary-font);
     }
     h5 {
         font-size: ${isMobile ? '20px' : '30px'};
@@ -79,11 +81,12 @@ const GlobalStyle = createGlobalStyle`
     .link {
         cursor: pointer;
         font-weight: 400;
-        color: #17568b;
+        color: #4185e9;
+        text-decoration: underline;
     }
     .link:hover {
-        color: #17568b;
-        text-decoration: underline;
+        color: #4185e9;
+        text-decoration: none;
     }
     .modal-content {
         padding: 10px 30px;
