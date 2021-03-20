@@ -8,6 +8,7 @@ export const STORAGE = {
 };
 
 export const ROUTES = {
+  HOME: { path: '/home', meta: { title: 'Home' } },
   LANDING: { path: '/', meta: { title: 'Landing' } },
   SIGN_IN: { path: '/auth/signin', meta: { title: 'Sign In' } },
   SIGN_UP: { path: '/auth/signup', meta: { title: 'Sign Up' } },

@@ -7,6 +7,7 @@ import { Switch, Router, Redirect, AuthRoute, PublicRoute, PrivateRoute } from '
 import GlobalStyle from './GlobalStyle';
 
 const Landing = lazy(() => import('./pages/Landing'));
+const Home = lazy(() => import('./pages/home/Home'));
 
 function App() {
   return (
@@ -16,6 +17,7 @@ function App() {
       <Suspense fallback={<Loader />}>
         <Router>
           <Switch>
+            <PublicRoute exact component={Home} {...ROUTES.HOME} />
             <PublicRoute exact component={Landing} {...ROUTES.LANDING} />
             <PrivateRoute exact component={<>Hello</>} {...ROUTES.SIGN_IN} />
             <AuthRoute exact component={<>Hello</>} {...ROUTES.SIGN_IN} />

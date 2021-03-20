@@ -12,12 +12,20 @@ const sizes: any = {
   default: 32,
 };
 
+const font_sizes: any = {
+  lg: 14,
+  md: 12,
+  sm: 11,
+  default: 13,
+};
+
 const StyledButton = styled.div`
   ${({ center }: any) => (center ? `display: flex; justify-content: center;` : '')};
 
   button {
+    color: #ffffff;
     font-weight: 600;
-    font-size: 13px;
+    font-size: ${(props: any) => `${font_sizes[props.size] || font_sizes.default}px`};
     margin: ${(props: any) => props.margin};
     padding: ${(props: any) => props.padding || '0 24px'};
     height: ${(props: any) => `${sizes[props.size] || sizes.default}px`};
@@ -30,18 +38,43 @@ const StyledButton = styled.div`
 
   button.primary {
     background: #4185e9;
-    color: #ffffff;
+  }
+
+  button.green {
+    background: #07c47b;
+  }
+
+  button.purple {
+    background: #7f4bf9;
+  }
+
+  button.orange {
+    background: #e9a541;
   }
 
   button.secondary {
     background: #2758a2;
-    color: #2758a2;
   }
 
   button.outline {
     background: #ffffff;
     border: 1px solid #2758a2;
     color: #2758a2;
+
+    &.green {
+      border: 1px solid #07c47b;
+      color: #07c47b;
+    }
+
+    &.purple {
+      border: 1px solid #7f4bf9;
+      color: #7f4bf9;
+    }
+
+    &.orange {
+      border: 1px solid #e9a541;
+      color: #e9a541;
+    }
   }
 
   button.round {
