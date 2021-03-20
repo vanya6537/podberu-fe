@@ -1,25 +1,29 @@
-import React from 'react';
-import logo from './logo.svg';
+import { lazy, Suspense } from 'react';
 import './App.css';
+import { Toaster } from 'react-hot-toast';
+import Loader from './components/Loader';
+import { ROUTES } from './utilities/constants';
+import { Switch, Router, Redirect, AuthRoute, PublicRoute, PrivateRoute } from './router/Router';
+import GlobalStyle from './GlobalStyle';
+
+const Landing = lazy(() => import('./pages/Landing'));
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <>
+      <GlobalStyle />
+      <Toaster position="top-center" />
+      <Suspense fallback={<Loader />}>
+        <Router>
+          <Switch>
+            <PublicRoute exact component={Landing} {...ROUTES.LANDING} />
+            <PrivateRoute exact component={<>Hello</>} {...ROUTES.SIGN_IN} />
+            <AuthRoute exact component={<>Hello</>} {...ROUTES.SIGN_IN} />
+            <Redirect path="*" to={ROUTES.LANDING.path} />
+          </Switch>
+        </Router>
+      </Suspense>
+    </>
   );
 }
 

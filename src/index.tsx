@@ -1,13 +1,22 @@
-import React from 'react';
+import { StrictMode } from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
-import App from './App';
+import { QueryClient, QueryClientProvider } from 'react-query';
+import { ReactQueryDevtools } from 'react-query/devtools';
 import reportWebVitals from './reportWebVitals';
+import { configureForage } from './utilities/forage';
+import App from './App';
+
+configureForage();
+const queryClient = new QueryClient();
 
 ReactDOM.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>,
+  <StrictMode>
+    <QueryClientProvider client={queryClient}>
+      <ReactQueryDevtools initialIsOpen={false} />
+      <App />
+    </QueryClientProvider>
+  </StrictMode>,
   document.getElementById('root')
 );
 
