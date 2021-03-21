@@ -2,6 +2,7 @@ import styled from 'styled-components';
 import { Row, Col } from 'react-bootstrap';
 import Back from '../../components/Back';
 import { SmallCard } from '../../components/Card';
+import Pagination from '../../components/Pagination';
 
 const StyledDebitCards = styled.div`
   section {
@@ -135,6 +136,12 @@ const DebitCards = () => {
             />
           </Col>
         </Row>
+        <div style={{ display: 'flex', justifyContent: 'center', margin: '10px 0', opacity: 0.8 }}>
+          Показать ещё
+        </div>
+        <div style={{ display: 'flex', justifyContent: 'center', padding: '30px 0' }}>
+          <Pagination />
+        </div>
       </section>
     </StyledDebitCards>
   );
