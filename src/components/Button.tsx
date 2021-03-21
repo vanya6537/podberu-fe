@@ -24,7 +24,7 @@ const StyledButton = styled.div`
 
   button {
     color: #ffffff;
-    font-weight: 600;
+    font-weight: 500;
     font-size: ${(props: any) => `${font_sizes[props.size] || font_sizes.default}px`};
     margin: ${(props: any) => props.margin};
     padding: ${(props: any) => props.padding || '0 24px'};

@@ -159,7 +159,7 @@ const Landing = () => {
                   label="Мобильный телефон"
                   placeholder="Мобильный телефон"
                   name="phone_number"
-                  type="numeric"
+                  type="number"
                   validate="required|phone_number"
                 />
               </Col>

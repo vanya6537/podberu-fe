@@ -1,5 +1,8 @@
 import { Card as BCard } from 'react-bootstrap';
 import styled from 'styled-components';
+import Icon from './Icon';
+import Button from './Button';
+import Image from './Image';
 
 const StyledCard = styled.div.attrs((props) => ({ ...props }))`
   /*height: 100%;*/
@@ -90,5 +93,99 @@ const Card = ({
 Card.Footer = ({ children, ...rest }: any) => {
   return <BCard.Footer {...rest}>{children}</BCard.Footer>;
 };
+
+const StyledLargeCard = styled.div.attrs((props: any) => ({ ...props }))`
+  display: flex;
+  flex-wrap: nowrap;
+
+  ${(props: any) =>
+    props.type === 'small' || props.type === 'icon'
+      ? `margin-top: 10px; padding: 0;
+        h6 { font-size: 16px;  margin-bottom: 11px; }
+        p { font-size: 11px; margin-bottom: 10px; }`
+      : `margin-top: 20px; padding: 0 10px; 
+        h6 { font-size: 20px;  margin-bottom: 15px; }
+        p { font-size: 12px; margin-bottom: 15px; }`}
+
+  ${(props: any) =>
+    props.type === 'icon'
+      ? `justify-content: center; margin: 20px 0;`
+      : `justify-content: space-between;`}
+      
+  h6 {
+    font-weight: 500;
+  }
+
+  p {
+    color: #272e3e;
+    opacity: 0.75;
+  }
+
+  .center {
+    text-align: center;
+  }
+`;
+
+const LargeCard = ({
+  title,
+  subtitle,
+  body,
+  button,
+  icon,
+  src,
+  assetWidth,
+  type,
+  centerText,
+  ...rest
+}: any) => {
+  return (
+    <Card style={{ height: '100%' }} {...rest}>
+      <StyledLargeCard type={type} style={centerText ? { justifyContent: 'center' } : {}}>
+        {title || subtitle || body || button ? (
+          <div className={centerText ? 'center' : ''}>
+            {title && <h6>{title}</h6>}
+            {subtitle && (
+              <p>
+                {typeof subtitle === 'string'
+                  ? subtitle
+                  : subtitle.map &&
+                    subtitle.map((st: string, index: number) => <div key={index}>{st}</div>)}
+              </p>
+            )}
+            {body && (
+              <p>
+                {typeof body === 'string'
+                  ? body
+                  : body.map &&
+                    body.map((st: string, index: number) => <div key={index}>{st}</div>)}
+              </p>
+            )}
+            {button && <Button {...button} />}
+          </div>
+        ) : null}
+        {icon && (
+          <div className="icon">
+            <Icon name={icon} width={assetWidth || (type === 'small' ? 24 : 30)} />
+          </div>
+        )}
+        {src && (
+          <div className="icon">
+            <Image src={src} width={assetWidth || (type === 'small' ? 24 : 30)} />
+          </div>
+        )}
+      </StyledLargeCard>
+    </Card>
+  );
+};
+
+const SmallCard = ({ type = 'small', ...rest }: any) => {
+  return <LargeCard {...rest} style={{}} styleBody={{ padding: '10px 15px' }} type={type} />;
+};
+
+const IconCard = ({ src, icon, width = 36 }: any) => {
+  return <SmallCard src={src} icon={icon} assetWidth={width} type="icon" />;
+};
+
+export { LargeCard, SmallCard, IconCard };
 
 export default Card;
