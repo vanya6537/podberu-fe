@@ -5,7 +5,6 @@ import Back from '../../../components/Back';
 import Button, { ButtonGroup } from '../../../components/Button';
 import { Input, Checkbox } from '../../../components/inputs';
 import { SmallCard } from '../../../components/Card';
-import { formatDate } from '../../../utilities/helper';
 import Pagination from '../../../components/Pagination';
 
 const StyledWithdraw = styled.div`
