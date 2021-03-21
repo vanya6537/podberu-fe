@@ -132,27 +132,14 @@ const StyledButtonGroup = styled.div`
       flex: 1;
     }
   }
+
+  button:not(.active) {
+    color: #222222;
+  }
 `;
 
-export const ButtonGroup = ({
-  type = 'button',
-  group = 'primary',
-  icon,
-  size,
-  width,
-  defaultActive,
-  margin = [],
-  padding = [],
-  submit = false,
-  options = [],
-  center,
-  loading,
-  disabled,
-  style,
-  onActiveClick,
-  ...rest
-}: any) => {
-  const [active, setActive] = useState(defaultActive || 0);
+export const ButtonGroup = ({ defaultActive = 0, options = [] }: any) => {
+  const [active, setActive] = useState(defaultActive);
 
   const handleClick = (index: number, onClick: any) => {
     setActive(index);
@@ -170,7 +157,7 @@ export const ButtonGroup = ({
             value={value}
             {...r}
             onClick={() => handleClick(index, onClick)}
-            className={active === index ? 'primary' : ''}
+            className={active === index ? 'active primary' : ''}
           />
         ))}
       </MButtonGroup>

@@ -8,7 +8,8 @@ import GlobalStyle from './GlobalStyle';
 
 const Landing = lazy(() => import('./pages/Landing'));
 const Home = lazy(() => import('./pages/home/Home'));
-const DebitCards = lazy(() => import('./pages/home/DebitCards'));
+const Account = lazy(() => import('./pages/account/Account'));
+// const DebitCards = lazy(() => import('./pages/home/DebitCards'));
 // const RegisterDeal = lazy(() => import('./pages/home/RegisterDeal'));
 const Signin = lazy(() => import('./pages/auth/Signin'));
 
@@ -20,8 +21,9 @@ function App() {
       <Suspense fallback={<Loader />}>
         <Router>
           <Switch>
-            {/* <PublicRoute exact component={Home} {...ROUTES.HOME} /> */}
-            <PublicRoute exact component={DebitCards} {...ROUTES.HOME} />
+            <PublicRoute exact component={Home} {...ROUTES.HOME} />
+            <PublicRoute exact component={Account} {...ROUTES.ACCOUNT} />
+            {/* <PublicRoute exact component={DebitCards} {...ROUTES.HOME} /> */}
             <PublicRoute exact component={Landing} {...ROUTES.LANDING} />
             <AuthRoute exact component={Signin} {...ROUTES.SIGN_IN} />
             <PrivateRoute exact component={Signin} {...ROUTES.NOT_FOUND} />

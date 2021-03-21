@@ -12,10 +12,21 @@ const StyledCard = styled.div.attrs((props) => ({ ...props }))`
   border-radius: 10px;
   overflow: hidden;
 
+  ${(props) => (props.onClick ? 'cursor: pointer;' : '')}
+
   .card {
     height: 100%;
     border: none;
     background: inherit;
+  }
+
+  .card-body.blue {
+    color: #ffffff;
+    background: #4185e9;
+
+    p {
+      color: #ffffff;
+    }
   }
 
   .card-title {
@@ -67,6 +78,7 @@ const Card = ({
   subtitle,
   children,
   footer,
+  group,
   noWrapper = false,
   styleBody = {},
   ...rest
@@ -76,7 +88,7 @@ const Card = ({
       {header && <StyledHeader>{header}</StyledHeader>}
       <StyledCard {...rest}>
         <BCard>
-          <BCard.Body style={styleBody}>
+          <BCard.Body style={styleBody} className={group || ''}>
             {title && <BCard.Title>{title}</BCard.Title>}
             {subtitle && <BCard.Subtitle>{subtitle}</BCard.Subtitle>}
 
