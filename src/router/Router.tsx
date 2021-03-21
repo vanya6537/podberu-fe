@@ -81,7 +81,14 @@ const PrivateRoute = ({
   );
 };
 
-const AuthRoute = ({ component: Component, path, meta, ...rest }: any) => {
+const AuthRoute = ({
+  component: Component,
+  path,
+  meta,
+  showHeader = false,
+  showFooter = false,
+  ...rest
+}: any) => {
   const { isSignedIn }: any = useContext(AuthContext);
 
   return (
@@ -89,7 +96,13 @@ const AuthRoute = ({ component: Component, path, meta, ...rest }: any) => {
       {...rest}
       path={path}
       render={(props) =>
-        !isSignedIn ? <Component {...props} /> : <Redirect to={ROUTES.DASHBOARD.path} />
+        !isSignedIn ? (
+          <Container showHeader={showHeader} showFooter={showFooter} meta={meta}>
+            <Component {...props} />
+          </Container>
+        ) : (
+          <Redirect to={ROUTES.DASHBOARD.path} />
+        )
       }
     />
   );

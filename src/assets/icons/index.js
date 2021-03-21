@@ -17,6 +17,7 @@ import facebook from './facebook.svg';
 import moneybag from './money-bag.svg';
 import microzaim from './microzaim.svg';
 import instagram from './instagram.svg';
+import caretleft from './caret-left.svg';
 import typography from './typography.svg';
 
 export {
@@ -39,5 +40,6 @@ export {
   moneybag,
   microzaim,
   instagram,
+  caretleft,
   typography,
 };

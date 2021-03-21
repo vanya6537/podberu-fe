@@ -8,6 +8,7 @@ import GlobalStyle from './GlobalStyle';
 
 const Landing = lazy(() => import('./pages/Landing'));
 const Home = lazy(() => import('./pages/home/Home'));
+const Signin = lazy(() => import('./pages/auth/Signin'));
 
 function App() {
   return (
@@ -19,8 +20,9 @@ function App() {
           <Switch>
             <PublicRoute exact component={Home} {...ROUTES.HOME} />
             <PublicRoute exact component={Landing} {...ROUTES.LANDING} />
-            <PrivateRoute exact component={<>Hello</>} {...ROUTES.SIGN_IN} />
-            <AuthRoute exact component={<>Hello</>} {...ROUTES.SIGN_IN} />
+            <AuthRoute exact component={Signin} {...ROUTES.SIGN_IN} />
+            <PrivateRoute exact component={Signin} {...ROUTES.NOT_FOUND} />
+            {/* <AuthRoute exact component={<>Hello</>} {...ROUTES.SIGN_IN} /> */}
             <Redirect path="*" to={ROUTES.LANDING.path} />
           </Switch>
         </Router>

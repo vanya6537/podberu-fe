@@ -88,6 +88,16 @@ const GlobalStyle = createGlobalStyle`
         color: #4185e9;
         text-decoration: none;
     }
+    .link-out {
+        cursor: pointer;
+        font-weight: 400;
+        color: #4185e9;
+        text-decoration: none;
+    }
+    .link-out:hover {
+        color: #4185e9;
+        text-decoration: underline;
+    }
     .modal-content {
         padding: 10px 30px;
     }
