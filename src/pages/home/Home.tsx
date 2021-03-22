@@ -10,6 +10,11 @@ const StyledHome = styled.div`
     min-height: 500px;
     padding: 40px 100px;
 
+    > * {
+      max-width: 1000px;
+      margin: auto;
+    }
+
     @media only screen and (max-width: 767px) {
       padding: 40px;
     }

@@ -8,7 +8,13 @@ import Button, { ButtonGroup } from '../components/Button';
 const StyledLanding = styled.div`
   section {
     min-height: 500px;
-    padding: 70px;
+    padding: 70px 10px;
+
+    > * {
+      max-width: 1000px;
+      margin-left: auto !important;
+      margin-right: auto !important;
+    }
 
     @media only screen and (max-width: 767px) {
       padding: 40px;
@@ -87,7 +93,7 @@ const Landing = () => {
     <StyledLanding>
       <section className="primary">
         <Row>
-          <Col md={8} lg={{ span: 5, offset: 2 }}>
+          <Col md={8} lg={7}>
             <h1>Кредит для вашего бизнеса до 5 000 000 ₽</h1>
             <p className="p">
               Если вы зарегистрированы как ИП или ваша компания оформлена как ООО или АО — вы можете
@@ -108,7 +114,7 @@ const Landing = () => {
               </div>
             </div>
           </Col>
-          <Col md={4} lg={{ span: 3 }} className="usps">
+          <Col md={4} lg={5} className="usps">
             <StyledUSP>
               <Icon name="clock" width={26} />
               <span>Решение за 1 день</span>
