@@ -3,10 +3,10 @@ import { isEmpty } from './helper';
 
 const settings: { forage: any } = {
   forage: {
-    storeName: 'BluInTouch',
-    name: 'BluInTouch Application Storage',
+    storeName: 'Podberu',
+    name: 'Podberu Application Storage',
     version: 1,
-    description: 'Storage for BluInTouch',
+    description: 'Storage for Podberu',
   },
 };
 
