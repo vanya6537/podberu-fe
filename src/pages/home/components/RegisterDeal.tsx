@@ -1,10 +1,12 @@
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 import styled from 'styled-components';
 import { Row, Col } from 'react-bootstrap';
 import Back from '../../../components/Back';
-import { Input } from '../../../components/inputs';
 import Button from '../../../components/Button';
+import { Input } from '../../../components/inputs';
+import { ROLES } from '../../../utilities/constants';
 import { formatDate } from '../../../utilities/helper';
+import { AuthContext } from '../../../context/AuthContext';
 
 const StyledRegisterDeal = styled.div`
   section {
@@ -27,6 +29,7 @@ const StyledRegisterDeal = styled.div`
       text-align: center;
       line-height: 1.4;
       position: relative;
+      width: 100%;
       > div {
         position: absolute;
         top: 10px;
@@ -41,9 +44,9 @@ const StyledRegisterDeal = styled.div`
   }
 `;
 
-const RegisterDeal = ({ initialState = 'initial' }: any) => {
-  // TODO:: just a placeholder
-  const [state, setState] = useState(initialState);
+const RegisterDeal = () => {
+  const { user }: any = useContext(AuthContext);
+  const [state, setState] = useState(user.role === ROLES.AGENT ? 'initial' : 'fill-form');
 
   const handleSubmit = (e: any) => {
     e.preventDefault();

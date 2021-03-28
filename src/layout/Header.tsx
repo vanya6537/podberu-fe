@@ -1,6 +1,10 @@
+import { useContext } from 'react';
 import styled from 'styled-components';
+import { useHistory } from 'react-router-dom';
 import Icon from '../components/Icon';
 import Button from '../components/Button';
+import { AuthContext } from '../context/AuthContext';
+import { ROUTES } from '../utilities/constants';
 
 const StyledHeader = styled.header`
   background-color: #09244c;
@@ -12,10 +16,34 @@ const StyledHeader = styled.header`
 `;
 
 const Header = () => {
+  const { isSignedIn }: any = useContext(AuthContext);
+  const history = useHistory();
+
+  const goHome = () => {
+    history.push(ROUTES.HOME.path);
+  };
+
+  const goLanding = () => {
+    history.push(ROUTES.LANDING.path);
+  };
+
+  const goToProfile = () => {
+    history.push(ROUTES.ACCOUNT.path);
+  };
+
+  const goToLogIn = () => {
+    history.push(ROUTES.SIGN_IN.path);
+  };
+
   return (
     <StyledHeader>
-      <Icon name="logo" width={130} />
-      <Button value="Оформить заявку" />
+      <Icon name="logo" width={130} onClick={isSignedIn ? goHome : goLanding} />
+      {isSignedIn ? (
+        <Button value="Профиль" onClick={goToProfile} />
+      ) : (
+        <Button value="Войти" onClick={goToLogIn} />
+      )}
+      {/* <Button value="Оформить заявку" /> */}
     </StyledHeader>
   );
 };

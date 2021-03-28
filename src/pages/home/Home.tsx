@@ -1,5 +1,7 @@
-import { useState } from 'react';
+import { useContext } from 'react';
 import styled from 'styled-components';
+import { AuthContext } from '../../context/AuthContext';
+import { ROLES } from '../../utilities/constants';
 import AgentHome from './AgentHome';
 import ClientHome from './ClientHome';
 
@@ -23,6 +25,7 @@ const StyledHome = styled.div`
       margin-bottom: 34px;
       text-align: center;
       line-height: 1.4;
+      width: 100%;
     }
 
     h4 {
@@ -32,13 +35,12 @@ const StyledHome = styled.div`
 `;
 
 const Home = () => {
-  // TODO:: just a placeholder
-  const [role, setRole] = useState('agent');
+  const { user }: any = useContext(AuthContext);
 
   return (
     <StyledHome>
-      {role === 'client' && <ClientHome />}
-      {role === 'agent' && <AgentHome />}
+      {user.role === ROLES.CLIENT && <ClientHome />}
+      {user.role === ROLES.AGENT && <AgentHome />}
     </StyledHome>
   );
 };

@@ -5,6 +5,7 @@ import Loader from './components/Loader';
 import { ROUTES } from './utilities/constants';
 import { Switch, Router, Redirect, AuthRoute, PublicRoute, PrivateRoute } from './router/Router';
 import GlobalStyle from './GlobalStyle';
+import { AuthProvider } from './context/AuthContext';
 
 const Landing = lazy(() => import('./pages/Landing'));
 const Home = lazy(() => import('./pages/home/Home'));
@@ -18,19 +19,22 @@ function App() {
     <>
       <GlobalStyle />
       <Toaster position="top-center" />
+
       <Suspense fallback={<Loader />}>
         <Router>
-          <Switch>
-            <PublicRoute exact component={Home} {...ROUTES.HOME} />
-            <PublicRoute exact component={Account} {...ROUTES.ACCOUNT} />
-            <PublicRoute exact component={DebitCards} {...ROUTES.DEBIT} />
-            <PublicRoute exact component={RegisterDeal} {...ROUTES.REGISTER} />
-            <PublicRoute exact component={Landing} {...ROUTES.LANDING} />
-            <AuthRoute exact component={Signin} {...ROUTES.SIGN_IN} />
-            <PrivateRoute exact component={Signin} {...ROUTES.NOT_FOUND} />
-            {/* <AuthRoute exact component={<>Hello</>} {...ROUTES.SIGN_IN} /> */}
-            <Redirect path="*" to={ROUTES.LANDING.path} />
-          </Switch>
+          <AuthProvider>
+            <Switch>
+              <PrivateRoute exact component={Home} {...ROUTES.HOME} />
+              <PrivateRoute exact component={Account} {...ROUTES.ACCOUNT} />
+              <PrivateRoute exact component={DebitCards} {...ROUTES.DEBIT} />
+              <PrivateRoute exact component={RegisterDeal} {...ROUTES.REGISTER} />
+              <PublicRoute exact component={Landing} {...ROUTES.LANDING} />
+              <AuthRoute exact component={Signin} {...ROUTES.SIGN_IN} />
+              <PrivateRoute exact component={Signin} {...ROUTES.NOT_FOUND} />
+              {/* <AuthRoute exact component={<>Hello</>} {...ROUTES.SIGN_IN} /> */}
+              <Redirect path="*" to={ROUTES.HOME.path} />
+            </Switch>
+          </AuthProvider>
         </Router>
       </Suspense>
     </>

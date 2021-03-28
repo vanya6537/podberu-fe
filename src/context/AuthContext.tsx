@@ -1,7 +1,7 @@
 import { createContext, useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
-import { ROUTES, STORAGE } from '../utilities/constants';
-import { localGet, localRemove } from '../utilities/forage';
+import { ROLES, ROUTES, STORAGE } from '../utilities/constants';
+import { localGet, localRemove, localSet } from '../utilities/forage';
 
 const AuthContext = createContext({});
 
@@ -33,9 +33,15 @@ const AuthProvider = ({ children }: any) => {
 
   const getProfile = () => {};
 
-  const signIn = ({ email, password }: { email: string; password: string }) => {
+  const signIn = ({ phone_number, password }: { phone_number: string; password: string }) => {
     // TODO:: Update
-    setAuthData((d) => ({ ...d, isSignedIn: true }));
+    const user: any = {
+      phone_number,
+      role: password.toLowerCase() === ROLES.AGENT ? ROLES.AGENT : ROLES.CLIENT,
+    };
+    setAuthData({ user, isSignedIn: true });
+    localSet({ key: STORAGE.USER, data: user });
+    localSet({ key: STORAGE.TOKEN, data: !!password });
   };
 
   return (

@@ -1,4 +1,4 @@
-import { useState, useMemo } from 'react';
+import { useMemo, useContext } from 'react';
 import styled from 'styled-components';
 import { Row, Col } from 'react-bootstrap';
 import Tabs from '../../components/Tabs';
@@ -7,6 +7,8 @@ import Withdraw from './components/Withdraw';
 import Documents from './components/Documents';
 import ProfileCard from './components/ProfileCard';
 import Applications from './components/Applications';
+import { AuthContext } from '../../context/AuthContext';
+import { ROLES } from '../../utilities/constants';
 
 const StyledAccount = styled.div`
   section {
@@ -28,6 +30,7 @@ const StyledAccount = styled.div`
       margin-bottom: 34px;
       text-align: center;
       line-height: 1.4;
+      width: 100%;
     }
 
     h4 {
@@ -37,9 +40,10 @@ const StyledAccount = styled.div`
 `;
 
 const Account = () => {
-  const [role, setRole] = useState('agent');
+  const { user }: any = useContext(AuthContext);
+
   const data = useMemo(() => {
-    if (role === 'agent') {
+    if (user.role === ROLES.AGENT) {
       return {
         header: [
           { value: 0, label: 'Мои заявки' },
@@ -67,7 +71,7 @@ const Account = () => {
         3: <Settings />,
       },
     };
-  }, [role]);
+  }, [user.role]);
 
   return (
     <StyledAccount>
@@ -75,7 +79,7 @@ const Account = () => {
         <h2>Добро пожаловать в личный кабинет!</h2>
         <Row>
           <Col style={{ display: 'flex', justifyContent: 'center' }}>
-            <ProfileCard full={role === 'client'} />
+            <ProfileCard />
           </Col>
         </Row>
 

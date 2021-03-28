@@ -27,6 +27,7 @@ const StyledDebitCards = styled.div`
       text-align: center;
       line-height: 1.4;
       position: relative;
+      width: 100%;
       > div {
         position: absolute;
         top: 10px;

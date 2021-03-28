@@ -1,9 +1,12 @@
+import { useContext } from 'react';
 import styled from 'styled-components';
 import Card from '../../../components/Card';
 import Icon from '../../../components/Icon';
 import Image from '../../../components/Image';
 import ProfileImage from '../../../assets/images/avatar.png';
 import CreditMeterImage from '../../../assets/images/credit-meter.png';
+import { AuthContext } from '../../../context/AuthContext';
+import { ROLES } from '../../../utilities/constants';
 
 const StyledProfileCard = styled.div`
   width: 310px !important;
@@ -52,7 +55,9 @@ const StyledProfileCard = styled.div`
   }
 `;
 
-const ProfileCard = ({ full = false }) => {
+const ProfileCard = () => {
+  const { user, signOut }: any = useContext(AuthContext);
+
   return (
     <Card>
       <StyledProfileCard>
@@ -65,10 +70,16 @@ const ProfileCard = ({ full = false }) => {
             </div>
           </div>
           <div>
-            <Icon name="logout" width={22} margin={[0, 0, 0, 20]} />
+            <Icon
+              name="logout"
+              title="Logout"
+              width={22}
+              margin={[0, 0, 0, 20]}
+              onClick={signOut}
+            />
           </div>
         </div>
-        {full && (
+        {user.role === ROLES.CLIENT && (
           <div className="credit-score">
             <div>Ваш персональный кредитный рейтинг</div>
             <Image

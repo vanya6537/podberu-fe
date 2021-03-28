@@ -19,3 +19,8 @@ export const ROUTES = {
   DASHBOARD: { path: '/dashboard', meta: { title: 'Dashboard' } },
   NOT_FOUND: { path: '/404', meta: { title: 'Not Found' } },
 };
+
+export const ROLES = {
+  AGENT: 'agent',
+  CLIENT: 'client',
+};

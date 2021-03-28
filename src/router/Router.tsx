@@ -101,7 +101,7 @@ const AuthRoute = ({
             <Component {...props} />
           </Container>
         ) : (
-          <Redirect to={ROUTES.DASHBOARD.path} />
+          <Redirect to={ROUTES.HOME.path} />
         )
       }
     />

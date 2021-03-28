@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import styled from 'styled-components';
 import { Row, Col } from 'react-bootstrap';
 import Back from '../../../components/Back';
@@ -15,6 +15,7 @@ const StyledDocuments = styled.div`
     text-align: center;
     line-height: 1.4;
     position: relative;
+    width: 100%;
     > div {
       position: absolute;
       top: 6px;
