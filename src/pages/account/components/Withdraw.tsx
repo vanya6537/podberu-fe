@@ -187,14 +187,8 @@ const WithdrawalForm = ({ back }: any) => {
   );
 };
 
-const Withdraw = ({ setFullProfile }: any) => {
+const Withdraw = () => {
   const [chosenForm, setChosenForm] = useState('');
-
-  useEffect(() => {
-    if (setFullProfile) {
-      setFullProfile(!chosenForm);
-    }
-  }, [chosenForm]);
 
   const goBack = () => {
     setChosenForm('');

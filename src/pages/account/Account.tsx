@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useMemo } from 'react';
 import styled from 'styled-components';
 import { Row, Col } from 'react-bootstrap';
 import Tabs from '../../components/Tabs';
@@ -37,7 +37,37 @@ const StyledAccount = styled.div`
 `;
 
 const Account = () => {
-  const [fullProfile, setFullProfile] = useState(true);
+  const [role, setRole] = useState('agent');
+  const data = useMemo(() => {
+    if (role === 'agent') {
+      return {
+        header: [
+          { value: 0, label: 'Мои заявки' },
+          { value: 1, label: 'Мои документы' },
+          { value: 2, label: 'Вывод средств' },
+          { value: 3, label: 'Настройки' },
+        ],
+        data: {
+          0: <Applications />,
+          1: <Documents />,
+          2: <Withdraw />,
+          3: <Settings />,
+        },
+      };
+    }
+    return {
+      header: [
+        { value: 0, label: 'Мои заявки' },
+        { value: 1, label: 'Мои документы' },
+        { value: 3, label: 'Настройки' },
+      ],
+      data: {
+        0: <Applications />,
+        1: <Documents />,
+        3: <Settings />,
+      },
+    };
+  }, [role]);
 
   return (
     <StyledAccount>
@@ -45,26 +75,13 @@ const Account = () => {
         <h2>Добро пожаловать в личный кабинет!</h2>
         <Row>
           <Col style={{ display: 'flex', justifyContent: 'center' }}>
-            <ProfileCard full={fullProfile} />
+            <ProfileCard full={role === 'client'} />
           </Col>
         </Row>
 
         <Row>
           <Col>
-            <Tabs
-              header={[
-                { value: 0, label: 'Мои заявки' },
-                { value: 1, label: 'Мои документы' },
-                { value: 2, label: 'Вывод средств' },
-                { value: 3, label: 'Настройки' },
-              ]}
-              data={{
-                0: <Applications />,
-                1: <Documents setFullProfile={setFullProfile} />,
-                2: <Withdraw setFullProfile={setFullProfile} />,
-                3: <Settings />,
-              }}
-            />
+            <Tabs header={data.header} data={data.data} />
           </Col>
         </Row>
       </section>

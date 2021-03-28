@@ -187,14 +187,8 @@ const TINCertificate = ({ back }: any) => {
   );
 };
 
-const Documents = ({ setFullProfile }: any) => {
+const Documents = () => {
   const [chosenForm, setChosenForm] = useState('');
-
-  useEffect(() => {
-    if (setFullProfile) {
-      setFullProfile(!chosenForm);
-    }
-  }, [chosenForm]);
 
   const goBack = () => {
     setChosenForm('');
