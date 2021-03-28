@@ -1,9 +1,9 @@
 import { lazy, Suspense } from 'react';
-import './App.css';
 import { Toaster } from 'react-hot-toast';
 import Loader from './components/Loader';
 import { ROUTES } from './utilities/constants';
 import { Switch, Router, Redirect, AuthRoute, PublicRoute, PrivateRoute } from './router/Router';
+import './App.css';
 import GlobalStyle from './GlobalStyle';
 import { AuthProvider } from './context/AuthContext';
 
