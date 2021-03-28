@@ -1,10 +1,10 @@
 import { useState } from 'react';
 import styled from 'styled-components';
 import { Row, Col } from 'react-bootstrap';
-import Back from '../../components/Back';
-import { Input } from '../../components/inputs';
-import Button from '../../components/Button';
-import { formatDate } from '../../utilities/helper';
+import Back from '../../../components/Back';
+import { Input } from '../../../components/inputs';
+import Button from '../../../components/Button';
+import { formatDate } from '../../../utilities/helper';
 
 const StyledRegisterDeal = styled.div`
   section {
@@ -41,18 +41,48 @@ const StyledRegisterDeal = styled.div`
   }
 `;
 
-const RegisterDeal = () => {
+const RegisterDeal = ({ initialState = 'initial' }: any) => {
   // TODO:: just a placeholder
-  const [submitted, setSubmitted] = useState(true);
+  const [state, setState] = useState(initialState);
 
   const handleSubmit = (e: any) => {
     e.preventDefault();
-    setSubmitted(true);
+    setState('complete');
   };
 
   return (
     <StyledRegisterDeal>
-      {!submitted && (
+      {state === 'initial' && (
+        <section
+          style={{
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            justifyContent: 'center',
+          }}
+        >
+          <h2>
+            <Back />
+            Дебетовая карта Альфа-банк
+          </h2>
+          <p>
+            <div>Вы можете оформить заявку самостоятельно</div>
+            <div>либо скопировать на неё ссылку</div>
+            <div>для клиента.</div>
+          </p>
+
+          <Button value="Скопировать ссылку" size="lg" group="outline" margin={[0, 0, 20, 0]} />
+          <span style={{ marginBottom: -8 }}>Или</span>
+          <Button
+            value="Заполнить данные о клиенте"
+            size="lg"
+            margin={[30, 0, 20, 0]}
+            onClick={() => setState('fill-form')}
+          />
+        </section>
+      )}
+
+      {state === 'fill-form' && (
         <section>
           <h2>
             <Back />
@@ -160,7 +190,7 @@ const RegisterDeal = () => {
         </section>
       )}
 
-      {submitted && (
+      {state === 'complete' && (
         <section
           style={{
             display: 'flex',
@@ -175,7 +205,7 @@ const RegisterDeal = () => {
             <div>Её статус вы можете отследить в своём</div>
             <div>личном кабинете.</div>
           </p>
-          <Button value="Вернуться на главную страницу" size="lg" margin={[30, 0, 20, 0]} />
+          <Button value="Вернуться на главную страницу" size="lg" margin={[20, 0]} />
         </section>
       )}
     </StyledRegisterDeal>

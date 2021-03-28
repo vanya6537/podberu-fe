@@ -1,8 +1,10 @@
 import styled from 'styled-components';
 import { Row, Col } from 'react-bootstrap';
-import Back from '../../components/Back';
-import { SmallCard } from '../../components/Card';
-import Pagination from '../../components/Pagination';
+import { useHistory } from 'react-router-dom';
+import Back from '../../../components/Back';
+import { SmallCard } from '../../../components/Card';
+import Pagination from '../../../components/Pagination';
+import { ROUTES } from '../../../utilities/constants';
 
 const StyledDebitCards = styled.div`
   section {
@@ -34,6 +36,12 @@ const StyledDebitCards = styled.div`
 `;
 
 const DebitCards = () => {
+  const history = useHistory();
+
+  const registerDeal = () => {
+    history.push(ROUTES.REGISTER.path);
+  };
+
   return (
     <StyledDebitCards>
       <section className="secondary">
@@ -55,7 +63,7 @@ const DebitCards = () => {
                 'карт любых банков.',
               ]}
               icon="typography"
-              button={{ value: 'Подробнее', size: 'sm' }}
+              button={{ value: 'Подробнее', size: 'sm', onClick: registerDeal }}
             />
           </Col>
           <Col md={4} style={{ marginBottom: 10 }}>
@@ -71,7 +79,7 @@ const DebitCards = () => {
                 'карт любых банков.',
               ]}
               icon="typography"
-              button={{ value: 'Подробнее', size: 'sm' }}
+              button={{ value: 'Подробнее', size: 'sm', onClick: registerDeal }}
             />
           </Col>
           <Col md={4} style={{ marginBottom: 10 }}>
@@ -87,7 +95,7 @@ const DebitCards = () => {
                 'карт любых банков.',
               ]}
               icon="typography"
-              button={{ value: 'Подробнее', size: 'sm' }}
+              button={{ value: 'Подробнее', size: 'sm', onClick: registerDeal }}
             />
           </Col>
         </Row>
@@ -105,7 +113,7 @@ const DebitCards = () => {
                 'карт любых банков.',
               ]}
               icon="typography"
-              button={{ value: 'Подробнее', size: 'sm' }}
+              button={{ value: 'Подробнее', size: 'sm', onClick: registerDeal }}
             />
           </Col>
           <Col md={4} style={{ marginBottom: 10 }}>
@@ -121,7 +129,7 @@ const DebitCards = () => {
                 'карт любых банков.',
               ]}
               icon="typography"
-              button={{ value: 'Подробнее', size: 'sm' }}
+              button={{ value: 'Подробнее', size: 'sm', onClick: registerDeal }}
             />
           </Col>
           <Col md={4} style={{ marginBottom: 10 }}>
@@ -137,11 +145,13 @@ const DebitCards = () => {
                 'карт любых банков.',
               ]}
               icon="typography"
-              button={{ value: 'Подробнее', size: 'sm' }}
+              button={{ value: 'Подробнее', size: 'sm', onClick: registerDeal }}
             />
           </Col>
         </Row>
-        <div style={{ display: 'flex', justifyContent: 'center', margin: '10px 0', opacity: 0.8 }}>
+        <div
+          style={{ display: 'flex', justifyContent: 'center', margin: '10px auto', opacity: 0.8 }}
+        >
           Показать ещё
         </div>
         <div style={{ display: 'flex', justifyContent: 'center', padding: '30px 0' }}>

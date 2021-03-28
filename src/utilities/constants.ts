@@ -10,7 +10,8 @@ export const STORAGE = {
 export const ROUTES = {
   HOME: { path: '/home', meta: { title: 'Home' } },
   ACCOUNT: { path: '/account', meta: { title: 'Account' } },
-  DEBITS: { path: '/debit', meta: { title: 'Debit' } },
+  DEBIT: { path: '/debit', meta: { title: 'Debit' } },
+  CREDIT: { path: '/credit', meta: { title: 'Credit' } },
   REGISTER: { path: '/register', meta: { title: 'Register' } },
   LANDING: { path: '/', meta: { title: 'Landing' } },
   SIGN_IN: { path: '/auth/signin', showHeader: true, showFooter: true, meta: { title: 'Sign In' } },
