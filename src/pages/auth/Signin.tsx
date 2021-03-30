@@ -1,4 +1,4 @@
-import { useContext, useState } from 'react';
+import { useCallback, useContext, useState } from 'react';
 import styled from 'styled-components';
 import { Row, Col } from 'react-bootstrap';
 import Back from '../../components/Back';
@@ -37,17 +37,24 @@ const StyledSignin = styled.div`
 `;
 
 const Signin = () => {
-  // TODO:: just a placeholder
-  const { signIn }: any = useContext(AuthContext);
-  const [formData, setFormData] = useState({});
+  const { sendAuthCode, completeSignIn }: any = useContext(AuthContext);
+  const [formData, setFormData] = useState({ phone: '', code: '' });
+  const [stage, setStage] = useState(0);
+  const handleInputChange = useCallback(({ name, value }: any) => {
+    setFormData((d) => ({ ...d, [name]: value }));
+  }, []);
 
   const handleSubmit = (e: any) => {
     e.preventDefault();
-    signIn(formData);
-  };
-
-  const handleInputChange = ({ name, value }: any) => {
-    setFormData((d) => ({ ...d, [name]: value }));
+    if (stage === 0) {
+      sendAuthCode(formData).then(({ error }: any) => {
+        if (!error) {
+          setStage(1);
+        }
+      });
+    } else if (stage === 1) {
+      completeSignIn(formData);
+    }
   };
 
   return (
@@ -63,24 +70,27 @@ const Signin = () => {
               <Input
                 label="Мобильный телефон"
                 placeholder="Мобильный телефон"
-                name="phone_number"
-                type="number"
+                name="phone"
+                type="text"
                 validate="required|phone_number"
                 onChange={handleInputChange}
               />
             </Col>
           </Row>
-          <Row>
-            <Col>
-              <PasswordInput
-                label="Код из смс"
-                placeholder="Код из смс"
-                validate="required"
-                name="password"
-                onChange={handleInputChange}
-              />
-            </Col>
-          </Row>
+          {stage === 1 && (
+            <Row>
+              <Col>
+                <PasswordInput
+                  label="Код из смс"
+                  placeholder="Код из смс"
+                  validate="required"
+                  type="number"
+                  name="code"
+                  onChange={handleInputChange}
+                />
+              </Col>
+            </Row>
+          )}
 
           <Row>
             <Col

@@ -104,16 +104,16 @@ const Input = ({
   type = 'text',
   variant = 'outlined',
   hint,
-  value,
   name,
   size = 'small',
-  defaultValue,
+  defaultValue = '',
   multiline = false,
   rows = 3,
   onChange,
   validate,
   ...rest
 }: any) => {
+  const [value, setValue]: any = useState(defaultValue);
   const [errors, setErrors]: any = useState([]);
 
   const handleValidation = (e: SyntheticEvent) => {
@@ -123,6 +123,7 @@ const Input = ({
 
   const handleOnChange = (e: SyntheticEvent) => {
     const { name: n, value: v }: any = e.target;
+    setValue(v);
     if (onChange) {
       onChange({ name: n, value: v });
     }

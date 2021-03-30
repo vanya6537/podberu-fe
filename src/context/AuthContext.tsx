@@ -1,6 +1,7 @@
 import { createContext, useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
-import { ROLES, ROUTES, STORAGE } from '../utilities/constants';
+import { post } from '../utilities/helper';
+import { API_URL, ROLES, ROUTES, STORAGE } from '../utilities/constants';
 import { localGet, localRemove, localSet } from '../utilities/forage';
 
 const AuthContext = createContext({});
@@ -33,19 +34,31 @@ const AuthProvider = ({ children }: any) => {
 
   const getProfile = () => {};
 
-  const signIn = ({ phone_number, password }: { phone_number: string; password: string }) => {
+  const sendAuthCode = ({ phone }: { phone: string }) => {
+    // TODO:: Update
+    return post(API_URL.SEND_CODE, { phone }, {}, true);
+  };
+
+  const completeSignIn = ({ phone, code }: { phone: string; code: string }) => {
     // TODO:: Update
     const user: any = {
-      phone_number,
-      role: password.toLowerCase() === ROLES.AGENT ? ROLES.AGENT : ROLES.CLIENT,
+      phone,
+      role: code.toLowerCase() === ROLES.AGENT ? ROLES.AGENT : ROLES.CLIENT,
     };
-    setAuthData({ user, isSignedIn: true });
-    localSet({ key: STORAGE.USER, data: user });
-    localSet({ key: STORAGE.TOKEN, data: !!password });
+
+    return post(API_URL.LOGIN, { phone, code }, {}, true).then(({ error }: any) => {
+      if (!error) {
+        setAuthData({ user, isSignedIn: true });
+        localSet({ key: STORAGE.USER, data: user });
+        localSet({ key: STORAGE.TOKEN, data: !!code });
+      }
+    });
   };
 
   return (
-    <AuthContext.Provider value={{ signOut, signIn, getProfile, ...authData }}>
+    <AuthContext.Provider
+      value={{ signOut, sendAuthCode, completeSignIn, getProfile, ...authData }}
+    >
       {children}
     </AuthContext.Provider>
   );

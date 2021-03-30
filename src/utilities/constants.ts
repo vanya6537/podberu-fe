@@ -1,6 +1,9 @@
-export const BASE_URL = 'https://base-url.com';
+export const BASE_URL = 'https://podberu-backend.herokuapp.com/api';
 
-export const API_URL = {};
+export const API_URL = {
+  LOGIN: `${BASE_URL}/auth`,
+  SEND_CODE: `${BASE_URL}/send_code`,
+};
 
 export const STORAGE = {
   USER: 'pick-up-user',
