@@ -2,7 +2,7 @@ import { useCallback, useContext, useState } from 'react';
 import styled from 'styled-components';
 import { Row, Col } from 'react-bootstrap';
 import Back from '../../components/Back';
-import { Input, PasswordInput } from '../../components/inputs';
+import { Form, Input, PasswordInput } from '../../components/inputs';
 import Button from '../../components/Button';
 import { AuthContext } from '../../context/AuthContext';
 
@@ -38,24 +38,22 @@ const StyledSignin = styled.div`
 
 const Signin = () => {
   const { sendAuthCode, completeSignIn }: any = useContext(AuthContext);
-  const [formData, setFormData] = useState({ phone: '', code: '' });
   const [stage, setStage] = useState(0);
-  const handleInputChange = useCallback(({ name, value }: any) => {
-    setFormData((d) => ({ ...d, [name]: value }));
-  }, []);
 
-  const handleSubmit = (e: any) => {
-    e.preventDefault();
-    if (stage === 0) {
-      sendAuthCode(formData).then(({ error }: any) => {
-        if (!error) {
-          setStage(1);
-        }
-      });
-    } else if (stage === 1) {
-      completeSignIn(formData);
-    }
-  };
+  const handleSubmit = useCallback(
+    async (formData) => {
+      if (stage === 0) {
+        await sendAuthCode(formData).then(({ error, ...rest }: any) => {
+          if (!error) {
+            setStage(1);
+          }
+        });
+      } else if (stage === 1) {
+        await completeSignIn(formData);
+      }
+    },
+    [stage]
+  );
 
   return (
     <StyledSignin>
@@ -64,53 +62,66 @@ const Signin = () => {
           <Back />
           Вход в личный кабинет
         </h2>
-        <form style={{ width: 260, margin: 'auto' }} onSubmit={handleSubmit}>
-          <Row>
-            <Col>
-              <Input
-                label="Мобильный телефон"
-                placeholder="Мобильный телефон"
-                name="phone"
-                type="text"
-                validate="required|phone_number"
-                onChange={handleInputChange}
-              />
-            </Col>
-          </Row>
-          {stage === 1 && (
-            <Row>
-              <Col>
-                <PasswordInput
-                  label="Код из смс"
-                  placeholder="Код из смс"
-                  validate="required"
-                  type="number"
-                  name="code"
-                  onChange={handleInputChange}
-                />
-              </Col>
-            </Row>
+        <Form
+          style={{ width: 260, margin: 'auto' }}
+          onSubmit={handleSubmit}
+          initialDataState={{ phone: '', code: '' }}
+          render={({ hasError, isFetching, handleInputChange }: any) => (
+            <>
+              <Row>
+                <Col>
+                  <Input
+                    label="Мобильный телефон"
+                    placeholder="Мобильный телефон"
+                    name="phone"
+                    type="text"
+                    validate="required|phone_number"
+                    onChange={handleInputChange}
+                  />
+                </Col>
+              </Row>
+              {stage === 1 && (
+                <Row>
+                  <Col>
+                    <PasswordInput
+                      label="Код из смс"
+                      placeholder="Код из смс"
+                      validate="required|number(Code should be 4 digits)"
+                      name="code"
+                      pattern=".{4}"
+                      onChange={handleInputChange}
+                    />
+                  </Col>
+                </Row>
+              )}
+              <Row>
+                <Col
+                  style={{
+                    display: 'flex',
+                    justifyContent: 'flex-end',
+                    marginTop: -10,
+                    marginBottom: -5,
+                  }}
+                >
+                  <a className="link-out">Не пришло смс?</a>
+                </Col>
+              </Row>
+
+              <Row>
+                <Col style={{ display: 'flex', justifyContent: 'center', marginTop: 20 }}>
+                  <Button
+                    type="submit"
+                    value="Войти"
+                    size="md"
+                    width={100}
+                    disabled={hasError}
+                    loading={isFetching}
+                  />
+                </Col>
+              </Row>
+            </>
           )}
-
-          <Row>
-            <Col
-              style={{
-                display: 'flex',
-                justifyContent: 'flex-end',
-                marginTop: -10,
-                marginBottom: -5,
-              }}
-            >
-              <a className="link-out">Не пришло смс?</a>
-            </Col>
-          </Row>
-
-          <Row>
-            <Col style={{ display: 'flex', justifyContent: 'center', marginTop: 20 }}>
-              <Button type="submit" value="Войти" size="md" width={100} />
-            </Col>
-          </Row>
-        </form>
+        />
       </section>
     </StyledSignin>
   );

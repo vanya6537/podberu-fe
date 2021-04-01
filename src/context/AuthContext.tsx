@@ -51,6 +51,7 @@ const AuthProvider = ({ children }: any) => {
         setAuthData({ user, isSignedIn: true });
         localSet({ key: STORAGE.USER, data: user });
         localSet({ key: STORAGE.TOKEN, data: !!code });
+        history.push(ROUTES.HOME.path);
       }
     });
   };

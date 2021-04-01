@@ -1,122 +1,60 @@
 import styled from 'styled-components';
 
-const StyledLoader = styled.div`
+const StyledLoader = styled.div<{ color: string }>`
   height: inherit;
   width: 100%;
+  display: flex;
   position: relative;
+  align-items: center;
+  justify-content: center;
 
   /* Loader 3 */
-  .loader-3 {
-    display: block;
-    height: 32px;
-    width: 32px;
+  .lds-ring {
+    display: inline-block;
+    position: relative;
+    width: 30px;
+    height: 30px;
   }
-  .loader-3 span {
+  .lds-ring div {
+    box-sizing: border-box;
     display: block;
     position: absolute;
-    top: 0;
-    left: 0;
-    bottom: 0;
-    right: 0;
-    margin: auto;
-    height: 32px;
-    width: 32px;
-  }
-  .loader-3 span::before {
-    content: '';
-    display: block;
-    position: absolute;
-    top: 0;
-    left: 0;
-    bottom: 0;
-    right: 0;
-    margin: auto;
-    height: 32px;
-    width: 32px;
-    border: 3px solid ${(props) => props.color || '#17568b'};
-    border-bottom: 3px solid transparent;
+    width: 24px;
+    height: 24px;
+    margin: 3px;
+    border: 3px solid ${({ color }) => (color === 'white' ? '#ffffff' : '#09244c')};
     border-radius: 50%;
-    -webkit-animation: loader-3-1 1.5s cubic-bezier(0.77, 0, 0.175, 1) infinite;
-    animation: loader-3-1 1.5s cubic-bezier(0.77, 0, 0.175, 1) infinite;
+    animation: lds-ring 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite;
+    border-color: ${({ color }) => (color === 'white' ? '#ffffff' : '#09244c')} transparent
+      transparent transparent;
   }
-  @-webkit-keyframes loader-3-1 {
-    0% {
-      -webkit-transform: rotate(0deg);
-    }
-    40% {
-      -webkit-transform: rotate(180deg);
-    }
-    60% {
-      -webkit-transform: rotate(180deg);
-    }
-    100% {
-      -webkit-transform: rotate(360deg);
-    }
+  .lds-ring div:nth-child(1) {
+    animation-delay: -0.45s;
   }
-  @keyframes loader-3-1 {
+  .lds-ring div:nth-child(2) {
+    animation-delay: -0.3s;
+  }
+  .lds-ring div:nth-child(3) {
+    animation-delay: -0.15s;
+  }
+  @keyframes lds-ring {
     0% {
       transform: rotate(0deg);
-    }
-    40% {
-      transform: rotate(180deg);
-    }
-    60% {
-      transform: rotate(180deg);
     }
     100% {
       transform: rotate(360deg);
     }
   }
-  .loader-3 span::after {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    bottom: 0;
-    right: 0;
-    margin: auto;
-    width: 6px;
-    height: 6px;
-    background: ${(props) => props.color};
-    border-radius: 50%;
-    -webkit-animation: loader-3-2 1.5s cubic-bezier(0.77, 0, 0.175, 1) infinite;
-    animation: loader-3-2 1.5s cubic-bezier(0.77, 0, 0.175, 1) infinite;
-  }
-  @-webkit-keyframes loader-3-2 {
-    0% {
-      -webkit-transform: translate3d(0, -32px, 0) scale(0, 2);
-      opacity: 0;
-    }
-    50% {
-      -webkit-transform: translate3d(0, 0, 0) scale(1.25, 1.25);
-      opacity: 1;
-    }
-    100% {
-      -webkit-transform: translate3d(0, 8px, 0) scale(0, 0);
-      opacity: 0;
-    }
-  }
-  @keyframes loader-3-2 {
-    0% {
-      transform: translate3d(0, -32px, 0) scale(0, 2);
-      opacity: 0;
-    }
-    50% {
-      transform: translate3d(0, 0, 0) scale(1.25, 1.25);
-      opacity: 1;
-    }
-    100% {
-      transform: translate3d(0, 8px, 0) scale(0, 0);
-      opacity: 0;
-    }
-  }
 `;
 
-const Loader = ({ color = '#17568b' }: any) => {
+const Loader = ({ color = '#2758a2' }: any) => {
   return (
     <StyledLoader color={color}>
-      <div className="loader-3 center">
-        <span />
+      <div className="lds-ring">
+        <div />
+        <div />
+        <div />
+        <div />
       </div>
     </StyledLoader>
   );

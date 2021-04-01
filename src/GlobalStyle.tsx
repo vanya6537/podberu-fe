@@ -36,7 +36,7 @@ const GlobalStyle = createGlobalStyle`
         width: 100%;
     }
     :root{
-        --primary-color: #17568b;
+        --primary-color: #09244c;
         --white-color: #ffffff;
         --primary-grey: #333333;
         --primary-black: #000000;
@@ -56,7 +56,7 @@ const GlobalStyle = createGlobalStyle`
         font-weight: ${isMobile ? '500' : '200'};
     }
     a {
-        color: #17568b;
+        color: #09244c;
     }
     .recharts-cartesian-axis-tick {    
         font-size: 12px;

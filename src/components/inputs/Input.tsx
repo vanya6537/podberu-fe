@@ -114,18 +114,20 @@ const Input = ({
   ...rest
 }: any) => {
   const [value, setValue]: any = useState(defaultValue);
-  const [errors, setErrors]: any = useState([]);
-
-  const handleValidation = (e: SyntheticEvent) => {
-    const { value: v }: any = e.target;
-    setErrors(validate ? validator(v, validate) : []);
-  };
+  const [errors, setErrors]: any = useState(null);
 
   const handleOnChange = (e: SyntheticEvent) => {
     const { name: n, value: v }: any = e.target;
     setValue(v);
+
+    let errs;
+    if (validate) {
+      errs = validate ? validator(v, validate) : null;
+      setErrors(errs);
+    }
+
     if (onChange) {
-      onChange({ name: n, value: v });
+      onChange({ name: n, value: v, error: errs });
     }
   };
 
@@ -146,9 +148,9 @@ const Input = ({
         rows={rows}
         value={value}
         onChange={handleOnChange}
-        onBlur={handleValidation}
-        error={errors.length > 0}
-        helperText={errors.length > 0 ? errors[0] : ''}
+        onBlur={validate ? handleOnChange : null}
+        error={errors && errors.length > 0}
+        helperText={errors && errors.length > 0 ? errors[0] : ''}
         required={!!validate}
         {...rest}
       />
@@ -164,25 +166,28 @@ const PasswordInput = ({
   variant = 'outlined',
   size = 'small',
   hint,
-  value,
   name,
-  defaultValue,
+  defaultValue = '',
   onChange,
   validate,
   ...rest
 }: any) => {
-  const [errors, setErrors]: any = useState([]);
+  const [value, setValue]: any = useState(defaultValue);
+  const [errors, setErrors]: any = useState(null);
   const [showPassword, setShowPassword] = useState(false);
-
-  const handleValidation = (e: SyntheticEvent) => {
-    const { value: v }: any = e.target;
-    setErrors(validate ? validator(v, validate) : []);
-  };
 
   const handleOnChange = (e: SyntheticEvent) => {
     const { name: n, value: v }: any = e.target;
+    setValue(v);
+
+    let errs;
+    if (validate) {
+      errs = validate ? validator(v, validate) : null;
+      setErrors(errs);
+    }
+
     if (onChange) {
-      onChange({ name: n, value: v });
+      onChange({ name: n, value: v, error: errs });
     }
   };
 
@@ -205,9 +210,9 @@ const PasswordInput = ({
         aria-describedby={label}
         value={value}
         onChange={handleOnChange}
-        onBlur={handleValidation}
-        error={errors.length > 0}
-        helperText={errors.length > 0 ? errors[0] : ''}
+        onBlur={validate ? handleOnChange : null}
+        error={errors && errors.length > 0}
+        helperText={errors && errors.length > 0 ? errors[0] : ''}
         required={!!validate}
         InputProps={{
           endAdornment: (

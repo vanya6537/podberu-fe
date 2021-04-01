@@ -1,6 +1,6 @@
 import axios from 'axios';
 import moment from 'moment';
-import { isEmail, isMobilePhone, isStrongPassword } from 'validator';
+import { isInt, isEmail, isMobilePhone, isStrongPassword } from 'validator';
 import Toast from 'react-hot-toast';
 
 export const throttle = (fn: () => null, wait: number) => {
@@ -103,7 +103,7 @@ const responseHandler = ({ data = {} }, show: boolean | string) => {
 };
 
 const errorHandler = ({ response: { data } = { data: {} } }, show: boolean | string) => {
-  const { response, message = 'Network Error', error, status_code: status }: any = data;
+  const { response, message = 'Network Error', error = true, status_code: status }: any = data;
   if (show) {
     Toast.error(typeof response === 'string' ? response : message || 'Could be your network!');
   }
@@ -148,25 +148,40 @@ export const formatDate = (date: string | number, format = 'ddd MMM D YYYY h:ma'
 
 export const validator = (value: string, validate = '') => {
   const opts = validate.split('|');
+  const options: any = {};
 
   const errors = opts
     .map((opt) => {
-      if (opt === 'required') {
-        return (value || '').trim() ? null : 'Field required';
+      let custom_message: any = opt.match(/\((.*)\)/);
+      custom_message = custom_message && custom_message[1];
+
+      if (opt.startsWith('required')) {
+        return (value || '').trim() ? null : custom_message || 'Field required';
       }
 
-      if (opt === 'email') {
-        return isEmail(value) ? null : 'Enter correct email address';
+      if (opt.startsWith('email')) {
+        return isEmail(value) ? null : custom_message || 'Enter correct email address';
       }
 
-      if (opt === 'phone_number') {
-        return isMobilePhone(value) ? null : 'Phone number invalid';
+      if (opt.startsWith('number')) {
+        opt.split(',').forEach((o) => {
+          const [x, y]: any = o.split(':');
+          if (x && y) {
+            options[x] = Number(y) ? parseInt(y, 10) : y;
+          }
+        });
+        return isInt(value, options) ? null : custom_message || 'Invalid number entered';
       }
 
-      if (opt === 'password') {
+      if (opt.startsWith('phone_number')) {
+        return isMobilePhone(value) ? null : custom_message || 'Phone number invalid';
+      }
+
+      if (opt.startsWith('password')) {
         return isStrongPassword(value)
           ? null
-          : 'Password must contain 1 lowercase, 1 uppercase, 1 number, 1 special character and minimum of 8 characters';
+          : custom_message ||
+              'Password must contain 1 lowercase, 1 uppercase, 1 number, 1 special character and minimum of 8 characters';
       }
       return null;
     })
