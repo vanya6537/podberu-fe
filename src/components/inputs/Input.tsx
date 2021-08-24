@@ -23,13 +23,18 @@ import { validator } from '../../utilities/helper';
 const StyledInput = styled.div`
   padding-bottom: 20px;
   font-weight: 300;
+  font-size: 24px;
 
   label {
-    font-size: 14px;
+    font-size: 24px;
+    line-height: 64px;
     font-weight: 300;
     padding-left: 3px;
   }
-
+  input::placeholder {
+    font-size: 24px;
+    line-height: 64px;
+  }
   ul li {
     font-size: 14px;
     font-weight: 300;
@@ -37,7 +42,9 @@ const StyledInput = styled.div`
 
   input,
   select {
-    height: 40px;
+    height: 64px;
+    font-size: 24px;
+    line-height: 64px;
   }
 
   textarea {
@@ -93,8 +100,8 @@ const StyledInput = styled.div`
 const StyledHint = styled.div`
   display: flex;
   justify-content: space-between;
-  margin-top: 16px;
-  font-size: 14px;
+  margin-top: 24px;
+  font-size: 24px;
 `;
 
 const Input = ({
