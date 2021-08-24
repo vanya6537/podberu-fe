@@ -17,7 +17,9 @@ const ClientHome = () => {
   return (
     <>
       <section>
-        <h2>Добрый день!</h2>
+        <h2 style={{ marginTop: 56, marginBottom: 24, fontSize: 48, fontWeight: 700 }}>
+          Добрый день!
+        </h2>
         <Row>
           <Col md={6} style={{ marginBottom: 20 }}>
             <LargeCard
