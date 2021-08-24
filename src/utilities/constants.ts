@@ -1,8 +1,14 @@
-export const BASE_URL = 'https://podberu-backend.herokuapp.com/api';
+export const BASE_URL = 'https://podberu-backend.herokuapp.com';
 
 export const API_URL = {
-  LOGIN: `${BASE_URL}/auth`,
-  SEND_CODE: `${BASE_URL}/send_code`,
+  LOGIN: `${BASE_URL}/auth/login`,
+  SEND_CODE: `${BASE_URL}/auth/send_code`,
+  CLIENT: {
+    GET_APPLICATIONS: `${BASE_URL}/clients/order`,
+  },
+  AGENT: {
+    GET_APPLICATIONS: `${BASE_URL}/agents/order`,
+  },
 };
 
 export const STORAGE = {
