@@ -1,4 +1,4 @@
-import { useMemo, useContext } from 'react';
+import { useMemo, useContext, useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { Row, Col } from 'react-bootstrap';
 import Tabs from '../../components/Tabs';
@@ -8,15 +8,16 @@ import Documents from './components/Documents';
 import ProfileCard from './components/ProfileCard';
 import Applications from './components/Applications';
 import { AuthContext } from '../../context/AuthContext';
-import { ROLES } from '../../utilities/constants';
+import { API_URL, ROLES } from '../../utilities/constants';
+import { post } from '../../utilities/helper';
 
 const StyledAccount = styled.div`
   section {
     min-height: 500px;
-    padding: 40px 100px;
+    padding: 96px 24px;
 
     > * {
-      max-width: 1000px;
+      max-width: 1156px;
       margin: auto;
     }
 
@@ -41,6 +42,16 @@ const StyledAccount = styled.div`
 
 const Account = () => {
   const { user }: any = useContext(AuthContext);
+  const getApplications = () => post(API_URL.CLIENT.GET_APPLICATIONS, null, {}, true);
+
+  const [applications, setApplictaions] = useState([]);
+  useEffect(
+    (async () => {
+      const updatedApplications = await getApplications();
+      setApplictaions(updatedApplications);
+    }) as any,
+    []
+  );
 
   const data = useMemo(() => {
     if (user.role === ROLES.AGENT) {
@@ -52,7 +63,7 @@ const Account = () => {
           { value: 3, label: 'Настройки' },
         ],
         data: {
-          0: <Applications />,
+          0: <Applications applications={applications} />,
           1: <Documents />,
           2: <Withdraw />,
           3: <Settings />,
@@ -71,12 +82,14 @@ const Account = () => {
         3: <Settings />,
       },
     };
-  }, [user.role]);
+  }, [user.role, applications]);
 
   return (
     <StyledAccount>
       <section>
-        <h2>Добро пожаловать в личный кабинет!</h2>
+        <h2 style={{ fontSize: 48, fontWeight: 700, textAlign: 'center', marginBottom: 48 }}>
+          Добро пожаловать в личный кабинет!
+        </h2>
         <Row>
           <Col style={{ display: 'flex', justifyContent: 'center' }}>
             <ProfileCard />
