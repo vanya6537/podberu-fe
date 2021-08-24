@@ -7,16 +7,17 @@ import Icon from './Icon';
 
 const sizes: any = {
   lg: 40,
-  md: 36,
+  md: 44,
   sm: 26,
-  default: 32,
+  default: 44,
 };
 
 const font_sizes: any = {
-  lg: 14,
-  md: 12,
+  lg: 36,
+  hmd: 24,
+  md: 18,
   sm: 11,
-  default: 13,
+  default: 18,
 };
 
 const StyledButton = styled.div`
@@ -27,8 +28,9 @@ const StyledButton = styled.div`
     font-weight: 500;
     font-size: ${(props: any) => `${font_sizes[props.size] || font_sizes.default}px`};
     margin: ${(props: any) => props.margin};
-    padding: ${(props: any) => props.padding || '0 24px'};
+    padding: ${(props: any) => props.padding || '0'};
     height: ${(props: any) => `${sizes[props.size] || sizes.default}px`};
+    line-height: ${(props: any) => `${sizes[props.size] || sizes.default}px`};
     width: ${({ width }: any) =>
       width ? (typeof width === 'string' ? width : `${width}px`) : 'auto'};
     border-radius: ${(props: any) =>
@@ -108,7 +110,7 @@ const Button = ({
         center,
         radius,
         margin: margin.length > 0 && `${margin.join('px ')}px;`,
-        padding: padding.length > 0 && `${padding.join('px ')}px;`,
+        padding: padding.length > 0 ? `${padding.join('px ')}px;` : '0 44px',
       }}
       style={style}
     >
