@@ -1,5 +1,5 @@
 import { useContext } from 'react';
-import { HashRouter as Router, Route, Switch, Redirect } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Switch, Redirect } from 'react-router-dom';
 import Container from '../layout/Container';
 import { ROUTES } from '../utilities/constants';
 import { AuthContext } from '../context/AuthContext';
@@ -95,14 +95,16 @@ const AuthRoute = ({
     <Route
       {...rest}
       path={path}
-      render={(props) =>
-        !isSignedIn ? (
+      render={
+        (props) => (
+          // !isSignedIn ? (
           <Container showHeader={showHeader} showFooter={showFooter} meta={meta}>
             <Component {...props} />
           </Container>
-        ) : (
-          <Redirect to={ROUTES.HOME.path} />
         )
+        // ) : (
+        //   <Redirect to={ROUTES.HOME.path} />
+        // )
       }
     />
   );
