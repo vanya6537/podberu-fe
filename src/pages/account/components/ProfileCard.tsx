@@ -4,12 +4,10 @@ import Card from '../../../components/Card';
 import Icon from '../../../components/Icon';
 import Image from '../../../components/Image';
 import ProfileImage from '../../../assets/images/avatar.png';
-import CreditMeterImage from '../../../assets/images/credit-meter.png';
 import { AuthContext } from '../../../context/AuthContext';
-import { ROLES } from '../../../utilities/constants';
 
 const StyledProfileCard = styled.div`
-  width: 310px !important;
+  width: 100% !important;
 
   > div {
     display: flex;
@@ -20,21 +18,24 @@ const StyledProfileCard = styled.div`
     .detail {
       display: flex;
       align-items: center;
-      justify-content: space-between;
+      //justify-content: space-between;
+
+      flex-grow: 1 !important;
 
       .name {
-        margin-left: 10px;
+        margin-left: 24px;
       }
 
       h6 {
-        font-size: 18px;
+        font-size: 36px;
         font-weight: 600;
         margin-bottom: 2px;
       }
 
       span {
-        font-size: 12px;
+        font-size: 24px;
         opacity: 0.75;
+        color: #272e3ebf;
       }
     }
 
@@ -57,13 +58,24 @@ const StyledProfileCard = styled.div`
 
 const ProfileCard = () => {
   const { user, signOut }: any = useContext(AuthContext);
-
+  // eslint-disable-next-line no-console
+  console.log(user);
   return (
-    <Card>
+    <Card
+      style={{
+        background: '#fbfcfd',
+        boxShadow: '0px 0px 8px rgba(39, 46, 62, 0.25)',
+        borderRadius: '10px',
+        minWidth: 684,
+        minHeight: 168,
+        marginBottom: 48,
+      }}
+      styleBody={{ padding: '24px 48px' }}
+    >
       <StyledProfileCard>
         <div>
           <div className="detail">
-            <Image src={ProfileImage} name="Фетисов М.Ю." round width={60} height={60} />
+            <Image src={ProfileImage} name="Фетисов М.Ю." round width={120} height={120} />
             <div className="name">
               <h6>Фетисов М.Ю.</h6>
               <span>Аккаунт подтверждён</span>
@@ -73,24 +85,24 @@ const ProfileCard = () => {
             <Icon
               name="logout"
               title="Logout"
-              width={22}
+              width={44}
               margin={[0, 0, 0, 20]}
               onClick={signOut}
             />
           </div>
         </div>
-        {user.role === ROLES.CLIENT && (
-          <div className="credit-score">
-            <div>Ваш персональный кредитный рейтинг</div>
-            <Image
-              src={CreditMeterImage}
-              name="credit meter"
-              width={100}
-              margin={[12, 'auto', 6, 'auto']}
-            />
-            <small>705 Баллов</small>
-          </div>
-        )}
+        {/* {user.role === ROLES.CLIENT && ( */}
+        {/*  <div className="credit-score"> */}
+        {/*    <div>Ваш персональный кредитный рейтинг</div> */}
+        {/*    <Image */}
+        {/*      src={CreditMeterImage} */}
+        {/*      name="credit meter" */}
+        {/*      width={100} */}
+        {/*      margin={[12, 'auto', 6, 'auto']} */}
+        {/*    /> */}
+        {/*    <small>705 Баллов</small> */}
+        {/*  </div> */}
+        {/* )} */}
       </StyledProfileCard>
     </Card>
   );
