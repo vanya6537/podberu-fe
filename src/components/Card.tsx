@@ -5,13 +5,11 @@ import Button from './Button';
 import Image from './Image';
 
 const StyledCard = styled.div.attrs((props) => ({ ...props }))`
-  /*height: 100%;*/
-  box-shadow: 0px 0px 8px 0px rgba(39, 46, 62, 0.25);
-  margin-bottom: 15px;
-  background: #ffffff;
-  border-radius: 10px;
+  border-radius: 15px;
   overflow: hidden;
+  background: #fbfcfd;
 
+  box-shadow: 0 0 8px rgba(39, 46, 62, 0.25);
   ${(props) => (props.onClick ? 'cursor: pointer;' : '')}
 
   .card {
@@ -23,7 +21,9 @@ const StyledCard = styled.div.attrs((props) => ({ ...props }))`
   .card-body.blue {
     color: #ffffff;
     background: #4185e9;
-
+    .card-subtitle {
+      color: ${(props: any) => props.subtitleTextColor || '#272e3e'};
+    }
     p {
       color: #ffffff;
     }
@@ -90,7 +90,11 @@ const Card = ({
         <BCard>
           <BCard.Body style={styleBody} className={group || ''}>
             {title && <BCard.Title>{title}</BCard.Title>}
-            {subtitle && <BCard.Subtitle>{subtitle}</BCard.Subtitle>}
+            {subtitle && (
+              <BCard.Subtitle>
+                <span className="card-subtitle">{subtitle}</span>
+              </BCard.Subtitle>
+            )}
 
             {noWrapper ? <>{children}</> : <div className="card-text">{children}</div>}
 
@@ -106,30 +110,32 @@ Card.Footer = ({ children, ...rest }: any) => {
   return <BCard.Footer {...rest}>{children}</BCard.Footer>;
 };
 
-const StyledLargeCard = styled.div.attrs((props: any) => ({ ...props }))`
+const StyledDivLargeCard = styled.div.attrs((props: any) => ({ ...props }))`
   display: flex;
   flex-wrap: nowrap;
 
   ${(props: any) =>
     props.type === 'small' || props.type === 'icon'
-      ? `margin-top: 10px; padding: 0;
-        h6 { font-size: 16px;  margin-bottom: 11px; }
-        p { font-size: 11px; margin-bottom: 10px; }`
-      : `margin-top: 20px; padding: 0 10px; 
-        h6 { font-size: 20px;  margin-bottom: 15px; }
-        p { font-size: 12px; margin-bottom: 15px; }`}
+      ? `margin-top: 0; padding: 0;
+        h6 { font-size: 24px;  margin-bottom: 11px; }
+        p { font-size: 18px; margin-bottom: 0; }`
+      : `margin-top: 0; padding: 0 10px; 
+        h6 { font-size: 36px;  margin-bottom: 24px; }
+        p { font-size: 24px; margin-bottom: 24px; }`}
 
   ${(props: any) =>
     props.type === 'icon'
       ? `justify-content: center; margin: 20px 0;`
       : `justify-content: space-between;`}
-      
+
   h6 {
     font-weight: 500;
   }
 
+  .card-subtitle {
+    color: ${(props: any) => props.subtitleTextColor || '#272e3e'};
+  }
   p {
-    color: #272e3e;
     opacity: 0.75;
   }
 
@@ -152,46 +158,52 @@ const LargeCard = ({
 }: any) => {
   return (
     <Card style={{ height: '100%' }} {...rest}>
-      <StyledLargeCard type={type} style={centerText ? { justifyContent: 'center' } : {}}>
+      <StyledDivLargeCard type={type} subtitleTextColor={rest.subtitleTextColor}>
         {title || subtitle || body || button ? (
           <div className={centerText ? 'center' : ''}>
             {title && <h6>{title}</h6>}
             {subtitle && (
-              <p>
+              <div className="card-subtitle">
                 {typeof subtitle === 'string'
                   ? subtitle
                   : subtitle.map &&
-                    subtitle.map((st: string, index: number) => <div key={index}>{st}</div>)}
-              </p>
+                    subtitle.map((st: string, index: number) => <p key={index}>{st}</p>)}
+              </div>
             )}
             {body && (
-              <p>
+              <div>
                 {typeof body === 'string'
                   ? body
-                  : body.map &&
-                    body.map((st: string, index: number) => <div key={index}>{st}</div>)}
-              </p>
+                  : body.map && body.map((st: string, index: number) => <p key={index}>{st}</p>)}
+              </div>
             )}
             {button && <Button {...button} />}
           </div>
         ) : null}
         {icon && (
           <div className="icon">
-            <Icon name={icon} width={assetWidth || (type === 'small' ? 24 : 30)} />
+            <Icon name={icon} width={assetWidth || (type === 'small' ? 44 : 48)} />
           </div>
         )}
         {src && (
           <div className="icon">
-            <Image src={src} width={assetWidth || (type === 'small' ? 24 : 30)} />
+            <Image src={src} width={assetWidth || (type === 'small' ? 44 : 48)} />
           </div>
         )}
-      </StyledLargeCard>
+      </StyledDivLargeCard>
     </Card>
   );
 };
 
 const SmallCard = ({ type = 'small', ...rest }: any) => {
-  return <LargeCard {...rest} style={{}} styleBody={{ padding: '10px 15px' }} type={type} />;
+  return (
+    <LargeCard
+      {...rest}
+      style={{}}
+      styleBody={{ padding: '36px 24px', ...rest.styleBody }}
+      type={type}
+    />
+  );
 };
 
 const IconCard = ({ src, icon, width = 36 }: any) => {
