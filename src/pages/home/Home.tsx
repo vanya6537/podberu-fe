@@ -11,7 +11,7 @@ const StyledHome = styled.div`
     padding: 40px 100px;
 
     > * {
-      max-width: 1000px;
+      max-width: 1156px;
       margin: auto;
     }
 
@@ -36,11 +36,13 @@ const StyledHome = styled.div`
 
 const Home = () => {
   const { user }: any = useContext(AuthContext);
-
+  console.log(user);
   return (
     <StyledHome>
-      {user.role === ROLES.CLIENT && <ClientHome />}
-      {user.role === ROLES.AGENT && <AgentHome />}
+      {/* {user.role === ROLES.CLIENT && <ClientHome />} */}
+      {/* {user.role === ROLES.AGENT && <AgentHome />} */}
+      <AgentHome />
+      <ClientHome />
     </StyledHome>
   );
 };
