@@ -36,7 +36,7 @@ const AuthProvider = ({ children }: any) => {
 
   const sendAuthCode = ({ phone }: { phone: string }) => {
     // TODO:: Update
-    return post(API_URL.SEND_CODE, { phone }, {}, true);
+    return post(API_URL.SEND_CODE, null, { params: { phone } }, true);
   };
 
   const completeSignIn = ({ phone, code }: { phone: string; code: string }) => {
@@ -46,7 +46,7 @@ const AuthProvider = ({ children }: any) => {
       role: code.toLowerCase() === ROLES.AGENT ? ROLES.AGENT : ROLES.CLIENT,
     };
 
-    return post(API_URL.LOGIN, { phone, code }, {}, true).then(({ error }: any) => {
+    return post(API_URL.LOGIN, null, { params: { phone, code } }, true).then(({ error }: any) => {
       if (!error) {
         setAuthData({ user, isSignedIn: true });
         localSet({ key: STORAGE.USER, data: user });
