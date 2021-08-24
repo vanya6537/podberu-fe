@@ -1,6 +1,6 @@
 import { useCallback, useContext, useState } from 'react';
 import styled from 'styled-components';
-import { Row, Col } from 'react-bootstrap';
+import { Row, Col, Container } from 'react-bootstrap';
 import Back from '../../components/Back';
 import { Form, Input, PasswordInput } from '../../components/inputs';
 import Button from '../../components/Button';
@@ -9,11 +9,16 @@ import { AuthContext } from '../../context/AuthContext';
 const StyledSignin = styled.div`
   section {
     min-height: 500px;
-    padding: 70px;
+    padding: 96px 24px;
 
     > * {
-      max-width: 1000px;
+      max-width: 1156px;
       margin: auto;
+    }
+
+    > .form-header {
+      margin-top: 56px;
+      margin-bottom: 100px;
     }
 
     @media only screen and (max-width: 767px) {
@@ -58,12 +63,20 @@ const Signin = () => {
   return (
     <StyledSignin>
       <section className="secondary">
-        <h2>
-          <Back />
-          Вход в личный кабинет
-        </h2>
+        <Container className="form-header">
+          <Row>
+            <Col md={1}>
+              <Back />
+            </Col>
+            <Col md={11}>
+              <h2 style={{ fontSize: 48, fontWeight: 700, marginLeft: -114, textAlign: 'center' }}>
+                Вход в личный кабинет
+              </h2>
+            </Col>
+          </Row>
+        </Container>
         <Form
-          style={{ width: 260, margin: 'auto' }}
+          style={{ width: 388, margin: 'auto' }}
           onSubmit={handleSubmit}
           initialDataState={{ phone: '', code: '' }}
           render={({ hasError, isFetching, handleInputChange }: any) => (
@@ -71,8 +84,8 @@ const Signin = () => {
               <Row>
                 <Col>
                   <Input
-                    label="Мобильный телефон"
-                    placeholder="Мобильный телефон"
+                    // label="Мобильный телефон"
+                    placeholder="+7"
                     name="phone"
                     type="text"
                     validate="required|phone_number"
@@ -84,7 +97,7 @@ const Signin = () => {
                 <Row>
                   <Col>
                     <PasswordInput
-                      label="Код из смс"
+                      // label="Код из смс"
                       placeholder="Код из смс"
                       validate="required|number(Code should be 4 digits)"
                       name="code"
@@ -108,14 +121,13 @@ const Signin = () => {
               </Row>
 
               <Row>
-                <Col style={{ display: 'flex', justifyContent: 'center', marginTop: 20 }}>
+                <Col style={{ display: 'flex', justifyContent: 'center', marginTop: 36 }}>
                   <Button
                     type="submit"
-                    value="Войти"
-                    size="md"
-                    width={100}
+                    value={stage === 0 ? 'Далее' : 'Войти'}
                     disabled={hasError}
                     loading={isFetching}
+                    size="hmd"
                   />
                 </Col>
               </Row>
