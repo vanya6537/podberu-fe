@@ -10,8 +10,8 @@ const StyledHeader = styled.header`
   background-color: #09244c;
   display: flex;
   align-items: center;
-  height: 60px;
-  padding: 10px 20px;
+  min-height: 120px;
+  padding: 36px 24px;
   justify-content: space-between;
 `;
 
@@ -37,7 +37,7 @@ const Header = () => {
 
   return (
     <StyledHeader>
-      <Icon name="logo" width={130} onClick={isSignedIn ? goHome : goLanding} />
+      <Icon name="logo" height={48} onClick={isSignedIn ? goHome : goLanding} />
       {isSignedIn ? (
         <Button value="Профиль" onClick={goToProfile} />
       ) : (
