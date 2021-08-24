@@ -4,6 +4,12 @@ import { Tabs as BTabs, Tab } from 'react-bootstrap';
 const StyledTabs = styled.div`
   padding: 10px 0;
 
+  .page-link {
+    font-size: 18px;
+    width: 36px !important;
+    height: 36px !important;
+  }
+
   .nav-tabs {
     border: none;
     justify-content: space-between;
@@ -13,9 +19,9 @@ const StyledTabs = styled.div`
     color: #272e3e;
     background-color: inherit;
     border: none;
-    font-size: 14px;
+    font-size: 24px;
     opacity: 0.8;
-    padding: 5px;
+    padding: 0 10px 8px 0;
     transition: color 250ms ease;
 
     &.active {
@@ -31,7 +37,7 @@ const StyledTabs = styled.div`
   }
 
   .tab-content {
-    margin-top: 20px;
+    margin-top: 56px;
   }
 `;
 
