@@ -14,7 +14,7 @@ const StyledRegisterDeal = styled.div`
     padding: 70px;
 
     > * {
-      max-width: 1000px;
+      max-width: 1156px;
       margin: auto;
     }
 
