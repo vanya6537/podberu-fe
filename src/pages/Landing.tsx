@@ -11,7 +11,7 @@ const StyledLanding = styled.div`
     padding: 70px 10px;
 
     > * {
-      max-width: 1000px;
+      max-width: 1156px;
       margin-left: auto !important;
       margin-right: auto !important;
     }
