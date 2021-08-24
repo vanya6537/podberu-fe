@@ -5,74 +5,102 @@ import { SmallCard } from '../../../components/Card';
 import Pagination from '../../../components/Pagination';
 
 const StyledApplications = styled.div``;
+const defaultSubtitleTextColor = 'rgba(251, 252, 253, 0.6)';
 
-const Applications = ({ full = false }) => {
+const Applications = ({ full = false, applications = [] }) => {
   return (
     <StyledApplications>
-      <Row>
-        <Col md={4} style={{ marginBottom: 10 }}>
-          <SmallCard
-            title="Дебетовая карта"
-            subtitle="24.12.2020"
-            icon="cards-white"
-            group="blue"
-          />
-        </Col>
-        <Col md={4} style={{ marginBottom: 10 }}>
-          <SmallCard
-            title="Дебетовая карта"
-            subtitle="24.12.2020"
-            icon="cards-white"
-            group="blue"
-          />
-        </Col>
-        <Col md={4} style={{ marginBottom: 10 }}>
-          <SmallCard
-            title="Дебетовая карта"
-            subtitle="24.12.2020"
-            icon="cards-white"
-            group="blue"
-          />
-        </Col>
-      </Row>
-      <Row>
-        <Col md={4} style={{ marginBottom: 10 }}>
-          <SmallCard
-            title="Дебетовая карта"
-            subtitle="24.12.2020"
-            icon="cards-white"
-            group="blue"
-          />
-        </Col>
-        <Col md={4} style={{ marginBottom: 10 }}>
-          <SmallCard
-            title="Дебетовая карта"
-            subtitle="24.12.2020"
-            icon="cards-white"
-            group="blue"
-          />
-        </Col>
-        <Col md={4} style={{ marginBottom: 10 }}>
-          <SmallCard
-            title="Дебетовая карта"
-            subtitle="24.12.2020"
-            icon="cards-white"
-            group="blue"
-          />
-        </Col>
-      </Row>
+      {applications.length ? (
+        <Row>
+          {applications.map(({ title, subtitle }) => (
+            <Col md={4} style={{ padding: '0 24px 24px 0' }}>
+              <SmallCard
+                title={title || 'Дебетовая карта'}
+                subtitle={subtitle || '24.12.2020'}
+                icon="cards-white"
+                group="blue"
+                subtitleTextColor={defaultSubtitleTextColor}
+                styleBody={{ padding: '24px 24px 24px 16px' }}
+              />
+            </Col>
+          ))}
+        </Row>
+      ) : (
+        <Row>
+          <Col md={4} style={{ padding: '0 24px 24px 0' }}>
+            <SmallCard
+              title="Дебетовая карта"
+              subtitle="24.12.2020"
+              icon="cards-white"
+              group="blue"
+              subtitleTextColor={defaultSubtitleTextColor}
+              styleBody={{ padding: '24px 24px 24px 16px' }}
+            />
+          </Col>
+          <Col md={4} style={{ padding: '0 24px 24px 0' }}>
+            <SmallCard
+              title="Дебетовая карта"
+              subtitle="24.12.2020"
+              icon="cards-white"
+              group="blue"
+              subtitleTextColor={defaultSubtitleTextColor}
+              styleBody={{ padding: '24px 24px 24px 16px' }}
+            />
+          </Col>
+          <Col md={4} style={{ padding: '0 0 24px 0' }}>
+            <SmallCard
+              title="Дебетовая карта"
+              subtitle="24.12.2020"
+              icon="cards-white"
+              group="blue"
+              styleBody={{ padding: '24px 24px 24px 16px' }}
+              subtitleTextColor={defaultSubtitleTextColor}
+            />
+          </Col>
+          <Col md={4} style={{ padding: '0 24px 0 0' }}>
+            <SmallCard
+              title="Дебетовая карта"
+              subtitle="24.12.2020"
+              icon="cards-white"
+              group="blue"
+              styleBody={{ padding: '24px 24px 24px 16px' }}
+              subtitleTextColor={defaultSubtitleTextColor}
+            />
+          </Col>
+          <Col md={4} style={{ padding: '0 24px 0 0' }}>
+            <SmallCard
+              title="Дебетовая карта"
+              subtitle="24.12.2020"
+              icon="cards-white"
+              group="blue"
+              styleBody={{ padding: '24px 24px 24px 16px' }}
+              subtitleTextColor={defaultSubtitleTextColor}
+            />
+          </Col>
+          <Col md={4} style={{ padding: '0 0 0 0' }}>
+            <SmallCard
+              title="Дебетовая карта"
+              subtitle="24.12.2020"
+              icon="cards-white"
+              group="blue"
+              styleBody={{ padding: '24px 24px 24px 16px' }}
+              subtitleTextColor={defaultSubtitleTextColor}
+            />
+          </Col>
+        </Row>
+      )}
 
       <div
         style={{
           display: 'flex',
           flexDirection: 'column',
           alignItems: 'center',
-          padding: '20px 0',
+          padding: '48px 0',
         }}
       >
         <Pagination />
 
-        <Button value="Новая заявка" size="lg" margin={[40, 0, 20, 0]} />
+        <Button value="Новая заявка" size="hmd" margin={[40, 0, 20, 0]} />
       </div>
     </StyledApplications>
   );
