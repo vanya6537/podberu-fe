@@ -36,6 +36,7 @@ const StyledHome = styled.div`
 
 const Home = () => {
   const { user }: any = useContext(AuthContext);
+  // eslint-disable-next-line no-console
   console.log(user);
   return (
     <StyledHome>
