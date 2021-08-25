@@ -89,7 +89,7 @@ const AuthRoute = ({
   showFooter = false,
   ...rest
 }: any) => {
-  const { isSignedIn }: any = useContext(AuthContext);
+  // const { isSignedIn }: any = useContext(AuthContext);
 
   return (
     <Route

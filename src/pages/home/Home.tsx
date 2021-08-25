@@ -1,7 +1,7 @@
 import { useContext } from 'react';
 import styled from 'styled-components';
 import { AuthContext } from '../../context/AuthContext';
-import { ROLES } from '../../utilities/constants';
+// import { ROLES } from '../../utilities/constants';
 import AgentHome from './AgentHome';
 import ClientHome from './ClientHome';
 
@@ -42,6 +42,7 @@ const Home = () => {
       {/* {user.role === ROLES.CLIENT && <ClientHome />} */}
       {/* {user.role === ROLES.AGENT && <AgentHome />} */}
       <AgentHome />
+      <p>-----Дальше главная страница клиентов-----</p>
       <ClientHome />
     </StyledHome>
   );
