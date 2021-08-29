@@ -37,7 +37,7 @@ const StyledTabs = styled.div`
   }
 
   .tab-content {
-    margin-top: 56px;
+    margin-top: 48px;
   }
 `;
 
