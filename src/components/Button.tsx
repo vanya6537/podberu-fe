@@ -6,15 +6,16 @@ import Loader from './Loader';
 import Icon from './Icon';
 
 const sizes: any = {
-  lg: 40,
-  md: 44,
+  hlg: 64,
+  lg: 44,
+  md: 36,
   sm: 26,
-  default: 44,
+  default: 36,
 };
 
 const font_sizes: any = {
-  lg: 36,
-  hmd: 24,
+  hlg: 24,
+  lg: 18,
   md: 18,
   sm: 11,
   default: 18,
