@@ -2,9 +2,10 @@ import { Row, Col } from 'react-bootstrap';
 import { SmallCard } from '../../../components/Card';
 
 const CreditCards = () => {
+  const defaultSubtitleColor = '#272E3E';
   return (
     <Row>
-      <Col md={4} style={{ marginBottom: 10 }}>
+      <Col md={4}>
         <SmallCard
           title="Альфа-банк"
           subtitle="Описание предложенного бренда."
@@ -16,11 +17,11 @@ const CreditCards = () => {
             '•бесплатное пополнение с ',
             'карт любых банков.',
           ]}
+          subtitleTextColor={defaultSubtitleColor}
           icon="typography"
-          button={{ value: 'Подробнее', size: 'sm' }}
         />
       </Col>
-      <Col md={4} style={{ marginBottom: 10 }}>
+      <Col md={4}>
         <SmallCard
           title="Альфа-банк"
           subtitle="Описание предложенного бренда."
@@ -32,11 +33,11 @@ const CreditCards = () => {
             '•бесплатное пополнение с ',
             'карт любых банков.',
           ]}
+          subtitleTextColor={defaultSubtitleColor}
           icon="typography"
-          button={{ value: 'Подробнее', size: 'sm' }}
         />
       </Col>
-      <Col md={4} style={{ marginBottom: 10 }}>
+      <Col md={4}>
         <SmallCard
           title="Альфа-банк"
           subtitle="Описание предложенного бренда."
@@ -48,8 +49,8 @@ const CreditCards = () => {
             '•бесплатное пополнение с ',
             'карт любых банков.',
           ]}
+          subtitleTextColor={defaultSubtitleColor}
           icon="typography"
-          button={{ value: 'Подробнее', size: 'sm' }}
         />
       </Col>
     </Row>
