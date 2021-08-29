@@ -39,9 +39,9 @@ const Header = () => {
     <StyledHeader>
       <Icon name="logo" height={48} onClick={isSignedIn ? goHome : goLanding} />
       {isSignedIn ? (
-        <Button value="Профиль" onClick={goToProfile} />
+        <Button size="lg" value="Профиль" onClick={goToProfile} />
       ) : (
-        <Button value="Войти" onClick={goToLogIn} />
+        <Button size="lg" value="Войти" onClick={goToLogIn} />
       )}
       {/* <Button value="Оформить заявку" /> */}
     </StyledHeader>
