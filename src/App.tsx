@@ -24,7 +24,7 @@ function App() {
         <Router>
           <AuthProvider>
             <Switch>
-              <PrivateRoute exact component={Home} {...ROUTES.HOME} />
+              <PublicRoute exact component={Home} {...ROUTES.HOME} />
               <PrivateRoute exact component={Account} {...ROUTES.ACCOUNT} />
               <PrivateRoute exact component={DebitCards} {...ROUTES.DEBIT} />
               <PrivateRoute exact component={RegisterDeal} {...ROUTES.REGISTER} />
