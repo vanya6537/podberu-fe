@@ -30,9 +30,9 @@ const StyledCard = styled.div.attrs((props) => ({ ...props }))`
   }
 
   .card-title {
-    color: #828282;
-    font-weight: 400;
-    font-size: 16px;
+    color: #272e3e;
+    font-weight: 500;
+    font-size: 36px;
     display: flex;
     justify-content: space-between;
   }
@@ -59,6 +59,10 @@ const StyledCard = styled.div.attrs((props) => ({ ...props }))`
     > * {
       width: 100%;
     }
+  }
+  .card-subtitle {
+    font-size: 18px;
+    color: #272e3e;
   }
 `;
 
@@ -92,7 +96,7 @@ const Card = ({
             {title && <BCard.Title>{title}</BCard.Title>}
             {subtitle && (
               <BCard.Subtitle>
-                <span className="card-subtitle">{subtitle}</span>
+                {typeof subtitle === 'string' ? { subtitle } : subtitle}
               </BCard.Subtitle>
             )}
 
@@ -117,11 +121,20 @@ const StyledDivLargeCard = styled.div.attrs((props: any) => ({ ...props }))`
   ${(props: any) =>
     props.type === 'small' || props.type === 'icon'
       ? `margin-top: 0; padding: 0;
-        h6 { font-size: 24px;  margin-bottom: 11px; }
-        p { font-size: 18px; margin-bottom: 0; }`
+        h6 { font-size: 24px;  margin-bottom: 16px; }
+        p { font-size: 18px; margin-bottom: 0; }
+        .card-subtitle {
+            ${(props.body || props.button) && 'padding-bottom: 20px;'}
+            font-size: 18px;
+        }`
       : `margin-top: 0; padding: 0 10px; 
         h6 { font-size: 36px;  margin-bottom: 24px; }
-        p { font-size: 24px; margin-bottom: 24px; }`}
+        p { font-size: 24px; margin-bottom: 24px; }
+        .card-subtitle {
+            ${(props.body || props.button) && 'padding-bottom: 24px;'}
+            font-size: 24px;
+        }
+        `}
 
   ${(props: any) =>
     props.type === 'icon'
@@ -134,7 +147,10 @@ const StyledDivLargeCard = styled.div.attrs((props: any) => ({ ...props }))`
 
   .card-subtitle {
     color: ${(props: any) => props.subtitleTextColor || '#272e3e'};
+    font-weight: 400;
+    letter-spacing: -0.24px;
   }
+
   p {
     opacity: 0.75;
   }
@@ -157,8 +173,17 @@ const LargeCard = ({
   ...rest
 }: any) => {
   return (
-    <Card style={{ height: '100%' }} {...rest}>
-      <StyledDivLargeCard type={type} subtitleTextColor={rest.subtitleTextColor}>
+    <Card
+      style={{ height: '100%' }}
+      {...rest}
+      styleBody={{ padding: '64px 48px 36px 48px', ...rest.styleBody }}
+    >
+      <StyledDivLargeCard
+        type={type}
+        subtitleTextColor={rest.subtitleTextColor}
+        body={body}
+        button={button}
+      >
         {title || subtitle || body || button ? (
           <div className={centerText ? 'center' : ''}>
             {title && <h6>{title}</h6>}
@@ -177,7 +202,7 @@ const LargeCard = ({
                   : body.map && body.map((st: string, index: number) => <p key={index}>{st}</p>)}
               </div>
             )}
-            {button && <Button {...button} />}
+            {button && <Button {...button} height={button.height || 36} />}
           </div>
         ) : null}
         {icon && (
