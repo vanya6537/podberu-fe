@@ -99,8 +99,7 @@ const Applications = ({ full = false, applications = [] }) => {
         }}
       >
         <Pagination />
-
-        <Button value="Новая заявка" size="hmd" margin={[40, 0, 20, 0]} />
+        <Button value="Новая заявка" size="hlg" margin={[48, 0, 0, 0]} />
       </div>
     </StyledApplications>
   );
