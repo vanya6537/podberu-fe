@@ -1,11 +1,69 @@
-import { Row, Col } from 'react-bootstrap';
+import { Col, Row } from 'react-bootstrap';
 import { useHistory } from 'react-router-dom';
 import Tabs from '../../components/Tabs';
-import Image from '../../components/Image';
 import CreditCards from './components/CreditCards';
-import ICCardsImage from '../../assets/images/ic_cards.png';
-import { LargeCard, SmallCard, IconCard } from '../../components/Card';
+import { IconCard, LargeCard, SmallCard } from '../../components/Card';
 import { ROUTES } from '../../utilities/constants';
+import InfoColumn from './components/InfoColumn';
+
+type UsefulInfo = {
+  title: string;
+  links: string[];
+}[];
+
+// Multiple rows
+const usefulInfo: UsefulInfo[] = [
+  [
+    {
+      title: 'Кредиты',
+      links: ['Без справок о доходах', 'В день обращения', 'Самые выгодные', 'Наличными'],
+    },
+    {
+      title: 'Карты',
+      links: ['БС овердрафтом', 'Бесплатные', 'С кэшбэком', 'Доходные'],
+    },
+    {
+      title: 'Микрозаймы',
+      links: ['На карту', 'Под ПТС', 'Без процентов', 'На Киви'],
+    },
+    {
+      title: 'Страхование',
+      links: [
+        'ОСАГО онлайн',
+        'КАСКО',
+        'Страхование для путешественников',
+        'Страхование ипотеки',
+        'Страхование недвижимости',
+        'Страхование от несчастных случаев',
+      ],
+    },
+  ],
+  [
+    {
+      title: 'Вклады',
+      links: ['Мультивалютные', 'Самые выгодные', 'С пополнением', 'Пенсионные'],
+    },
+    {
+      title: 'Карты',
+      links: ['БС овердрафтом', 'Бесплатные', 'С кэшбэком', 'Доходные'],
+    },
+    {
+      title: 'Микрозаймы',
+      links: ['На карту', 'Под ПТС', 'Без процентов', 'На Киви'],
+    },
+    {
+      title: 'Продукты в банках',
+      links: [
+        'Вклады в банках',
+        'Кредиты в банках',
+        'Ипотека в банках',
+        'Кредитные карты в банках',
+        'Дебетовые карты в банках',
+        'Автокредиты в банках',
+      ],
+    },
+  ],
+];
 
 const ClientHome = () => {
   const history = useHistory();
@@ -13,15 +71,16 @@ const ClientHome = () => {
   const openDebit = () => {
     history.push(ROUTES.DEBIT.path);
   };
+  const defaultColStyles = { marginBottom: 24 };
+  const infoColStyles = { marginBottom: 48 };
+  const sectionStyle = { padding: '32px 0' };
 
   return (
     <>
-      <section>
-        <h2 style={{ marginTop: 56, marginBottom: 24, fontSize: 48, fontWeight: 700 }}>
-          Добрый день!
-        </h2>
+      <section style={sectionStyle}>
+        <h2>Добрый день!</h2>
         <Row>
-          <Col md={6} style={{ marginBottom: 20 }}>
+          <Col md={6} style={defaultColStyles}>
             <LargeCard
               title="Дебетовые карты"
               subtitle="Сегодня оформить дебетовую карту предлагает своим клиентам практически любой банк."
@@ -29,7 +88,7 @@ const ClientHome = () => {
               icon="cards"
             />
           </Col>
-          <Col md={6} style={{ marginBottom: 20 }}>
+          <Col md={6} style={defaultColStyles}>
             <LargeCard
               title="Микрозаймы"
               subtitle="Выгодные займы с онлайн заявкой! Одобрение за 5 минут! Минимальный пакет документов!"
@@ -39,7 +98,7 @@ const ClientHome = () => {
           </Col>
         </Row>
         <Row>
-          <Col md={6} style={{ marginBottom: 20 }}>
+          <Col md={6} style={defaultColStyles}>
             <LargeCard
               title="Кредитные карты"
               subtitle="Сегодня оформить кредитную карту предлагает своим клиентам практически любой банк."
@@ -47,7 +106,7 @@ const ClientHome = () => {
               icon="cards"
             />
           </Col>
-          <Col md={6} style={{ marginBottom: 20 }}>
+          <Col md={6} style={defaultColStyles}>
             <LargeCard
               title="РКО"
               subtitle="Комплекс услуг, которые предлагаются при открытии расчетного счета для бизнесменов."
@@ -58,10 +117,10 @@ const ClientHome = () => {
         </Row>
       </section>
 
-      <section>
+      <section style={sectionStyle}>
         <h2>Список продуктов</h2>
         <Row>
-          <Col md={4} style={{ marginBottom: 10 }}>
+          <Col md={4} style={defaultColStyles}>
             <SmallCard
               title="Кредиты"
               subtitle={['Описание продукта.', ' Преимущества.']}
@@ -69,7 +128,7 @@ const ClientHome = () => {
               onClick={openDebit}
             />
           </Col>
-          <Col md={4} style={{ marginBottom: 10 }}>
+          <Col md={4} style={defaultColStyles}>
             <SmallCard
               title="Микрозаймы"
               subtitle={['Описание продукта.', ' Преимущества.']}
@@ -77,7 +136,7 @@ const ClientHome = () => {
               onClick={openDebit}
             />
           </Col>
-          <Col md={4} style={{ marginBottom: 10 }}>
+          <Col md={4} style={defaultColStyles}>
             <SmallCard
               title="РКО"
               subtitle={['Описание продукта.', ' Преимущества.']}
@@ -87,7 +146,7 @@ const ClientHome = () => {
           </Col>
         </Row>
         <Row>
-          <Col md={4} style={{ marginBottom: 10 }}>
+          <Col md={4} style={defaultColStyles}>
             <SmallCard
               title="Кредитные карты"
               subtitle={['Описание продукта.', ' Преимущества.']}
@@ -95,7 +154,7 @@ const ClientHome = () => {
               onClick={openDebit}
             />
           </Col>
-          <Col md={4} style={{ marginBottom: 10 }}>
+          <Col md={4} style={defaultColStyles}>
             <SmallCard
               title="Для бизнеса"
               subtitle={['Описание продукта.', ' Преимущества.']}
@@ -103,7 +162,7 @@ const ClientHome = () => {
               onClick={openDebit}
             />
           </Col>
-          <Col md={4} style={{ marginBottom: 10 }}>
+          <Col md={4} style={defaultColStyles}>
             <SmallCard
               title="Дебетовые карты"
               subtitle={['Описание продукта.', ' Преимущества.']}
@@ -113,7 +172,7 @@ const ClientHome = () => {
           </Col>
         </Row>
         <Row>
-          <Col md={4} style={{ marginBottom: 10 }}>
+          <Col md={4} style={defaultColStyles}>
             <SmallCard
               title="КАСКО"
               subtitle={['Описание продукта.', ' Преимущества.']}
@@ -121,7 +180,7 @@ const ClientHome = () => {
               onClick={openDebit}
             />
           </Col>
-          <Col md={4} style={{ marginBottom: 10 }}>
+          <Col md={4} style={defaultColStyles}>
             <SmallCard
               title="ОСАГО"
               subtitle={['Описание продукта.', ' Преимущества.']}
@@ -129,7 +188,7 @@ const ClientHome = () => {
               onClick={openDebit}
             />
           </Col>
-          <Col md={4} style={{ marginBottom: 10 }}>
+          <Col md={4} style={defaultColStyles}>
             <SmallCard
               title="Вклады"
               subtitle={['Описание продукта.', ' Преимущества.']}
@@ -140,7 +199,7 @@ const ClientHome = () => {
         </Row>
       </section>
 
-      <section style={{ minHeight: 100 }}>
+      <section style={{ minHeight: 100, ...sectionStyle }}>
         <h2>Лучшие предложения</h2>
         <Row>
           <Col>
@@ -164,7 +223,7 @@ const ClientHome = () => {
         </Row>
       </section>
 
-      <section style={{ minHeight: 100 }}>
+      <section style={{ minHeight: 100, ...sectionStyle }}>
         <h2>Наши партнёры</h2>
         <Row>
           <Col>
@@ -180,169 +239,29 @@ const ClientHome = () => {
             <IconCard icon="typography" />
           </Col>
         </Row>
-        <div style={{ textAlign: 'center' }}>Посмотреть всех</div>
+        <div style={{ textAlign: 'center', marginTop: '36px' }}>
+          <a>Посмотреть всех</a>
+        </div>
       </section>
 
-      <section style={{ minHeight: 100 }}>
-        <h2>НО проекте</h2>
-        <Row>
-          <Col>
-            <SmallCard
-              title={
-                <>
-                  <Image
-                    src={ICCardsImage}
-                    name="logo"
-                    width={40}
-                    margin={[0, 'auto', 15, 'auto']}
-                  />
-                  Название
-                </>
-              }
-              body={[
-                'Описание описание',
-                'Описание описание описание',
-                'Описание описание описание',
-                'Описание описание описание',
-                'Описание описание описание',
-                'Описание описание описание',
-              ]}
-              centerText
-            />
-          </Col>
-          <Col>
-            <SmallCard
-              title={
-                <>
-                  <Image
-                    src={ICCardsImage}
-                    name="logo"
-                    width={40}
-                    margin={[0, 'auto', 15, 'auto']}
-                  />
-                  Название
-                </>
-              }
-              body={[
-                'Описание описание',
-                'Описание описание описание',
-                'Описание описание описание',
-                'Описание описание описание',
-                'Описание описание описание',
-                'Описание описание описание',
-              ]}
-              centerText
-            />
-          </Col>
-          <Col>
-            <SmallCard
-              title={
-                <>
-                  <Image
-                    src={ICCardsImage}
-                    name="logo"
-                    width={40}
-                    margin={[0, 'auto', 15, 'auto']}
-                  />
-                  Название
-                </>
-              }
-              body={[
-                'Описание описание',
-                'Описание описание описание',
-                'Описание описание описание',
-                'Описание описание описание',
-                'Описание описание описание',
-                'Описание описание описание',
-              ]}
-              centerText
-            />
-          </Col>
-        </Row>
-      </section>
-
-      <section style={{ minHeight: 100 }}>
+      <section style={{ minHeight: 100 }} className="useful-info">
         <h2>Полезная информация</h2>
-        <Row>
-          <Col style={{ marginBottom: 20 }}>
-            <h4>Кредиты</h4>
-            <small>
-              <div>Без справок о доходах</div>
-              <div>В день обращения</div>
-              <div>Самые выгодные</div>
-              <div>Наличными</div>
-            </small>
-          </Col>
-          <Col style={{ marginBottom: 20 }}>
-            <h4>Карты</h4>
-            <small>
-              <div>БС овердрафтом</div>
-              <div>Бесплатные</div>
-              <div>С кэшбэком</div>
-              <div>Доходные</div>
-            </small>
-          </Col>
-          <Col style={{ marginBottom: 20 }}>
-            <h4>Микрозаймы</h4>
-            <small>
-              <div>На карту</div>
-              <div>Под ПТС</div>
-              <div>Без процентов</div>
-              <div>На Киви</div>
-            </small>
-          </Col>
-          <Col style={{ marginBottom: 20 }}>
-            <h4>Страхование</h4>
-            <small>
-              <div>ОСАГО онлайн</div>
-              <div>КАСКО</div>
-              <div>Страхование для путешественников</div>
-              <div>Страхование ипотеки</div>
-              <div>Страхование недвижимости</div>
-              <div>Страхование от несчастных случаев</div>
-            </small>
-          </Col>
-        </Row>
-        <Row>
-          <Col style={{ marginBottom: 20 }}>
-            <h4>Вклады</h4>
-            <small>
-              <div>Мультивалютные</div>
-              <div>Самые выгодные</div>
-              <div>С пополнением</div>
-              <div>Пенсионные</div>
-            </small>
-          </Col>
-          <Col style={{ marginBottom: 20 }}>
-            <h4>Вклады</h4>
-            <small>
-              <div>Мультивалютные</div>
-              <div>Самые выгодные</div>
-              <div>С пополнением</div>
-              <div>Пенсионные</div>
-            </small>
-          </Col>
-          <Col style={{ marginBottom: 20 }}>
-            <h4>Вклады</h4>
-            <small>
-              <div>Мультивалютные</div>
-              <div>Самые выгодные</div>
-              <div>С пополнением</div>
-              <div>Пенсионные</div>
-            </small>
-          </Col>
-          <Col style={{ marginBottom: 20 }}>
-            <h4>Продукты в банках</h4>
-            <small>
-              <div>Вклады в банках</div>
-              <div>Кредиты в банках</div>
-              <div>Ипотека в банках</div>
-              <div>Кредитные карты в банках</div>
-              <div>Дебетовые карты в банках</div>
-              <div>Автокредиты в банках</div>
-            </small>
-          </Col>
-        </Row>
+        {usefulInfo.map((rowItems, rowIndex) => (
+          <Row>
+            {rowItems.map(({ title, links }) =>
+              // Last row is without bottom margins
+              usefulInfo.length - 1 === rowIndex ? (
+                <Col>
+                  <InfoColumn headingText={title} links={links} />
+                </Col>
+              ) : (
+                <Col style={infoColStyles}>
+                  <InfoColumn headingText={title} links={links} />
+                </Col>
+              )
+            )}
+          </Row>
+        ))}
       </section>
     </>
   );
