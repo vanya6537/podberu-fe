@@ -1,7 +1,7 @@
 import { useContext } from 'react';
 import styled from 'styled-components';
 import { AuthContext } from '../../context/AuthContext';
-// import { ROLES } from '../../utilities/constants';
+import { ROLES } from '../../utilities/constants';
 import AgentHome from './AgentHome';
 import ClientHome from './ClientHome';
 
@@ -20,9 +20,9 @@ const StyledHome = styled.div`
     }
 
     > h2 {
-      font-size: 28px;
+      font-size: 48px;
       font-weight: 500;
-      margin-bottom: 34px;
+      margin-bottom: 48px;
       text-align: center;
       line-height: 1.4;
       width: 100%;
@@ -35,16 +35,13 @@ const StyledHome = styled.div`
 `;
 
 const Home = () => {
-  const { user }: any = useContext(AuthContext);
+  const { user, isSignedIn }: any = useContext(AuthContext);
   // eslint-disable-next-line no-console
   console.log(user);
   return (
     <StyledHome>
-      {/* {user.role === ROLES.CLIENT && <ClientHome />} */}
-      {/* {user.role === ROLES.AGENT && <AgentHome />} */}
-      <AgentHome />
-      <p>-----Дальше главная страница клиентов-----</p>
-      <ClientHome />
+      {(!isSignedIn || user.role === ROLES.CLIENT) && <ClientHome />}
+      {isSignedIn && user.role === ROLES.AGENT && <AgentHome />}
     </StyledHome>
   );
 };
