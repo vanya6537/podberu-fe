@@ -1,11 +1,13 @@
 import { lazy, Suspense } from 'react';
 import { Toaster } from 'react-hot-toast';
-import Loader from './components/Loader';
+import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
+import { ruRU } from '@material-ui/core/locale';
 import { ROUTES } from './utilities/constants';
-import { Switch, Router, Redirect, AuthRoute, PublicRoute, PrivateRoute } from './router/Router';
+import { AuthRoute, PrivateRoute, PublicRoute, Redirect, Router, Switch } from './router/Router';
 import './App.css';
 import GlobalStyle from './GlobalStyle';
 import { AuthProvider } from './context/AuthContext';
+import Loader from './components/Loader';
 
 const Landing = lazy(() => import('./pages/Landing'));
 const Home = lazy(() => import('./pages/home/Home'));
@@ -14,9 +16,11 @@ const DebitCards = lazy(() => import('./pages/home/components/DebitCards'));
 const RegisterDeal = lazy(() => import('./pages/home/components/RegisterDeal'));
 const Signin = lazy(() => import('./pages/auth/Signin'));
 
+const theme = createMuiTheme({}, ruRU);
+
 function App() {
   return (
-    <>
+    <ThemeProvider theme={theme}>
       <GlobalStyle />
       <Toaster position="top-center" />
 
@@ -25,7 +29,7 @@ function App() {
           <AuthProvider>
             <Switch>
               <PublicRoute exact component={Home} {...ROUTES.HOME} />
-              <PrivateRoute exact component={Account} {...ROUTES.ACCOUNT} />
+              <PublicRoute exact component={Account} {...ROUTES.ACCOUNT} />
               <PrivateRoute exact component={DebitCards} {...ROUTES.DEBIT} />
               <PrivateRoute exact component={RegisterDeal} {...ROUTES.REGISTER} />
               <PublicRoute exact component={Landing} {...ROUTES.LANDING} />
@@ -37,7 +41,7 @@ function App() {
           </AuthProvider>
         </Router>
       </Suspense>
-    </>
+    </ThemeProvider>
   );
 }
 
