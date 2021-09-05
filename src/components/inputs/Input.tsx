@@ -18,18 +18,20 @@ import {
   RadioButtonChecked,
   RadioButtonUnchecked,
 } from '@material-ui/icons';
-import { validator } from '../../utilities/helper';
+import { validator } from '../../utilities/api-methods';
 
 const StyledInput = styled.div`
-  padding-bottom: 20px;
+  padding-bottom: 24px;
   font-weight: 300;
   font-size: 24px;
 
   label {
     font-size: 24px;
-    line-height: 64px;
+    line-height: 40px;
     font-weight: 300;
     padding-left: 3px;
+    background-color: #f2f2f2;
+    cursor: pointer;
   }
   input::placeholder {
     font-size: 24px;
@@ -86,7 +88,9 @@ const StyledInput = styled.div`
       font-size: 12px;
     }
   }
-
+  .MuiInputLabel-shrink {
+    transform: translate(14px, -14px) scale(0.75) !important;
+  }
   .MuiCheckbox-root {
     padding: 0;
     margin-right: 8px;
@@ -94,6 +98,9 @@ const StyledInput = styled.div`
     .MuiSvgIcon-root {
       color: #4185e9 !important;
     }
+  }
+  input[type='file'] {
+    visibility: hidden;
   }
 `;
 
@@ -146,7 +153,7 @@ const Input = ({
         defaultValue={defaultValue}
         label={label}
         type={type}
-        placeholder={placeholder || label}
+        placeholder={placeholder}
         disabled={disabled}
         variant={variant}
         aria-label={label}
