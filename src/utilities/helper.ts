@@ -3,6 +3,8 @@ import moment from 'moment';
 import { isInt, isEmail, isMobilePhone, isStrongPassword } from 'validator';
 import Toast from 'react-hot-toast';
 
+axios.defaults.withCredentials = true;
+
 export const throttle = (fn: () => null, wait: number) => {
   let time = Date.now();
 
