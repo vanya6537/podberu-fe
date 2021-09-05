@@ -8,7 +8,7 @@ const AuthContext = createContext({});
 
 // isSignedIn: null, used to check know that signed in state has not been checked yet
 const initialState: { user: object | null; isSignedIn: boolean | null } = {
-  user: null,
+  user: {},
   isSignedIn: null,
 };
 
