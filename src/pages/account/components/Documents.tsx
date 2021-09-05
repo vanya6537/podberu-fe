@@ -26,43 +26,30 @@ const StyledDocuments = styled.div`
 const Passport = ({ back }: any) => {
   return (
     <>
-      <h2 style={{ fontSize: 20 }}>
+      <h2 style={{ fontSize: 36 }}>
         <Back onClick={back} />
         Паспорт
       </h2>
-      <form style={{ width: 260, margin: 'auto' }}>
+      <form style={{ width: 388, margin: 'auto' }}>
         <Row>
           <Col>
-            <Input label="ФИО" placeholder="ФИО" name="full_name" type="text" validate="required" />
+            <Input label="ФИО" name="full_name" type="text" validate="required" />
           </Col>
         </Row>
         <Row>
           <Col>
-            <Input
-              label="Серия и номер"
-              placeholder="Серия и номер"
-              name="serial_number"
-              type="number"
-              validate="required"
-            />
+            <Input label="Серия и номер" name="serial_number" type="text" validate="required" />
           </Col>
         </Row>
         <Row>
           <Col>
-            <Input
-              label="Кем выдан"
-              placeholder="Кем выдан"
-              name="issued_by"
-              type="text"
-              validate="required"
-            />
+            <Input label="Кем выдан" name="issued_by" type="text" validate="required" />
           </Col>
         </Row>
         <Row>
           <Col>
             <Input
               label="Дата выдачи"
-              placeholder="Дата выдачи"
               name="date_of_issue"
               type="date"
               defaultValue={formatDate(Date.now(), 'YYYY-MM-DD')}
@@ -72,13 +59,7 @@ const Passport = ({ back }: any) => {
         </Row>
         <Row>
           <Col>
-            <Input
-              label="Скан паспорта"
-              placeholder="Скан паспорта"
-              validate="required"
-              type="file"
-              name="passport_scan"
-            />
+            <Input label="Скан паспорта" validate="required" type="file" name="passport_scan" />
           </Col>
         </Row>
         <Row>
@@ -86,17 +67,18 @@ const Passport = ({ back }: any) => {
             style={{
               display: 'flex',
               justifyContent: 'center',
-              fontSize: 12,
-              marginTop: -5,
+              fontSize: 18,
               textAlign: 'center',
+              letterSpacing: '-0.24px',
+              opacity: 0.75,
             }}
           >
             2,3 страница + страница с актуальной регистрацией
           </Col>
         </Row>
         <Row>
-          <Col style={{ display: 'flex', justifyContent: 'center', marginTop: 20 }}>
-            <Button type="submit" value="Сохранить" size="md" width={100} />
+          <Col style={{ display: 'flex', justifyContent: 'center', marginTop: 48 }}>
+            <Button type="submit" value="Сохранить" size="hlg" />
           </Col>
         </Row>
       </form>
@@ -107,11 +89,11 @@ const Passport = ({ back }: any) => {
 const SNILS = ({ back }: any) => {
   return (
     <>
-      <h2 style={{ fontSize: 20 }}>
+      <h2 style={{ fontSize: 36 }}>
         <Back onClick={back} />
         СНИЛС
       </h2>
-      <form style={{ width: 260, margin: 'auto' }}>
+      <form style={{ width: 388, margin: 'auto' }}>
         <Row>
           <Col>
             <Input
@@ -149,11 +131,11 @@ const SNILS = ({ back }: any) => {
 const TINCertificate = ({ back }: any) => {
   return (
     <>
-      <h2 style={{ fontSize: 20 }}>
+      <h2 style={{ fontSize: 36 }}>
         <Back onClick={back} />
         Свидетельство ИНН
       </h2>
-      <form style={{ width: 260, margin: 'auto' }}>
+      <form style={{ width: 388, margin: 'auto' }}>
         <Row>
           <Col>
             <Input
@@ -206,8 +188,9 @@ const Documents = () => {
               icon="docblue"
               button={{
                 value: 'Изменить',
-                size: 'sm',
-                margin: [10, 0],
+                size: 'md',
+                margin: [28, 0, 12, 0],
+                padding: [0, 20],
                 onClick: () => setChosenForm('passport'),
               }}
             />
@@ -219,8 +202,9 @@ const Documents = () => {
               icon="docblue"
               button={{
                 value: 'Добавить',
-                size: 'sm',
-                margin: [10, 0],
+                size: 'md',
+                margin: [28, 0, 12, 0],
+                padding: [0, 20],
                 onClick: () => setChosenForm('snils'),
               }}
             />
@@ -232,8 +216,9 @@ const Documents = () => {
               icon="docblue"
               button={{
                 value: 'Добавить',
-                size: 'sm',
-                margin: [10, 0],
+                size: 'md',
+                margin: [28, 0, 12, 0],
+                padding: [0, 20],
                 onClick: () => setChosenForm('tin'),
               }}
             />
