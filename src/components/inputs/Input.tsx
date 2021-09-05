@@ -18,7 +18,7 @@ import {
   RadioButtonChecked,
   RadioButtonUnchecked,
 } from '@material-ui/icons';
-import { validator } from '../../utilities/api-methods';
+import { validator } from '../../utilities/helper';
 
 const StyledInput = styled.div`
   padding-bottom: 24px;
