@@ -1,6 +1,6 @@
-import { useMemo, useContext, useEffect, useState } from 'react';
+import { useContext, useMemo } from 'react';
 import styled from 'styled-components';
-import { Row, Col } from 'react-bootstrap';
+import { Col, Row } from 'react-bootstrap';
 import Tabs from '../../components/Tabs';
 import Settings from './components/Settings';
 import Withdraw from './components/Withdraw';
@@ -8,8 +8,7 @@ import Documents from './components/Documents';
 import ProfileCard from './components/ProfileCard';
 import Applications from './components/Applications';
 import { AuthContext } from '../../context/AuthContext';
-import { API_URL, ROLES } from '../../utilities/constants';
-import { post } from '../../utilities/helper';
+import { ROLES } from '../../utilities/constants';
 
 const StyledAccount = styled.div`
   section {
@@ -42,16 +41,6 @@ const StyledAccount = styled.div`
 
 const Account = () => {
   const { user }: any = useContext(AuthContext);
-  const getApplications = () => post(API_URL.CLIENT.GET_APPLICATIONS, null, {}, true);
-
-  const [applications, setApplictaions] = useState([]);
-  useEffect(
-    (async () => {
-      const updatedApplications = await getApplications();
-      setApplictaions(updatedApplications);
-    }) as any,
-    []
-  );
 
   const data = useMemo(() => {
     if (user.role === ROLES.AGENT) {
@@ -63,7 +52,7 @@ const Account = () => {
           { value: 3, label: 'Настройки' },
         ],
         data: {
-          0: <Applications applications={applications} />,
+          0: <Applications />,
           1: <Documents />,
           2: <Withdraw />,
           3: <Settings />,
@@ -82,7 +71,7 @@ const Account = () => {
         3: <Settings />,
       },
     };
-  }, [user.role, applications]);
+  }, [user.role]);
 
   return (
     <StyledAccount>
