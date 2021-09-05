@@ -4,7 +4,7 @@ import Icon from './Icon';
 const StyledBack = styled.div.attrs((props) => ({ ...props }))`
   display: flex;
   align-items: center;
-  font-size: 14px;
+  font-size: 24px;
   font-weight: 500;
   cursor: pointer;
   span {
