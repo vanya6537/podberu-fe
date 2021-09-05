@@ -1,10 +1,10 @@
 import { useCallback, useContext, useState } from 'react';
 import styled from 'styled-components';
-import { Row, Col, Container } from 'react-bootstrap';
-import Back from '../../components/Back';
+import { Col, Container, Row } from 'react-bootstrap';
 import { Form, Input, PasswordInput } from '../../components/inputs';
 import Button from '../../components/Button';
 import { AuthContext } from '../../context/AuthContext';
+import Back from '../../components/Back';
 
 const StyledSignin = styled.div`
   section {
@@ -17,7 +17,7 @@ const StyledSignin = styled.div`
     }
 
     > .form-header {
-      margin-top: 56px;
+      margin-top: 64px;
       margin-bottom: 100px;
     }
 
@@ -33,6 +33,7 @@ const StyledSignin = styled.div`
       line-height: 1.4;
       position: relative;
       width: 100%;
+
       > div {
         position: absolute;
         top: 10px;
@@ -65,11 +66,8 @@ const Signin = () => {
       <section className="secondary">
         <Container className="form-header">
           <Row>
-            <Col md={1}>
-              <Back />
-            </Col>
-            <Col md={11}>
-              <h2 style={{ fontSize: 48, fontWeight: 700, marginLeft: -114, textAlign: 'center' }}>
+            <Col>
+              <h2 style={{ fontSize: 48, fontWeight: 700, textAlign: 'center' }}>
                 Вход в личный кабинет
               </h2>
             </Col>
@@ -127,7 +125,7 @@ const Signin = () => {
                     value={stage === 0 ? 'Далее' : 'Войти'}
                     disabled={hasError}
                     loading={isFetching}
-                    size="hmd"
+                    size="hlg"
                   />
                 </Col>
               </Row>
