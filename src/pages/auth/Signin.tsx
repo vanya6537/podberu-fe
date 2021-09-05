@@ -4,7 +4,6 @@ import { Col, Container, Row } from 'react-bootstrap';
 import { Form, Input, PasswordInput } from '../../components/inputs';
 import Button from '../../components/Button';
 import { AuthContext } from '../../context/AuthContext';
-import Back from '../../components/Back';
 
 const StyledSignin = styled.div`
   section {
