@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { Row, Col } from 'react-bootstrap';
+import { Col, Row } from 'react-bootstrap';
 import Button from '../../../components/Button';
 import { Input } from '../../../components/inputs';
 
@@ -12,6 +12,7 @@ const StyledSettings = styled.div`
     line-height: 1.4;
     position: relative;
     width: 100%;
+
     > div {
       position: absolute;
       top: 6px;
@@ -22,14 +23,13 @@ const StyledSettings = styled.div`
 const Settings = () => {
   return (
     <StyledSettings>
-      <h2 style={{ fontSize: 20 }}>Изменить персональную информацию</h2>
-      <form style={{ width: 260, margin: 'auto' }}>
+      <h2 style={{ fontSize: 36 }}>Изменить персональную информацию</h2>
+      <form style={{ width: 388, margin: 'auto' }}>
         <Row>
           <Col>
             <Input label="ФИО" placeholder="ФИО" name="full_name" type="text" validate="required" />
           </Col>
         </Row>
-
         <Row>
           <Col>
             <Input
@@ -37,7 +37,7 @@ const Settings = () => {
               placeholder="Мобильный телефон"
               defaultValue="+7 000 00-00"
               validate="required|phone_number"
-              type="number"
+              type="phone"
               name="phone_number"
             />
           </Col>
@@ -60,8 +60,8 @@ const Settings = () => {
         </Row>
 
         <Row>
-          <Col style={{ display: 'flex', justifyContent: 'center', marginTop: 20 }}>
-            <Button type="submit" value="Сохранить" size="md" width={100} />
+          <Col style={{ display: 'flex', justifyContent: 'center', marginTop: 24 }}>
+            <Button type="submit" value="Сохранить" size="hlg" />
           </Col>
         </Row>
       </form>
