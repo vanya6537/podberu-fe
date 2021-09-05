@@ -117,7 +117,6 @@ Card.Footer = ({ children, ...rest }: any) => {
 const StyledDivLargeCard = styled.div.attrs((props: any) => ({ ...props }))`
   display: flex;
   flex-wrap: nowrap;
-
   ${(props: any) =>
     props.type === 'small' || props.type === 'icon'
       ? `margin-top: 0; padding: 0;
@@ -149,6 +148,7 @@ const StyledDivLargeCard = styled.div.attrs((props: any) => ({ ...props }))`
     color: ${(props: any) => props.subtitleTextColor || '#272e3e'};
     font-weight: 400;
     letter-spacing: -0.24px;
+    opacity: 0.75;
   }
 
   p {
