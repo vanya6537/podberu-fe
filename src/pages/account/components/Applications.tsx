@@ -1,28 +1,49 @@
 import styled from 'styled-components';
-import { Row, Col } from 'react-bootstrap';
+import { Col, Row } from 'react-bootstrap';
 import { useEffect, useState } from 'react';
 import Button from '../../../components/Button';
 import { SmallCard } from '../../../components/Card';
 import Pagination from '../../../components/Pagination';
-import { post } from '../../../utilities/helper';
-import { API_URL } from '../../../utilities/constants';
+import { getApplications } from '../../../api';
+import { ApplicationCardType, ApplicationResponseDataType } from '../../../utilities/models';
 
 const StyledApplications = styled.div``;
 const defaultSubtitleTextColor = 'rgba(251, 252, 253, 0.6)';
 
-const Applications = ({ full = false }) => {
-  const getApplications = () => post(API_URL.CLIENT.GET_APPLICATIONS, null, {}, true);
+// const CARD_TITLES = {
+//   rko: 'РКО карта',
+//   mfo: 'МФО карта',
+//   credit: 'Кредитная карта',
+//   debit: 'Дебетовая карта',
+//   business_credit: 'Кредитная карта (бизнес)',
+// };
 
-  const [applications, setApplications] = useState([]);
+const Applications = ({ full = false }) => {
+  const [applications, setApplications] = useState<ApplicationCardType[]>([]);
+
   useEffect(() => {
     getApplications()
-      .then((data) => {
+      .then((responseInfo) => {
         // const { response, message, status, error } = data;
-        const { response } = data;
+        const { data } = responseInfo;
         // console.log(response);
-        const updatedApplications = response.json();
-        // console.log(updatedApplications);
-        setApplications(updatedApplications);
+        const updatedApplicationsData: ApplicationResponseDataType = data;
+        const updatedApplicationsList: ApplicationCardType[] = Object.entries(
+          updatedApplicationsData
+        ).reduce(
+          (accum, [applicationType, applicationList]) => [
+            ...accum,
+            ...applicationList.map(({ offer }) => ({
+              // title: CARD_TITLES[applicationType!],
+              title: offer.type,
+              subtitle: offer.createdAt,
+            })),
+          ],
+          [] as ApplicationCardType[]
+        );
+        // eslint-disable-next-line no-console
+        console.log(updatedApplicationsList);
+        setApplications(updatedApplicationsList);
       })
       // eslint-disable-next-line no-console
       .catch((err) => console.error(err));
@@ -35,8 +56,8 @@ const Applications = ({ full = false }) => {
           {applications.map(({ title, subtitle }) => (
             <Col md={4} style={{ padding: '0 24px 24px 0' }}>
               <SmallCard
-                title={title || 'Дебетовая карта'}
-                subtitle={subtitle || '24.12.2020'}
+                title={title}
+                subtitle={subtitle}
                 icon="cards-white"
                 group="blue"
                 subtitleTextColor={defaultSubtitleTextColor}
@@ -46,6 +67,7 @@ const Applications = ({ full = false }) => {
           ))}
         </Row>
       ) : (
+        // Mock data
         <Row>
           <Col md={4} style={{ padding: '0 24px 24px 0' }}>
             <SmallCard

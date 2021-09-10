@@ -1,6 +1,7 @@
 import { useContext, useState } from 'react';
 import styled from 'styled-components';
 import { Row, Col } from 'react-bootstrap';
+import { useParams } from 'react-router-dom';
 import Back from '../../../components/Back';
 import Button from '../../../components/Button';
 import { Input } from '../../../components/inputs';
@@ -47,7 +48,7 @@ const StyledRegisterDeal = styled.div`
 const RegisterDeal = () => {
   const { user }: any = useContext(AuthContext);
   const [state, setState] = useState(user.role === ROLES.AGENT ? 'initial' : 'fill-form');
-
+  const { bankName } = useParams<{ offerType: string; bankName: string }>();
   const handleSubmit = (e: any) => {
     e.preventDefault();
     setState('complete');
@@ -202,7 +203,7 @@ const RegisterDeal = () => {
             justifyContent: 'center',
           }}
         >
-          <h2>Дебетовая карта Альфа-банк</h2>
+          <h2>Дебетовая карта ${bankName}</h2>
           <p>
             <div>Заявка успешно отправлена!</div>
             <div>Её статус вы можете отследить в своём</div>

@@ -2,8 +2,10 @@ import axios from 'axios';
 import moment from 'moment';
 import { isInt, isEmail, isMobilePhone, isStrongPassword } from 'validator';
 import Toast from 'react-hot-toast';
+import applyCaseMiddleware from 'axios-case-converter';
 
-axios.defaults.withCredentials = true;
+const useCookies = { withCredentials: true };
+const client = applyCaseMiddleware(axios.create(useCookies));
 
 export const throttle = (fn: () => null, wait: number) => {
   let time = Date.now();
@@ -89,6 +91,7 @@ export const onlyDefined = (obj: any) => {
  * @returns {string}
  */
 export const encodeB64 = (str: string) => {
+  // return Buffer.from(str, 'binary').toString('base64');
   return btoa(str);
 };
 
@@ -113,28 +116,28 @@ const errorHandler = ({ response: { data } = { data: {} } }, show: boolean | str
 };
 
 export const get = (url: string, config = {}, show: boolean | string = false) => {
-  return axios
+  return client
     .get(url, { ...config })
     .then((x) => responseHandler(x, show))
     .catch((x) => errorHandler(x, show));
 };
 
 export const post = (url: string, body: any, config = {}, show = false) => {
-  return axios
+  return client
     .post(url, body, { ...config })
     .then((x) => responseHandler(x, show))
     .catch((x) => errorHandler(x, show));
 };
 
 export const patch = (url: string, body: any, config = {}, show = false) => {
-  return axios
-    .patch(url, body, { ...config })
+  return client
+    .patch(url, body, { ...useCookies, ...config })
     .then((x) => responseHandler(x, show))
     .catch((x) => errorHandler(x, show));
 };
 
 export const upload = (url: string, body: any, config = {}, show = false) => {
-  return axios
+  return client
     .post(url, body, { ...config })
     .then((x) => responseHandler(x, show))
     .catch((x) => errorHandler(x, show));

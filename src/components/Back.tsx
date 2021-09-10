@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import { useHistory } from 'react-router-dom';
 import Icon from './Icon';
 
 const StyledBack = styled.div.attrs((props) => ({ ...props }))`
@@ -13,9 +14,13 @@ const StyledBack = styled.div.attrs((props) => ({ ...props }))`
 `;
 
 const Back = ({ icon = 'caretleft', value = 'Назад', onClick, ...rest }: any) => {
+  const history = useHistory();
+
   const goBack = () => {
     if (onClick) {
       onClick();
+    } else {
+      history.goBack();
     }
   };
   return (

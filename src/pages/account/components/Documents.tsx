@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import styled from 'styled-components';
-import { Row, Col } from 'react-bootstrap';
+import { Col, Row } from 'react-bootstrap';
 import Back from '../../../components/Back';
 import Button from '../../../components/Button';
 import { Input } from '../../../components/inputs';
@@ -16,6 +16,7 @@ const StyledDocuments = styled.div`
     line-height: 1.4;
     position: relative;
     width: 100%;
+
     > div {
       position: absolute;
       top: 6px;
@@ -170,12 +171,19 @@ const TINCertificate = ({ back }: any) => {
   );
 };
 
+// const getStatusText = (flag: boolean) => (flag ? 'Подтверждён' : 'Не подтверждён');
+
 const Documents = () => {
   const [chosenForm, setChosenForm] = useState('');
 
   const goBack = () => {
     setChosenForm('');
   };
+  // const statusMap = {
+  //   passport: false,
+  //   snils: false,
+  //   inn: false,
+  // };
 
   return (
     <StyledDocuments>

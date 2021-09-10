@@ -1,9 +1,9 @@
 import { useContext } from 'react';
 import styled from 'styled-components';
 import { AuthContext } from '../../context/AuthContext';
-import { ROLES } from '../../utilities/constants';
 import AgentHome from './AgentHome';
 import ClientHome from './ClientHome';
+import { ROLES } from '../../utilities/constants';
 
 const StyledHome = styled.div`
   section {
@@ -40,8 +40,10 @@ const Home = () => {
   console.log(user);
   return (
     <StyledHome>
-      {(!isSignedIn || user.role === ROLES.CLIENT) && <ClientHome />}
+      {(!isSignedIn || user.is_agent) && <ClientHome />}
       {isSignedIn && user.role === ROLES.AGENT && <AgentHome />}
+      {/* <AgentHome /> */}
+      {/* <ClientHome /> */}
     </StyledHome>
   );
 };

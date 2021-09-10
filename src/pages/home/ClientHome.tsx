@@ -1,10 +1,14 @@
 import { Col, Row } from 'react-bootstrap';
 import { useHistory } from 'react-router-dom';
+import { useCallback, useEffect, useState } from 'react';
 import Tabs from '../../components/Tabs';
-import CreditCards from './components/CreditCards';
+import CardsRow from './components/CardsRow';
 import { IconCard, LargeCard, SmallCard } from '../../components/Card';
-import { ROUTES } from '../../utilities/constants';
+import { getDefaultCard, ROUTES } from '../../utilities/constants';
 import InfoColumn from './components/InfoColumn';
+import { OfferType } from '../../utilities/models';
+import { getOffersTypes } from '../../api';
+import { getIcon } from './AgentHome';
 
 type UsefulInfo = {
   title: string;
@@ -68,12 +72,36 @@ const usefulInfo: UsefulInfo[] = [
 const ClientHome = () => {
   const history = useHistory();
 
-  const openDebit = () => {
-    history.push(ROUTES.DEBIT.path);
-  };
+  const openOffersByType = useCallback(
+    (offerType) => (e: any) => {
+      // eslint-disable-next-line no-console
+      console.log(e.target);
+      history.push({
+        pathname: ROUTES.OFFERS_BY_TYPE.path.replace(':offerType', offerType),
+      });
+    },
+    []
+  );
+
   const defaultColStyles = { marginBottom: 24 };
   const infoColStyles = { marginBottom: 48 };
   const sectionStyle = { padding: '32px 0' };
+
+  const creditCardsInfo = new Array(3).fill(getDefaultCard(() => {}));
+  const [offersTypes, setOffersTypes] = useState<OfferType[] | null>(null);
+
+  useEffect(() => {
+    getOffersTypes()
+      .then((responseInfo) => {
+        // const { response, message, status, error } = data;
+        const { data }: { data: OfferType[] } = responseInfo;
+        // console.log(response);
+        // eslint-disable-next-line no-console
+        setOffersTypes(data);
+      })
+      // eslint-disable-next-line no-console
+      .catch((err) => console.error(err));
+  }, []);
 
   return (
     <>
@@ -120,82 +148,18 @@ const ClientHome = () => {
       <section style={sectionStyle}>
         <h2>Список продуктов</h2>
         <Row>
-          <Col md={4} style={defaultColStyles}>
-            <SmallCard
-              title="Кредиты"
-              subtitle={['Описание продукта.', ' Преимущества.']}
-              icon="justice"
-              onClick={openDebit}
-            />
-          </Col>
-          <Col md={4} style={defaultColStyles}>
-            <SmallCard
-              title="Микрозаймы"
-              subtitle={['Описание продукта.', ' Преимущества.']}
-              icon="microzaim"
-              onClick={openDebit}
-            />
-          </Col>
-          <Col md={4} style={defaultColStyles}>
-            <SmallCard
-              title="РКО"
-              subtitle={['Описание продукта.', ' Преимущества.']}
-              icon="credits"
-              onClick={openDebit}
-            />
-          </Col>
-        </Row>
-        <Row>
-          <Col md={4} style={defaultColStyles}>
-            <SmallCard
-              title="Кредитные карты"
-              subtitle={['Описание продукта.', ' Преимущества.']}
-              icon="cards"
-              onClick={openDebit}
-            />
-          </Col>
-          <Col md={4} style={defaultColStyles}>
-            <SmallCard
-              title="Для бизнеса"
-              subtitle={['Описание продукта.', ' Преимущества.']}
-              icon="finance"
-              onClick={openDebit}
-            />
-          </Col>
-          <Col md={4} style={defaultColStyles}>
-            <SmallCard
-              title="Дебетовые карты"
-              subtitle={['Описание продукта.', ' Преимущества.']}
-              icon="cards"
-              onClick={openDebit}
-            />
-          </Col>
-        </Row>
-        <Row>
-          <Col md={4} style={defaultColStyles}>
-            <SmallCard
-              title="КАСКО"
-              subtitle={['Описание продукта.', ' Преимущества.']}
-              icon="shield"
-              onClick={openDebit}
-            />
-          </Col>
-          <Col md={4} style={defaultColStyles}>
-            <SmallCard
-              title="ОСАГО"
-              subtitle={['Описание продукта.', ' Преимущества.']}
-              icon="shield"
-              onClick={openDebit}
-            />
-          </Col>
-          <Col md={4} style={defaultColStyles}>
-            <SmallCard
-              title="Вклады"
-              subtitle={['Описание продукта.', ' Преимущества.']}
-              icon="bank"
-              onClick={openDebit}
-            />
-          </Col>
+          {offersTypes &&
+            offersTypes.map(({ id, name, header, description, type }) => (
+              <Col key={type} md={4} style={{ marginBottom: 24, padding: '0 12px' }}>
+                <SmallCard
+                  key={`${type}-${id}`}
+                  title={name}
+                  subtitle={[description]}
+                  icon={getIcon(type)}
+                  onClick={openOffersByType(type)}
+                />
+              </Col>
+            ))}
         </Row>
       </section>
 
@@ -212,7 +176,7 @@ const ClientHome = () => {
                 { value: 4, label: 'Все предложения' },
               ]}
               data={{
-                0: <CreditCards />,
+                0: <CardsRow cardsInfo={creditCardsInfo} />,
                 1: 'Дебетовые карты',
                 2: 'Кредиты',
                 3: 'Микрозаймы',

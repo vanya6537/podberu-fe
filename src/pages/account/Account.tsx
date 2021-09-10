@@ -1,4 +1,4 @@
-import { useContext, useMemo } from 'react';
+import { useContext, useEffect, useMemo } from 'react';
 import styled from 'styled-components';
 import { Col, Row } from 'react-bootstrap';
 import Tabs from '../../components/Tabs';
@@ -8,7 +8,7 @@ import Documents from './components/Documents';
 import ProfileCard from './components/ProfileCard';
 import Applications from './components/Applications';
 import { AuthContext } from '../../context/AuthContext';
-import { ROLES } from '../../utilities/constants';
+import { AuthContextType } from '../../utilities/models';
 
 const StyledAccount = styled.div`
   section {
@@ -40,10 +40,27 @@ const StyledAccount = styled.div`
 `;
 
 const Account = () => {
-  const { user }: any = useContext(AuthContext);
+  const {
+    user,
+    getUserData,
+    profileData,
+    setUserData,
+    signOut,
+  }: AuthContextType = useContext<AuthContextType>(AuthContext);
 
-  const data = useMemo(() => {
-    if (user.role === ROLES.AGENT) {
+  useEffect(() => {
+    if (getUserData)
+      getUserData()
+        .then((responseInfo) => {
+          const { data } = responseInfo;
+          setUserData(data);
+        })
+        // eslint-disable-next-line no-console
+        .catch((err) => console.error(err));
+  }, [getUserData]);
+
+  const tabsData = useMemo(() => {
+    if (user?.isAgent) {
       return {
         header: [
           { value: 0, label: 'Мои заявки' },
@@ -71,7 +88,7 @@ const Account = () => {
         3: <Settings />,
       },
     };
-  }, [user.role]);
+  }, [user?.isAgent]);
 
   return (
     <StyledAccount>
@@ -81,13 +98,13 @@ const Account = () => {
         </h2>
         <Row>
           <Col style={{ display: 'flex', justifyContent: 'center' }}>
-            <ProfileCard />
+            <ProfileCard profile={profileData} signOut={signOut} />
           </Col>
         </Row>
 
         <Row>
           <Col>
-            <Tabs header={data.header} data={data.data} />
+            <Tabs header={tabsData.header} data={tabsData.data} />
           </Col>
         </Row>
       </section>

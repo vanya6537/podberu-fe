@@ -23,9 +23,9 @@ const Header = () => {
     history.push(ROUTES.HOME.path);
   };
 
-  const goLanding = () => {
-    history.push(ROUTES.LANDING.path);
-  };
+  // const goLanding = () => {
+  //   history.push(ROUTES.LANDING.path);
+  // };
 
   const goToProfile = () => {
     history.push(ROUTES.ACCOUNT.path);
@@ -37,7 +37,7 @@ const Header = () => {
 
   return (
     <StyledHeader>
-      <Icon name="logo" height={48} onClick={isSignedIn ? goHome : goLanding} />
+      <Icon name="logo" height={48} onClick={goHome} />
       {isSignedIn ? (
         <Button size="lg" value="Профиль" onClick={goToProfile} />
       ) : (

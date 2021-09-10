@@ -1,10 +1,9 @@
-import { useContext } from 'react';
 import styled from 'styled-components';
 import Card from '../../../components/Card';
 import Icon from '../../../components/Icon';
 import Image from '../../../components/Image';
 import ProfileImage from '../../../assets/images/avatar.png';
-import { AuthContext } from '../../../context/AuthContext';
+import { ProfileDataType } from '../../../utilities/models';
 
 const StyledProfileCard = styled.div`
   width: 100% !important;
@@ -56,10 +55,8 @@ const StyledProfileCard = styled.div`
   }
 `;
 
-const ProfileCard = () => {
-  const { user, signOut }: any = useContext(AuthContext);
-  // eslint-disable-next-line no-console
-  console.log(user);
+type ProfileCardProps = { profile: ProfileDataType | null; signOut: () => void };
+const ProfileCard = ({ profile, signOut }: ProfileCardProps) => {
   return (
     <Card
       style={{
@@ -75,9 +72,15 @@ const ProfileCard = () => {
       <StyledProfileCard>
         <div>
           <div className="detail">
-            <Image src={ProfileImage} name="Фетисов М.Ю." round width={120} height={120} />
+            <Image
+              src={profile?.photo || ProfileImage}
+              name={profile?.fullName || 'Укажите своё имя'}
+              round
+              width={120}
+              height={120}
+            />
             <div className="name">
-              <h6>Фетисов М.Ю.</h6>
+              <h6>{profile?.fullName || 'Укажите своё имя'}.</h6>
               <span>Аккаунт подтверждён</span>
             </div>
           </div>
