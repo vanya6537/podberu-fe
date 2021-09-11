@@ -29,12 +29,6 @@ jobs:
         npm install yarn -g
         yarn
 
-#      - name: Run the tests and generate coverage report
-#        run: npm test -- --coverage
-
-#      - name: Upload coverage to Codecov
-#        uses: codecov/codecov-action@v1
-
       - name: Build
         run: yarn build
 
@@ -56,4 +50,3 @@ jobs:
           path: |
             **/node_modules
           key: ${{ runner.os }}-${{ hashFiles('**/package-lock.json') }}
-
