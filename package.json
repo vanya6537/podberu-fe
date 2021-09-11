@@ -46,7 +46,7 @@
     "predeploy": "npm run build",
     "deploy": "gh-pages -d build"
   },
-  "homepage": "https://podberuWebApp.github.io/",
+  "homepage": "https://podberuWebApp.github.io/podberu-fe",
   "eslintConfig": {
     "extends": [
       "react-app",
