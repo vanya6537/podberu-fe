@@ -42,9 +42,7 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "ts:check": "tsc",
-    "predeploy": "npm run build",
-    "deploy": "gh-pages -d build"
+    "ts:check": "tsc"
   },
   "homepage": "https://podberuWebApp.github.io/podberu-fe",
   "eslintConfig": {
