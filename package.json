@@ -44,7 +44,6 @@
     "eject": "react-scripts eject",
     "ts:check": "tsc"
   },
-  "homepage": "https://podberuWebApp.github.io/podberu-fe",
   "eslintConfig": {
     "extends": [
       "react-app",
