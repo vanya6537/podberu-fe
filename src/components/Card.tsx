@@ -1,5 +1,6 @@
 import { Card as BCard } from 'react-bootstrap';
 import styled from 'styled-components';
+import { useEffect, useRef, useState } from 'react';
 import Icon from './Icon';
 import Button from './Button';
 import Image from './Image';
@@ -8,12 +9,14 @@ const StyledCard = styled.div.attrs((props) => ({ ...props }))`
   border-radius: 15px;
   overflow: hidden;
   background: #fbfcfd;
-
+  //height: 100%;
   box-shadow: 0 0 8px rgba(39, 46, 62, 0.25);
   ${(props) => (props.onClick ? 'cursor: pointer;' : '')}
+  height: fit-content;
 
   .card {
-    height: 100%;
+    //height: 100%;
+    height: fit-content;
     border: none;
     background: inherit;
   }
@@ -21,12 +24,20 @@ const StyledCard = styled.div.attrs((props) => ({ ...props }))`
   .card-body.blue {
     color: #ffffff;
     background: #4185e9;
+
     .card-subtitle {
       color: ${(props: any) => props.subtitleTextColor || '#272e3e'};
     }
+
     p {
       color: #ffffff;
     }
+  }
+
+  .card-content-wrapper {
+    //height: 100%;
+    display: flex;
+    flex-direction: column;
   }
 
   .card-title {
@@ -55,14 +66,27 @@ const StyledCard = styled.div.attrs((props) => ({ ...props }))`
     justify-content: center;
     font-weight: 400;
     font-size: 14px;
+    height: 100%;
 
     > * {
       width: 100%;
     }
   }
+
   .card-subtitle {
     font-size: 18px;
     color: #272e3e;
+  }
+
+  .button-wrapper {
+    flex: 1;
+    position: relative;
+    min-height: 60px;
+
+    & button {
+      position: absolute;
+      bottom: 0;
+    }
   }
 `;
 
@@ -116,7 +140,9 @@ Card.Footer = ({ children, ...rest }: any) => {
 
 const StyledDivLargeCard = styled.div.attrs((props: any) => ({ ...props }))`
   display: flex;
+  height: 100%;
   flex-wrap: nowrap;
+
   ${(props: any) =>
     props.type === 'small' || props.type === 'icon'
       ? `margin-top: 0; padding: 0;
@@ -130,18 +156,20 @@ const StyledDivLargeCard = styled.div.attrs((props: any) => ({ ...props }))`
         h6 { font-size: 36px;  margin-bottom: 24px; }
         p { font-size: 24px; margin-bottom: 24px; }
         .card-subtitle {
-            ${(props.body || props.button) && 'padding-bottom: 24px;'}
+            ${props.body || props.button}
             font-size: 24px;
         }
         `}
-
   ${(props: any) =>
     props.type === 'icon'
       ? `justify-content: center; margin: 20px 0;`
       : `justify-content: space-between;`}
-
   h6 {
     font-weight: 500;
+  }
+
+  .icon {
+    padding-left: 24px;
   }
 
   .card-subtitle {
@@ -172,9 +200,15 @@ const LargeCard = ({
   centerText,
   ...rest
 }: any) => {
+  const buttonRef = useRef<HTMLDivElement>(null);
+  const [buttonWrapperHeight, setButtonWrapperHeight] = useState(0);
+  useEffect(() => {
+    if (buttonRef.current) setButtonWrapperHeight(buttonRef.current.getBoundingClientRect().height);
+  }, [buttonRef]);
+  if (buttonRef.current) console.log(buttonRef.current.getBoundingClientRect().height);
   return (
     <Card
-      style={{ height: '100%' }}
+      // style={{ flex: 1 }}
       {...rest}
       styleBody={{ padding: '64px 48px 36px 48px', ...rest.styleBody }}
     >
@@ -185,7 +219,7 @@ const LargeCard = ({
         button={button}
       >
         {title || subtitle || body || button ? (
-          <div className={centerText ? 'center' : ''}>
+          <div className={`card-content-wrapper ${centerText ? 'center' : ''}`}>
             {title && <h6>{title}</h6>}
             {subtitle && (
               <div className="card-subtitle">
@@ -202,7 +236,18 @@ const LargeCard = ({
                   : body.map && body.map((st: string, index: number) => <p key={index}>{st}</p>)}
               </div>
             )}
-            {button && <Button {...button} height={button.height || 36} />}
+
+            {button && (
+              <div className="button-wrapper">
+                <Button
+                  ref={buttonRef}
+                  {...button}
+                  height={button.height || 36}
+                  display="absolute"
+                  bottom={0}
+                />
+              </div>
+            )}
           </div>
         ) : null}
         {icon && (

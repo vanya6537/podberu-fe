@@ -1,6 +1,6 @@
 import { useContext, useState } from 'react';
 import styled from 'styled-components';
-import { Row, Col } from 'react-bootstrap';
+import { Col, Row } from 'react-bootstrap';
 import { useParams } from 'react-router-dom';
 import Back from '../../../components/Back';
 import Button from '../../../components/Button';
@@ -31,6 +31,7 @@ const StyledRegisterDeal = styled.div`
       line-height: 1.4;
       position: relative;
       width: 100%;
+
       > div {
         position: absolute;
         top: 10px;
@@ -47,7 +48,7 @@ const StyledRegisterDeal = styled.div`
 
 const RegisterDeal = () => {
   const { user }: any = useContext(AuthContext);
-  const [state, setState] = useState(user.role === ROLES.AGENT ? 'initial' : 'fill-form');
+  const [state, setState] = useState(user && user.role === ROLES.AGENT ? 'initial' : 'fill-form');
   const { bankName } = useParams<{ offerType: string; bankName: string }>();
   const handleSubmit = (e: any) => {
     e.preventDefault();
@@ -67,7 +68,7 @@ const RegisterDeal = () => {
         >
           <h2>
             <Back />
-            Дебетовая карта Альфа-банк
+            Дебетовая карта {bankName}
           </h2>
           <p>
             <div>Вы можете оформить заявку самостоятельно</div>
@@ -88,12 +89,12 @@ const RegisterDeal = () => {
 
       {state === 'fill-form' && (
         <section>
-          <h2>
+          <h2 style={{ fontSize: 36 }}>
             <Back />
-            Дебетовая карта Альфа-банк
+            Дебетовая карта {bankName}
           </h2>
           <p>Заполните персональную информацию</p>
-          <form style={{ width: 260, margin: 'auto' }} onSubmit={handleSubmit}>
+          <form style={{ width: 388, margin: 'auto' }} onSubmit={handleSubmit}>
             <Row>
               <Col>
                 <Input
@@ -187,7 +188,7 @@ const RegisterDeal = () => {
 
             <Row>
               <Col style={{ display: 'flex', justifyContent: 'center', marginTop: 20 }}>
-                <Button type="submit" value="Отправить" size="md" width={100} />
+                <Button type="submit" value="Отправить" size="hlg" width={212} />
               </Col>
             </Row>
           </form>
@@ -209,7 +210,7 @@ const RegisterDeal = () => {
             <div>Её статус вы можете отследить в своём</div>
             <div>личном кабинете.</div>
           </p>
-          <Button value="Вернуться на главную страницу" size="lg" margin={[20, 0]} />
+          <Button value="Вернуться на главную страницу" size="hlg" width={212} margin={[20, 0]} />
         </section>
       )}
     </StyledRegisterDeal>

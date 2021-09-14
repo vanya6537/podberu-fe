@@ -60,6 +60,14 @@ const Signin = () => {
     [stage]
   );
 
+  const handleNoAuthCode = useCallback(async (formData) => {
+    await sendAuthCode(formData).then(({ error, ...rest }: any) => {
+      if (!error) {
+        setStage(1);
+      }
+    });
+  }, []);
+
   return (
     <StyledSignin>
       <section className="secondary">
@@ -76,7 +84,7 @@ const Signin = () => {
           style={{ width: 388, margin: 'auto' }}
           onSubmit={handleSubmit}
           initialDataState={{ phone: '', code: '' }}
-          render={({ hasError, isFetching, handleInputChange }: any) => (
+          render={({ hasError, isFetching, handleInputChange, formData }: any) => (
             <>
               <Row>
                 <Col>
@@ -113,7 +121,9 @@ const Signin = () => {
                     marginBottom: -5,
                   }}
                 >
-                  <a className="link-out">Не пришло смс?</a>
+                  <a className="link-out" onClick={() => handleNoAuthCode(formData)}>
+                    Не пришло смс?
+                  </a>
                 </Col>
               </Row>
 

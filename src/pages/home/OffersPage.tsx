@@ -8,6 +8,7 @@ import Pagination from '../../components/Pagination';
 import { getTitle, ROUTES } from '../../utilities/constants';
 import { getOffersByType } from '../../api';
 import { OfferType } from '../../utilities/models';
+import OffersList from './components/OffersList';
 
 const StyledDebitCards = styled.div`
   section {
@@ -52,19 +53,6 @@ const OffersPage = () => {
     document.title = title;
   }, [title]);
 
-  const registerDeal = useCallback(
-    (bankName) => (e: any) => {
-      // eslint-disable-next-line no-console
-      console.log(e);
-      history.push({
-        pathname: ROUTES.REGISTER.path
-          .replace(':offerType', offerType)
-          .replace(':bankName', bankName),
-      });
-    },
-    []
-  );
-
   useEffect(() => {
     getOffersByType(offerType)
       .then((responseInfo) => {
@@ -85,26 +73,7 @@ const OffersPage = () => {
           <Back />
           {title}
         </h2>
-        <Row>
-          {offers?.map((offer) => (
-            <Col md={4} style={{ marginBottom: 10 }}>
-              <SmallCard
-                title={offer.name}
-                subtitle={offer.header}
-                body={offer.description}
-                icon="typography"
-                button={{
-                  value: 'Подробнее',
-                  size: 'md',
-                  onClick: registerDeal(offer.name),
-                  margin: [24, 0, 0, 0],
-                  padding: [0, 24],
-                  // fontSize: 18,
-                }}
-              />
-            </Col>
-          ))}
-        </Row>
+        <OffersList cards={offers} offerType={offerType} />
         <div
           style={{ display: 'flex', justifyContent: 'center', margin: '10px auto', opacity: 0.8 }}
         >

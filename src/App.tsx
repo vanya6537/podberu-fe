@@ -30,12 +30,12 @@ function App() {
             <Switch>
               <PublicRoute exact component={Home} {...ROUTES.HOME} />
               <PublicRoute exact component={Account} {...ROUTES.ACCOUNT} />
-              <PrivateRoute exact component={RegisterDeal} {...ROUTES.REGISTER} />
+              <PublicRoute component={RegisterDeal} {...ROUTES.REGISTER} />
               <PublicRoute exact component={Landing} {...ROUTES.LANDING} />
               <AuthRoute exact component={Signin} {...ROUTES.SIGN_IN} />
               <PrivateRoute exact component={Signin} {...ROUTES.NOT_FOUND} />
               <PublicRoute component={OffersPage} {...ROUTES.OFFERS_BY_TYPE} />
-              <PublicRoute component={OffersPage} {...ROUTES.ALL_OFFERS} />
+              <PublicRoute exact component={OffersPage} {...ROUTES.ALL_OFFERS} />
 
               {/* <AuthRoute exact component={<>Hello</>} {...ROUTES.SIGN_IN} /> */}
               <Redirect path="*" to={ROUTES.HOME.path} />

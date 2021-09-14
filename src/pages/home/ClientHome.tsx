@@ -9,6 +9,7 @@ import InfoColumn from './components/InfoColumn';
 import { OfferType } from '../../utilities/models';
 import { getOffersTypes } from '../../api';
 import { getIcon } from './AgentHome';
+import OffersTypesRow from './components/OffersTypesRow';
 
 type UsefulInfo = {
   title: string;
@@ -71,17 +72,6 @@ const usefulInfo: UsefulInfo[] = [
 
 const ClientHome = () => {
   const history = useHistory();
-
-  const openOffersByType = useCallback(
-    (offerType) => (e: any) => {
-      // eslint-disable-next-line no-console
-      console.log(e.target);
-      history.push({
-        pathname: ROUTES.OFFERS_BY_TYPE.path.replace(':offerType', offerType),
-      });
-    },
-    []
-  );
 
   const defaultColStyles = { marginBottom: 24 };
   const infoColStyles = { marginBottom: 48 };
@@ -147,20 +137,7 @@ const ClientHome = () => {
 
       <section style={sectionStyle}>
         <h2>Список продуктов</h2>
-        <Row>
-          {offersTypes &&
-            offersTypes.map(({ id, name, header, description, type }) => (
-              <Col key={type} md={4} style={{ marginBottom: 24, padding: '0 12px' }}>
-                <SmallCard
-                  key={`${type}-${id}`}
-                  title={name}
-                  subtitle={[description]}
-                  icon={getIcon(type)}
-                  onClick={openOffersByType(type)}
-                />
-              </Col>
-            ))}
-        </Row>
+        <OffersTypesRow cards={offersTypes} />
       </section>
 
       <section style={{ minHeight: 100, ...sectionStyle }}>
@@ -176,7 +153,7 @@ const ClientHome = () => {
                 { value: 4, label: 'Все предложения' },
               ]}
               data={{
-                0: <CardsRow cardsInfo={creditCardsInfo} />,
+                0: <CardsRow cards={creditCardsInfo} />,
                 1: 'Дебетовые карты',
                 2: 'Кредиты',
                 3: 'Микрозаймы',

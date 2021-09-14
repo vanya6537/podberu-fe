@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 
 export const Form = ({
   render,
@@ -43,6 +43,7 @@ export const Form = ({
         hasError: errorState,
         isFetching: formData.fetching,
         handleInputChange,
+        formData,
       })}
     </form>
   );
