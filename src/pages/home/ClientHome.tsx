@@ -1,5 +1,4 @@
 import { Col, Row } from 'react-bootstrap';
-import { useHistory } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import Tabs from '../../components/Tabs';
 import CardsRow from './components/CardsRow';
@@ -70,7 +69,7 @@ const usefulInfo: UsefulInfo[] = [
 ];
 
 const ClientHome = () => {
-  const history = useHistory();
+  // const history = useHistory();
 
   const defaultColStyles = { marginBottom: 24 };
   const infoColStyles = { marginBottom: 48 };

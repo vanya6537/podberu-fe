@@ -22,14 +22,14 @@ const CardsRow = ({ cards }: CardsRowProps) => {
     () => (cards ? cards.map((info, index) => ({ ...info, ref: refs[index] })) : []),
     [cards, refs]
   );
-  const history = useHistory();
+  // const history = useHistory();
 
   useEffect(() => {
     // eslint-disable-next-line no-restricted-syntax
-    for (const childRef of refs) {
-      console.log(childRef.current.getElementsByClassName('card')[0].clientHeight);
-      // childRef.current.style.height = maxHeight;
-    }
+    // for (const childRef of refs) {
+    //   console.log(childRef.current.getElementsByClassName('card')[0].clientHeight);
+    // childRef.current.style.height = maxHeight;
+    // }
     setMaxHeight(
       refs.reduce(
         (localMaxHeight, ref) =>
@@ -40,7 +40,7 @@ const CardsRow = ({ cards }: CardsRowProps) => {
       )
     );
 
-    console.log(refs);
+    // console.log(refs);
   }, [refs, setMaxHeight]);
 
   return (

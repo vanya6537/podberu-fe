@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { useHistory, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import { useEffect, useMemo, useState } from 'react';
 import Back from '../../components/Back';
 import Pagination from '../../components/Pagination';
@@ -41,7 +41,7 @@ const StyledDebitCards = styled.div`
 // export type OffersPageProps = { cardsType: string | undefined; bankName: string | undefined };
 
 const OffersPage = () => {
-  const history = useHistory();
+  // const history = useHistory();
   const { offerType } = useParams<{ offerType: string }>();
   const title = useMemo(() => getTitle(offerType), [offerType]);
 

@@ -1,6 +1,6 @@
 import { Card as BCard } from 'react-bootstrap';
 import styled from 'styled-components';
-import { useEffect, useRef, useState } from 'react';
+import { useRef } from 'react';
 import Icon from './Icon';
 import Button from './Button';
 import Image from './Image';
@@ -201,11 +201,6 @@ const LargeCard = ({
   ...rest
 }: any) => {
   const buttonRef = useRef<HTMLDivElement>(null);
-  const [buttonWrapperHeight, setButtonWrapperHeight] = useState(0);
-  useEffect(() => {
-    if (buttonRef.current) setButtonWrapperHeight(buttonRef.current.getBoundingClientRect().height);
-  }, [buttonRef]);
-  if (buttonRef.current) console.log(buttonRef.current.getBoundingClientRect().height);
   return (
     <Card
       // style={{ flex: 1 }}
