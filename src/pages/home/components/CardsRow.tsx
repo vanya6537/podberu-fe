@@ -1,6 +1,5 @@
 import { ButtonProps, Col, Row } from 'react-bootstrap';
 import { createRef, useEffect, useMemo, useState } from 'react';
-import { useHistory } from 'react-router-dom';
 import { SmallCard } from '../../../components/Card';
 
 export type DebitCard = {
