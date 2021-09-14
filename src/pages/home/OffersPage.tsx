@@ -1,11 +1,9 @@
 import styled from 'styled-components';
-import { Col, Row } from 'react-bootstrap';
 import { useHistory, useParams } from 'react-router-dom';
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import Back from '../../components/Back';
-import { SmallCard } from '../../components/Card';
 import Pagination from '../../components/Pagination';
-import { getTitle, ROUTES } from '../../utilities/constants';
+import { getTitle } from '../../utilities/constants';
 import { getOffersByType } from '../../api';
 import { OfferType } from '../../utilities/models';
 import OffersList from './components/OffersList';

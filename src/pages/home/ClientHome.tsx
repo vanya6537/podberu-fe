@@ -1,14 +1,13 @@
 import { Col, Row } from 'react-bootstrap';
 import { useHistory } from 'react-router-dom';
-import { useCallback, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import Tabs from '../../components/Tabs';
 import CardsRow from './components/CardsRow';
-import { IconCard, LargeCard, SmallCard } from '../../components/Card';
-import { getDefaultCard, ROUTES } from '../../utilities/constants';
+import { IconCard, LargeCard } from '../../components/Card';
+import { getDefaultCard } from '../../utilities/constants';
 import InfoColumn from './components/InfoColumn';
 import { OfferType } from '../../utilities/models';
 import { getOffersTypes } from '../../api';
-import { getIcon } from './AgentHome';
 import OffersTypesRow from './components/OffersTypesRow';
 
 type UsefulInfo = {
