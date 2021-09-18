@@ -17,7 +17,7 @@ export type ProfileDataType = {
 };
 
 export type ApplicationCardType = { title: string; subtitle: string };
-export type ApplicationType = Record<string, any> & { offer: { type: string; createdAt: string } };
+export type ApplicationType = Record<string, any> & { offer: { type: string }; createdAt: string };
 export type ApplicationResponseDataType = Record<string, ApplicationType[]>;
 
 export type GetProfileResponseType = { data: ProfileDataType; error: string };

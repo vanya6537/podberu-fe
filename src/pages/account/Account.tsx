@@ -55,7 +55,7 @@ const Account = () => {
           const { data } = responseInfo;
           // console.log('account ');
           // console.log({ data });
-          setUserData(data);
+          setUserData({ ...user, ...data });
         })
         // eslint-disable-next-line no-console
         .catch((err) => console.error(err));

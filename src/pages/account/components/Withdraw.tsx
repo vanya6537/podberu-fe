@@ -1,12 +1,13 @@
-import { useContext, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import styled from 'styled-components';
-import { Row, Col } from 'react-bootstrap';
+import { Col, Row } from 'react-bootstrap';
 import Back from '../../../components/Back';
 import Button, { ButtonGroup } from '../../../components/Button';
-import { Input, Checkbox } from '../../../components/inputs';
+import { Checkbox, Input } from '../../../components/inputs';
 import { SmallCard } from '../../../components/Card';
 import Pagination from '../../../components/Pagination';
 import { AuthContext } from '../../../context/AuthContext';
+import { getWithdrawals } from '../../../api';
 
 const StyledWithdraw = styled.div`
   > h2 {
@@ -17,6 +18,7 @@ const StyledWithdraw = styled.div`
     line-height: 1.4;
     position: relative;
     width: 100%;
+
     > div {
       position: absolute;
       top: 6px;
@@ -189,9 +191,16 @@ const WithdrawalForm = ({ back, fundsAvailable }: any) => {
 const Withdraw = () => {
   const [chosenForm, setChosenForm] = useState('');
   const { user } = useContext(AuthContext);
+  const [, setCards] = useState([]);
   const goBack = () => {
     setChosenForm('');
   };
+  useEffect(() => {
+    getWithdrawals().then((responseInfo) => {
+      const { data } = responseInfo;
+      setCards(data);
+    });
+  }, []);
 
   return (
     <StyledWithdraw>
@@ -205,6 +214,7 @@ const Withdraw = () => {
                 icon="hand-white"
                 group="blue"
                 onClick={() => setChosenForm('transfer')}
+                subtitleTextColor="rgba(251, 252, 253, 0.6)"
               />
             </Col>
             <Col md={4} style={{ marginBottom: 10 }}>
@@ -214,6 +224,7 @@ const Withdraw = () => {
                 icon="hand-white"
                 group="blue"
                 onClick={() => setChosenForm('withdrawal')}
+                subtitleTextColor="rgba(251, 252, 253, 0.6)"
               />
             </Col>
             <Col md={4} style={{ marginBottom: 10 }}>
@@ -222,6 +233,8 @@ const Withdraw = () => {
                 subtitle="24.12.2020"
                 icon="hand-white"
                 group="blue"
+                onClick={() => setChosenForm('withdrawal')}
+                subtitleTextColor="rgba(251, 252, 253, 0.6)"
               />
             </Col>
           </Row>
@@ -232,6 +245,8 @@ const Withdraw = () => {
                 subtitle="24.12.2020"
                 icon="hand-white"
                 group="blue"
+                onClick={() => setChosenForm('withdrawal')}
+                subtitleTextColor="rgba(251, 252, 253, 0.6)"
               />
             </Col>
             <Col md={4} style={{ marginBottom: 10 }}>
@@ -240,6 +255,8 @@ const Withdraw = () => {
                 subtitle="24.12.2020"
                 icon="hand-white"
                 group="blue"
+                onClick={() => setChosenForm('withdrawal')}
+                subtitleTextColor="rgba(251, 252, 253, 0.6)"
               />
             </Col>
             <Col md={4} style={{ marginBottom: 10 }}>
@@ -248,6 +265,8 @@ const Withdraw = () => {
                 subtitle="24.12.2020"
                 icon="hand-white"
                 group="blue"
+                onClick={() => setChosenForm('withdrawal')}
+                subtitleTextColor="rgba(251, 252, 253, 0.6)"
               />
             </Col>
           </Row>

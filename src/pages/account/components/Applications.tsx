@@ -33,10 +33,10 @@ const Applications = ({ full = false }) => {
         ).reduce(
           (accum, [applicationType, applicationList]) => [
             ...accum,
-            ...applicationList.map(({ offer }) => ({
+            ...applicationList.map(({ offer, createdAt }) => ({
               // title: CARD_TITLES[applicationType!],
               title: offer.type,
-              subtitle: offer.createdAt,
+              subtitle: createdAt,
             })),
           ],
           [] as ApplicationCardType[]
