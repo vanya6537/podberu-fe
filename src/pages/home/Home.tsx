@@ -3,7 +3,6 @@ import styled from 'styled-components';
 import { AuthContext } from '../../context/AuthContext';
 import AgentHome from './AgentHome';
 import ClientHome from './ClientHome';
-import { ROLES } from '../../utilities/constants';
 
 const StyledHome = styled.div`
   section {
@@ -40,8 +39,8 @@ const Home = () => {
   console.log(user);
   return (
     <StyledHome>
-      {(!isSignedIn || user.is_agent) && <ClientHome />}
-      {isSignedIn && user.role === ROLES.AGENT && <AgentHome />}
+      {(!isSignedIn || !user.isAgent) && <ClientHome />}
+      {isSignedIn && user.isAgent && <AgentHome />}
       {/* <AgentHome /> */}
       {/* <ClientHome /> */}
     </StyledHome>

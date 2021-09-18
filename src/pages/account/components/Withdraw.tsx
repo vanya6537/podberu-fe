@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 import styled from 'styled-components';
 import { Row, Col } from 'react-bootstrap';
 import Back from '../../../components/Back';
@@ -6,6 +6,7 @@ import Button, { ButtonGroup } from '../../../components/Button';
 import { Input, Checkbox } from '../../../components/inputs';
 import { SmallCard } from '../../../components/Card';
 import Pagination from '../../../components/Pagination';
+import { AuthContext } from '../../../context/AuthContext';
 
 const StyledWithdraw = styled.div`
   > h2 {
@@ -29,15 +30,15 @@ const StyledWithdraw = styled.div`
   }
 `;
 
-const TransferForm = ({ back }: any) => {
+const TransferForm = ({ back, fundsAvailable }: any) => {
   return (
     <>
-      <h2 style={{ fontSize: 20 }}>
+      <h2 style={{ fontSize: 36 }}>
         <Back onClick={back} />
-        Ваш баланс: 78 475 ₽
+        Ваш баланс: {fundsAvailable}₽
       </h2>
       <p>На расчётный счёт</p>
-      <form style={{ width: 260, margin: 'auto' }}>
+      <form style={{ minWidth: 388, margin: 'auto' }}>
         <Row>
           <Col>
             <Input
@@ -120,14 +121,11 @@ const TransferForm = ({ back }: any) => {
   );
 };
 
-const WithdrawalForm = ({ back }: any) => {
+const WithdrawalForm = ({ back, fundsAvailable }: any) => {
   return (
     <>
-      <h2 style={{ fontSize: 20 }}>
-        <Back onClick={back} />
-        Ваш баланс: 78 475 ₽
-      </h2>
-      <form style={{ width: 260, margin: 'auto' }}>
+      <h2 style={{ fontSize: 36 }}>Ваш баланс: {fundsAvailable}</h2>
+      <form style={{ width: 388, margin: 'auto' }}>
         <Row>
           <Col>
             <ButtonGroup
@@ -190,7 +188,7 @@ const WithdrawalForm = ({ back }: any) => {
 
 const Withdraw = () => {
   const [chosenForm, setChosenForm] = useState('');
-
+  const { user } = useContext(AuthContext);
   const goBack = () => {
     setChosenForm('');
   };
@@ -270,7 +268,9 @@ const Withdraw = () => {
       )}
 
       {chosenForm === 'transfer' && <TransferForm back={goBack} />}
-      {chosenForm === 'withdrawal' && <WithdrawalForm back={goBack} />}
+      {chosenForm === 'withdrawal' && (
+        <WithdrawalForm back={goBack} fundsAvailable={user?.fundsAvailable || 0} />
+      )}
     </StyledWithdraw>
   );
 };

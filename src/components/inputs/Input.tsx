@@ -85,14 +85,14 @@ const StyledInput = styled.div`
   .MuiFormControlLabel-root {
     align-items: flex-start;
     span {
-      font-size: 12px;
+      font-size: 18px;
     }
   }
   .MuiInputLabel-shrink {
     transform: translate(14px, -14px) scale(0.75) !important;
   }
   .MuiCheckbox-root {
-    padding: 0;
+    padding: 4px 0 0 0;
     margin-right: 8px;
 
     .MuiSvgIcon-root {

@@ -19,6 +19,9 @@ export const API_URL = {
     ROOT: `${BASE_URL}/offers`,
     TYPES: `${BASE_URL}/offers/types`,
   },
+  ORDERS: {
+    ROOT: `${BASE_URL}/orders`,
+  },
 };
 
 export const STORAGE = {
@@ -29,7 +32,8 @@ export const STORAGE = {
 export const ROUTES = {
   HOME: { path: '/', meta: { title: 'Home' } },
   ACCOUNT: { path: '/account', meta: { title: 'Account' } },
-  OFFERS_BY_TYPE: { path: '/offers/:offerType' },
+  OFFERS_BY_TYPE: { path: '/offers/:offerType/:id' },
+  OFFERS_GENERAL: { path: '/offers/:offerType' },
   ALL_OFFERS: { path: '/offers' },
   CREDIT: { path: '/credit', meta: { title: 'Credit' } },
   REGISTER: { path: '/register/:offerType/:bankName', meta: { title: 'Register' } },
@@ -81,15 +85,15 @@ export const getDefaultCard = (onClick: () => void) => ({
 
 export const getTitle = (offerType: string) => {
   switch (offerType) {
-    case 'rko':
+    case ORDER_TYPES.RKO:
       return 'РКО';
-    case 'mfo':
+    case ORDER_TYPES.MFO:
       return 'Микрозаймы';
-    case 'credit':
+    case ORDER_TYPES.CREDIT:
       return 'Кредиты';
-    case 'debit':
+    case ORDER_TYPES.DEBIT:
       return 'Дебетовые карты';
-    case 'business_credit':
+    case ORDER_TYPES.BUSINESS_CREDIT:
       return 'Кредит для бизнеса';
     default:
       return 'Все предложения';

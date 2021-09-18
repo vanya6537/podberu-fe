@@ -44,7 +44,7 @@ const OffersList = ({ cards, offerType }: OffersListProps) => {
           .replace(':bankName', bankName),
       });
     },
-    []
+    [offerType]
   );
 
   return (

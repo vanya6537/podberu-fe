@@ -53,6 +53,8 @@ const Account = () => {
       getUserData()
         .then((responseInfo) => {
           const { data } = responseInfo;
+          // console.log('account ');
+          // console.log({ data });
           setUserData(data);
         })
         // eslint-disable-next-line no-console

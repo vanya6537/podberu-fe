@@ -41,12 +41,12 @@ const StyledTabs = styled.div`
   }
 `;
 
-const Tabs = ({ header, data, activeKey }: any) => {
+const Tabs = ({ header, data, activeKey, onSelect }: any) => {
   return (
     header &&
     data && (
       <StyledTabs>
-        <BTabs defaultActiveKey={activeKey || header[0].value} id="uncontrolled-tab-example">
+        <BTabs defaultActiveKey={activeKey || header[0].value} onSelect={onSelect}>
           {header.map(({ value, label }: any) => (
             <Tab eventKey={value} title={label} key={value}>
               {data[value]}

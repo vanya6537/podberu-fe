@@ -50,6 +50,7 @@ const Signin = () => {
       if (stage === 0) {
         await sendAuthCode(formData).then(({ error, ...rest }: any) => {
           if (!error) {
+            // console.log(rest.code);
             setStage(1);
           }
         });

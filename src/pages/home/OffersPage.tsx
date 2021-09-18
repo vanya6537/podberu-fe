@@ -42,7 +42,9 @@ const StyledDebitCards = styled.div`
 
 const OffersPage = () => {
   // const history = useHistory();
-  const { offerType } = useParams<{ offerType: string }>();
+  // const { offerType, id } = useParams<{ offerType: string; id: string }>();
+  const { offerType } = useParams<{ offerType: string; id: string }>();
+
   const title = useMemo(() => getTitle(offerType), [offerType]);
 
   const [offers, setOffers] = useState<OfferType[] | null>(null);

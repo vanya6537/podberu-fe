@@ -10,7 +10,7 @@ export const Form = ({
   onSubmit: (data: any) => Promise<any>;
   [key: string]: any;
 }) => {
-  const [formData, setFormData] = useState(initialDataState);
+  const [formData, setFormData] = useState<Record<string, any>>(initialDataState);
   const [errors, setErrors]: [{ [key: string]: string | null }, any] = useState({});
   const [errorState, setErrorState]: [boolean, any] = useState(initialErrorState);
 

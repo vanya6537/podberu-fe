@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useContext, useMemo, useState } from 'react';
 import styled from 'styled-components';
 import { Col, Row } from 'react-bootstrap';
 import Back from '../../../components/Back';
@@ -6,6 +6,11 @@ import Button from '../../../components/Button';
 import { Input } from '../../../components/inputs';
 import { SmallCard } from '../../../components/Card';
 import { formatDate } from '../../../utilities/helper';
+import { AuthContextType } from '../../../utilities/models';
+import { AuthContext } from '../../../context/AuthContext';
+
+const getIsVerifiedLabel = (flag: any): string => (flag ? 'Подтверждён' : 'Не подтверждён');
+const getIconName = (flag: any): string => (flag ? 'docblue' : 'doc');
 
 const StyledDocuments = styled.div`
   > h2 {
@@ -175,15 +180,19 @@ const TINCertificate = ({ back }: any) => {
 
 const Documents = () => {
   const [chosenForm, setChosenForm] = useState('');
+  const { user }: AuthContextType = useContext<AuthContextType>(AuthContext);
 
   const goBack = () => {
     setChosenForm('');
   };
-  // const statusMap = {
-  //   passport: false,
-  //   snils: false,
-  //   inn: false,
-  // };
+  const documents = useMemo(
+    () => ({
+      passport: !!(user?.passport && user?.passport?.isVerified),
+      snils: !!(user?.snils && user?.snils?.isVerified),
+      inn: !!(user?.inn && user?.inn?.isVerified),
+    }),
+    [user]
+  );
 
   return (
     <StyledDocuments>
@@ -192,8 +201,8 @@ const Documents = () => {
           <Col md={4} style={{ marginBottom: 10 }}>
             <SmallCard
               title="Паспорт"
-              subtitle="Подтверждён"
-              icon="docblue"
+              subtitle={getIsVerifiedLabel(documents.passport)}
+              icon={getIconName(documents.passport)}
               button={{
                 value: 'Изменить',
                 size: 'md',
@@ -206,8 +215,8 @@ const Documents = () => {
           <Col md={4} style={{ marginBottom: 10 }}>
             <SmallCard
               title="СНИЛС"
-              subtitle="Не подтверждён"
-              icon="docblue"
+              subtitle={getIsVerifiedLabel(documents.snils)}
+              icon={getIconName(documents.snils)}
               button={{
                 value: 'Добавить',
                 size: 'md',
@@ -220,8 +229,8 @@ const Documents = () => {
           <Col md={4} style={{ marginBottom: 10 }}>
             <SmallCard
               title="Свидетельство ИНН"
-              subtitle="Не подтверждён"
-              icon="docblue"
+              subtitle={getIsVerifiedLabel(documents.inn)}
+              icon={getIconName(documents.inn)}
               button={{
                 value: 'Добавить',
                 size: 'md',

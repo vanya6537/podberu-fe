@@ -11,6 +11,7 @@ import { AuthContextType, ProfileDataType } from '../utilities/models';
 const initialState: AuthContextType = {
   user: null,
   isSignedIn: null,
+  isAgent: false,
   getUserData: getProfile,
   signOut: () => {},
   setUserData: () => {},
@@ -52,7 +53,7 @@ const AuthProvider = ({ children }: any) => {
   const completeSignIn = ({ phone, code }: { phone: string; code: string }) => {
     // TODO:: Update
     const userData: any = {
-      phone,
+      phone: phone.replace('+', '').trim(),
       role: code.toLowerCase() === ROLES.AGENT ? ROLES.AGENT : ROLES.CLIENT,
     };
 
@@ -61,10 +62,10 @@ const AuthProvider = ({ children }: any) => {
       null,
       { params: { phone: phone.replace('+', '').trim(), code } },
       true
-    ).then(({ error }: any) => {
+    ).then(({ error, isAgent }: any) => {
       if (!error) {
-        setUserData({ ...user, ...userData, isSignedIn: true });
-        localSet({ key: STORAGE.USER, data: user });
+        setUserData({ ...user, ...userData, isAgent: !!isAgent, isSignedIn: true });
+        localSet({ key: STORAGE.USER, data: { ...user, ...userData } });
         localSet({ key: STORAGE.TOKEN, data: !!code });
         history.push(ROUTES.HOME.path);
       }
@@ -80,6 +81,7 @@ const AuthProvider = ({ children }: any) => {
         signOut,
         setUserData,
         user,
+        ...user,
       }}
     >
       {children}

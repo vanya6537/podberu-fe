@@ -35,6 +35,7 @@ function App() {
               <AuthRoute exact component={Signin} {...ROUTES.SIGN_IN} />
               <PrivateRoute exact component={Signin} {...ROUTES.NOT_FOUND} />
               <PublicRoute component={OffersPage} {...ROUTES.OFFERS_BY_TYPE} />
+              <PublicRoute component={OffersPage} {...ROUTES.OFFERS_GENERAL} />
               <PublicRoute exact component={OffersPage} {...ROUTES.ALL_OFFERS} />
 
               {/* <AuthRoute exact component={<>Hello</>} {...ROUTES.SIGN_IN} /> */}

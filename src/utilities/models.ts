@@ -4,15 +4,16 @@ export type ProfileDataType = {
   id: number; // 16
   fullName: null | string;
   phone: string;
-  email: null;
-  photo: null;
-  passport: null;
-  snils: null;
-  inn: null;
+  email: null | string;
+  photo: null | string;
+  passport: null | any;
+  snils: null | any;
+  inn: null | any;
   isAgent: boolean;
   referred_agent: null;
   token?: string;
   isSignedIn?: boolean | null;
+  fundsAvailable: number;
 };
 
 export type ApplicationCardType = { title: string; subtitle: string };

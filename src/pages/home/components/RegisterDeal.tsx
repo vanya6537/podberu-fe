@@ -1,13 +1,11 @@
-import { useContext, useState } from 'react';
+import { useCallback, useContext, useState } from 'react';
 import styled from 'styled-components';
-import { Col, Row } from 'react-bootstrap';
 import { useParams } from 'react-router-dom';
 import Back from '../../../components/Back';
 import Button from '../../../components/Button';
-import { Input } from '../../../components/inputs';
-import { ROLES } from '../../../utilities/constants';
-import { formatDate } from '../../../utilities/helper';
 import { AuthContext } from '../../../context/AuthContext';
+import { sendDealInfo } from '../../../api';
+import { FormDebit } from './FormDebit';
 
 const StyledRegisterDeal = styled.div`
   section {
@@ -48,12 +46,20 @@ const StyledRegisterDeal = styled.div`
 
 const RegisterDeal = () => {
   const { user }: any = useContext(AuthContext);
-  const [state, setState] = useState(user && user.role === ROLES.AGENT ? 'initial' : 'fill-form');
-  const { bankName } = useParams<{ offerType: string; bankName: string }>();
-  const handleSubmit = (e: any) => {
-    e.preventDefault();
-    setState('complete');
-  };
+  const [state, setState] = useState(user && user.isAgent ? 'initial' : 'fill-form');
+  const { offerType, bankName } = useParams<{ offerType: string; bankName: string }>();
+  // const handleSubmit = (e: any) => {
+  //   e.preventDefault();
+  //   setState('complete');
+  // };
+  const handleSubmit = useCallback((formData) => {
+    return sendDealInfo(offerType, formData).then(({ error, ...rest }: any) => {
+      if (!error) {
+        // console.log(rest.code);
+        setState('complete');
+      }
+    });
+  }, []);
 
   return (
     <StyledRegisterDeal>
@@ -94,104 +100,7 @@ const RegisterDeal = () => {
             Дебетовая карта {bankName}
           </h2>
           <p>Заполните персональную информацию</p>
-          <form style={{ width: 388, margin: 'auto' }} onSubmit={handleSubmit}>
-            <Row>
-              <Col>
-                <Input
-                  label="ФИО"
-                  placeholder="ФИО"
-                  name="full_name"
-                  type="text"
-                  validate="required"
-                />
-              </Col>
-            </Row>
-            <Row>
-              <Col>
-                <Input
-                  label="Дата рождение"
-                  placeholder="Дата рождение"
-                  name="date_of_birth"
-                  type="date"
-                  defaultValue={formatDate(Date.now(), 'YYYY-MM-DD')}
-                  validate="required"
-                />
-              </Col>
-            </Row>
-            <Row>
-              <Col>
-                <Input
-                  label="Серия и номер паспорта"
-                  placeholder="Серия и номер паспорта"
-                  name="passport_number"
-                  type="text"
-                  validate="required"
-                />
-              </Col>
-            </Row>
-            <Row>
-              <Col>
-                <Input
-                  label="Кем выдан"
-                  placeholder="Кем выдан"
-                  name="issued_by"
-                  type="text"
-                  validate="required"
-                />
-              </Col>
-            </Row>
-            <Row>
-              <Col>
-                <Input
-                  label="Дата выдачи"
-                  placeholder="Дата выдачи"
-                  name="date_of_issue"
-                  type="date"
-                  defaultValue={formatDate(Date.now(), 'YYYY-MM-DD')}
-                  validate="required"
-                />
-              </Col>
-            </Row>
-            <Row>
-              <Col>
-                <Input
-                  label="Адрес регистрации"
-                  placeholder="Адрес регистрации"
-                  name="address"
-                  type="text"
-                  validate="required"
-                />
-              </Col>
-            </Row>
-            <Row>
-              <Col>
-                <Input
-                  label="Мобильный телефон"
-                  placeholder="Мобильный телефон"
-                  name="phone_number"
-                  type="number"
-                  validate="required|phone_number"
-                />
-              </Col>
-            </Row>
-            <Row>
-              <Col>
-                <Input
-                  label="E-mail"
-                  placeholder="E-mail"
-                  name="email"
-                  type="email"
-                  validate="required"
-                />
-              </Col>
-            </Row>
-
-            <Row>
-              <Col style={{ display: 'flex', justifyContent: 'center', marginTop: 20 }}>
-                <Button type="submit" value="Отправить" size="hlg" width={212} />
-              </Col>
-            </Row>
-          </form>
+          <FormDebit handleSubmit={handleSubmit} />
         </section>
       )}
 
