@@ -1,7 +1,7 @@
-import { createContext, useEffect, useState } from 'react';
+import { createContext, useCallback, useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import { post } from '../utilities/helper';
-import { API_URL, ROLES, ROUTES, STORAGE } from '../utilities/constants';
+import { API_URL, ROUTES, STORAGE } from '../utilities/constants';
 import { localGet, localRemove, localSet } from '../utilities/forage';
 import { getProfile } from '../api';
 import { AuthContextType, ProfileDataType } from '../utilities/models';
@@ -10,7 +10,7 @@ import { AuthContextType, ProfileDataType } from '../utilities/models';
 
 const initialState: AuthContextType = {
   user: null,
-  isSignedIn: null,
+  isSignedIn: true, // not to reload page on every refresh
   isAgent: false,
   getUserData: getProfile,
   signOut: () => {},
@@ -24,19 +24,20 @@ const AuthProvider = ({ children }: any) => {
 
   const history = useHistory();
 
-  useEffect(
-    (async () => {
-      const token: string = (await localGet(STORAGE.TOKEN)) as string;
-      const userData: ProfileDataType = (await localGet(STORAGE.USER)) as ProfileDataType;
-
-      setUserData({ ...user, ...userData, token, isSignedIn: !!token });
-    }) as any,
-    []
-  );
+  useEffect(() => {
+    localGet<ProfileDataType>(STORAGE.USER).then((userData) => {
+      const mergedUserData = {
+        ...user,
+        ...userData,
+        isSignedIn: !!user?.phone || !!userData?.phone,
+      };
+      setUserData(mergedUserData);
+    });
+  }, []);
 
   function signOut() {
     localRemove(Object.values(STORAGE));
-    setUserData({ ...initialState, isSignedIn: false });
+    setUserData(null);
     history.push(ROUTES.SIGN_IN.path);
   }
 
@@ -50,13 +51,7 @@ const AuthProvider = ({ children }: any) => {
     );
   };
 
-  const completeSignIn = ({ phone, code }: { phone: string; code: string }) => {
-    // TODO:: Update
-    const userData: any = {
-      phone: phone.replace('+', '').trim(),
-      role: code.toLowerCase() === ROLES.AGENT ? ROLES.AGENT : ROLES.CLIENT,
-    };
-
+  const completeSignIn = useCallback(({ phone, code }: { phone: string; code: string }) => {
     return post(
       API_URL.LOGIN,
       null,
@@ -64,13 +59,19 @@ const AuthProvider = ({ children }: any) => {
       true
     ).then(({ error, isAgent }: any) => {
       if (!error) {
-        setUserData({ ...user, ...userData, isAgent: !!isAgent, isSignedIn: true });
-        localSet({ key: STORAGE.USER, data: { ...user, ...userData } });
-        localSet({ key: STORAGE.TOKEN, data: !!code });
+        const userData = {
+          ...(user || {}),
+          phone: phone.replace('+', '').trim(),
+          isAgent: !!isAgent,
+          isSignedIn: true,
+        };
+        setUserData(userData);
+        localSet({ key: STORAGE.USER, data: userData });
+        // localSet({ key: STORAGE.TOKEN, data: !!code });
         history.push(ROUTES.HOME.path);
       }
     });
-  };
+  }, []);
 
   return (
     <AuthContext.Provider

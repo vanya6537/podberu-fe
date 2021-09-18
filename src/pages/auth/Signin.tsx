@@ -1,9 +1,11 @@
-import { useCallback, useContext, useState } from 'react';
+import { useCallback, useContext, useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { Col, Container, Row } from 'react-bootstrap';
+import { useHistory } from 'react-router-dom';
 import { Form, Input, PasswordInput } from '../../components/inputs';
 import Button from '../../components/Button';
 import { AuthContext } from '../../context/AuthContext';
+import { ROUTES } from '../../utilities/constants';
 
 const StyledSignin = styled.div`
   section {
@@ -42,8 +44,13 @@ const StyledSignin = styled.div`
 `;
 
 const Signin = () => {
-  const { sendAuthCode, completeSignIn }: any = useContext(AuthContext);
+  const { isSignedIn, sendAuthCode, completeSignIn }: any = useContext(AuthContext);
   const [stage, setStage] = useState(0);
+  const history = useHistory();
+
+  useEffect(() => {
+    if (isSignedIn) history.push(ROUTES.ACCOUNT.path);
+  }, [isSignedIn]);
 
   const handleSubmit = useCallback(
     async (formData) => {

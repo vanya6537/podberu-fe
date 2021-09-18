@@ -8,7 +8,6 @@ import Footer from './Footer';
 const StyledContainer = styled.div`
   display: flex;
   flex-direction: row;
-  flex-wrap: no-wrap;
   height: 100%;
   background: #f2f2f2;
   position: relative;
@@ -20,6 +19,7 @@ const StyledContainer = styled.div`
     height: 100vh;
     overflow-x: hidden;
     overflow-y: auto;
+    background: #eff1f5;
 
     > section {
       padding: 0;

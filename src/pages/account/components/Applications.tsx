@@ -1,11 +1,13 @@
 import styled from 'styled-components';
 import { Col, Row } from 'react-bootstrap';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
+import { useHistory } from 'react-router-dom';
 import Button from '../../../components/Button';
 import { SmallCard } from '../../../components/Card';
 import Pagination from '../../../components/Pagination';
 import { getApplications } from '../../../api';
 import { ApplicationCardType, ApplicationResponseDataType } from '../../../utilities/models';
+import { ROUTES } from '../../../utilities/constants';
 
 const StyledApplications = styled.div``;
 const defaultSubtitleTextColor = 'rgba(251, 252, 253, 0.6)';
@@ -20,6 +22,10 @@ const defaultSubtitleTextColor = 'rgba(251, 252, 253, 0.6)';
 
 const Applications = ({ full = false }) => {
   const [applications, setApplications] = useState<ApplicationCardType[]>([]);
+  const history = useHistory();
+  const newOrderCallback = useCallback(() => {
+    history.push(ROUTES.HOME.path);
+  }, []);
 
   useEffect(() => {
     getApplications()
@@ -141,7 +147,13 @@ const Applications = ({ full = false }) => {
         }}
       >
         <Pagination />
-        <Button value="Новая заявка" size="hlg" margin={[48, 0, 0, 0]} padding={[0, 44]} />
+        <Button
+          value="Новая заявка"
+          size="hlg"
+          margin={[48, 0, 0, 0]}
+          padding={[0, 44]}
+          onClick={newOrderCallback}
+        />
       </div>
     </StyledApplications>
   );

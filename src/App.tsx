@@ -29,7 +29,7 @@ function App() {
           <AuthProvider>
             <Switch>
               <PublicRoute exact component={Home} {...ROUTES.HOME} />
-              <PublicRoute exact component={Account} {...ROUTES.ACCOUNT} />
+              <PrivateRoute exact component={Account} {...ROUTES.ACCOUNT} />
               <PublicRoute component={RegisterDeal} {...ROUTES.REGISTER} />
               <PublicRoute exact component={Landing} {...ROUTES.LANDING} />
               <AuthRoute exact component={Signin} {...ROUTES.SIGN_IN} />

@@ -22,11 +22,11 @@ const StyledRegisterDeal = styled.div`
     }
 
     > h2 {
-      font-size: 28px;
-      font-weight: 500;
+      font-weight: 600;
+      font-size: 48px;
+      line-height: 58px;
       margin-bottom: 34px;
       text-align: center;
-      line-height: 1.4;
       position: relative;
       width: 100%;
 
@@ -37,8 +37,9 @@ const StyledRegisterDeal = styled.div`
     }
 
     > p {
-      font-size: 20px;
-      margin-bottom: 30px;
+      font-size: 36px;
+      line-height: 43px;
+      margin-bottom: 48px;
       text-align: center;
     }
   }
@@ -52,6 +53,10 @@ const RegisterDeal = () => {
   //   e.preventDefault();
   //   setState('complete');
   // };
+  const copyCurrentUrl = useCallback(() => navigator.clipboard.writeText(window.location.href), []);
+  const setStateCallback = useCallback((someStateName: string) => () => setState(someStateName), [
+    setState,
+  ]);
   const handleSubmit = useCallback((formData) => {
     return sendDealInfo(offerType, formData).then(({ error, ...rest }: any) => {
       if (!error) {
@@ -82,13 +87,19 @@ const RegisterDeal = () => {
             <div>для клиента.</div>
           </p>
 
-          <Button value="Скопировать ссылку" size="lg" group="outline" margin={[0, 0, 20, 0]} />
-          <span style={{ marginBottom: -8 }}>Или</span>
+          <Button
+            value="Скопировать ссылку"
+            size="lg"
+            group="outline"
+            margin={[0, 0, 24, 0]}
+            onClick={copyCurrentUrl}
+          />
+          <span style={{ fontSize: 18 }}>Или</span>
           <Button
             value="Заполнить данные о клиенте"
             size="lg"
-            margin={[30, 0, 20, 0]}
-            onClick={() => setState('fill-form')}
+            margin={[24, 0, 20, 0]}
+            onClick={setStateCallback('fill-form')}
           />
         </section>
       )}

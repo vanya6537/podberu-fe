@@ -1,6 +1,6 @@
 import axios from 'axios';
 import moment from 'moment';
-import { isInt, isEmail, isMobilePhone, isStrongPassword } from 'validator';
+import { isEmail, isInt, isMobilePhone, isStrongPassword } from 'validator';
 import Toast from 'react-hot-toast';
 import applyCaseMiddleware from 'axios-case-converter';
 
@@ -46,7 +46,7 @@ export const getFontsStr = (typography: any) => {
 
 export const getFontsLink = (fontsStr: string) => {
   const href = `//fonts.googleapis.com/css?family=${fontsStr}`;
-  const link = `<link href="${href}" rel="stylesheet" type="text/css" />`;
+  const link = `<link href='${href}' rel='stylesheet' type='text/css' />`;
   return { link, href };
 };
 
@@ -193,4 +193,21 @@ export const validator = (value: string, validate = '') => {
     .filter((e) => !!e);
 
   return errors;
+};
+
+export const getIcon = (typeName: string) => {
+  switch (typeName) {
+    case 'rko':
+      return 'credits';
+    case 'mfo':
+      return 'microzaim';
+    case 'credit':
+      return 'cards';
+    case 'debit':
+      return 'cards';
+    case 'business_credit':
+      return 'finance';
+    default:
+      return 'cards';
+  }
 };

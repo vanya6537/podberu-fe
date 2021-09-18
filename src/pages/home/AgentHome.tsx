@@ -1,11 +1,10 @@
-import { Col, Row } from 'react-bootstrap';
 import { useHistory } from 'react-router-dom';
 import { useCallback, useContext, useEffect, useState } from 'react';
-import { SmallCard } from '../../components/Card';
 import { ROUTES } from '../../utilities/constants';
 import { OfferType } from '../../utilities/models';
 import { getOffersTypes } from '../../api';
 import { AuthContext } from '../../context/AuthContext';
+import OffersTypesRow from './components/OffersTypesRow';
 
 // const perChunk = 3;
 // const chunkArray = (arr: OfferType[]): OfferType[][] =>
@@ -22,23 +21,6 @@ import { AuthContext } from '../../context/AuthContext';
 //     return resultArray;
 //   }, [] as OfferType[][]);
 
-export const getIcon = (typeName: string) => {
-  switch (typeName) {
-    case 'rko':
-      return 'credits';
-    case 'mfo':
-      return 'microzaim';
-    case 'credit':
-      return 'cards';
-    case 'debit':
-      return 'cards';
-    case 'business_credit':
-      return 'finance';
-    default:
-      return 'cards';
-  }
-};
-
 const AgentHome = () => {
   const history = useHistory();
   const { user }: any = useContext(AuthContext);
@@ -50,10 +32,13 @@ const AgentHome = () => {
   const [offers, setOffers] = useState<OfferType[] | null>(null);
 
   const openOffersByType = useCallback(
-    (offerType) => () => {
+    (offerType, id = null) => (e: any) => {
+      // eslint-disable-next-line no-console
       // console.log(e.target);
       history.push({
-        pathname: ROUTES.OFFERS_BY_TYPE.path.replace(':offerType', offerType),
+        pathname: ROUTES.OFFERS_BY_TYPE.path
+          .replace(':offerType', offerType)
+          .replace(':id', id || ''),
       });
     },
     []
@@ -79,20 +64,7 @@ const AgentHome = () => {
       <p style={{ marginBottom: 48, fontSize: 36, textAlign: 'center' }}>
         Выберите продукт, чтобы предложить клиенту
       </p>
-
-      <Row>
-        {offers &&
-          offers.map(({ id, name, header, description, type }) => (
-            <Col key={type} md={4} style={{ marginBottom: 24, padding: '0 12px' }}>
-              <SmallCard
-                title={name}
-                subtitle={[description]}
-                icon={getIcon(type)}
-                onClick={openOffersByType(type)}
-              />
-            </Col>
-          ))}
-      </Row>
+      <OffersTypesRow onClick={openOffersByType} cards={offers} />
     </section>
   );
 };

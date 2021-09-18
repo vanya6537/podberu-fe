@@ -1,7 +1,7 @@
 import styled from 'styled-components';
-import { Col, Row } from 'react-bootstrap';
-import Button from '../../../components/Button';
-import { Input } from '../../../components/inputs';
+import { useCallback } from 'react';
+import { saveProfileInfo } from '../../../api';
+import { SettingsForm } from './SettingsForm';
 
 const StyledSettings = styled.div`
   > h2 {
@@ -20,51 +20,31 @@ const StyledSettings = styled.div`
   }
 `;
 
-const Settings = () => {
+const Settings = ({ user }: any) => {
+  const handleSubmit = useCallback((formData) => {
+    return saveProfileInfo(formData).then((data: any) => {
+      if (!data.error) {
+        console.log(data);
+        console.log('save completed');
+
+        // setState('complete');
+      } else {
+        console.log('save completed with error');
+        console.log(data);
+      }
+    });
+  }, []);
+
+  const initialData = {
+    full_name: user?.fullName || '',
+    email: user?.email || '',
+    photo: user?.photo || '',
+  };
+
   return (
     <StyledSettings>
       <h2 style={{ fontSize: 36 }}>Изменить персональную информацию</h2>
-      <form style={{ width: 388, margin: 'auto' }}>
-        <Row>
-          <Col>
-            <Input label="ФИО" placeholder="ФИО" name="full_name" type="text" validate="required" />
-          </Col>
-        </Row>
-        <Row>
-          <Col>
-            <Input
-              label="Мобильный телефон"
-              placeholder="Мобильный телефон"
-              defaultValue="+7 000 00-00"
-              validate="required|phone_number"
-              type="phone"
-              name="phone_number"
-            />
-          </Col>
-        </Row>
-        <Row>
-          <Col>
-            <Input
-              label="E-mail"
-              placeholder="E-mail"
-              validate="required|email"
-              type="email"
-              name="email"
-            />
-          </Col>
-        </Row>
-        <Row>
-          <Col>
-            <Input label="Изменить фото" placeholder="Изменить фото" type="file" name="avatar" />
-          </Col>
-        </Row>
-
-        <Row>
-          <Col style={{ display: 'flex', justifyContent: 'center', marginTop: 24 }}>
-            <Button type="submit" value="Сохранить" size="hlg" />
-          </Col>
-        </Row>
-      </form>
+      <SettingsForm handleSubmit={handleSubmit} initialData={initialData} />
     </StyledSettings>
   );
 };

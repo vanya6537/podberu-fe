@@ -165,7 +165,7 @@ const Input = ({
         onBlur={validate ? handleOnChange : null}
         error={errors && errors.length > 0}
         helperText={errors && errors.length > 0 ? errors[0] : ''}
-        required={!!validate}
+        required={(validate || '').indexOf('required') !== -1}
         {...rest}
       />
       {hint && <StyledHint>{hint}</StyledHint>}

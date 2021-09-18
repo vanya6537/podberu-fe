@@ -1,13 +1,13 @@
 import { Col, Row } from 'react-bootstrap';
 import { createRef, useEffect, useMemo, useState } from 'react';
 import { SmallCard } from '../../../components/Card';
-import { getIcon } from '../AgentHome';
+import { getIcon } from '../../../utilities/helper';
 import { OfferType } from '../../../utilities/models';
 
 export type CardsRowProps = { cards: OfferType[] | null; onClick: any };
 
 const OffersTypesRow = ({ onClick, cards }: CardsRowProps) => {
-  const [maxHeight, setMaxHeight] = useState(0);
+  const [minCardHeight, setMinCardHeight] = useState(0);
   const refs = useMemo(
     () => (cards ? new Array(cards.length).fill(null).map(() => createRef<HTMLDivElement>()) : []),
     [cards]
@@ -18,11 +18,12 @@ const OffersTypesRow = ({ onClick, cards }: CardsRowProps) => {
   );
 
   useEffect(() => {
-    const cardHeights = refs.map((ref) =>
-      ref.current ? ref.current.getElementsByClassName('card')[0].clientHeight - 28 : 0
-    );
-    setMaxHeight(Math.max(...cardHeights));
-  }, [refs, setMaxHeight]);
+    const cardHeights = refs.map((ref) => {
+      console.log(ref.current && ref.current.getElementsByClassName('card')[0].clientHeight);
+      return ref.current ? ref.current.getElementsByClassName('card')[0].clientHeight - 28 : 0;
+    });
+    setMinCardHeight(Math.max(...cardHeights));
+  }, [refs, setMinCardHeight]);
 
   return (
     <Row>
@@ -40,7 +41,7 @@ const OffersTypesRow = ({ onClick, cards }: CardsRowProps) => {
               subtitle={[description]}
               icon={getIcon(type)}
               onClick={onClick(type, id)}
-              styleBody={{ minHeight: maxHeight }}
+              styleBody={{ minHeight: minCardHeight }}
             />
           </Col>
         ))}

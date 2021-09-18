@@ -43,19 +43,19 @@ const Account = () => {
   const {
     user,
     getUserData,
-    profileData,
     setUserData,
     signOut,
+    isSignedIn,
   }: AuthContextType = useContext<AuthContextType>(AuthContext);
 
   useEffect(() => {
-    if (getUserData)
+    if (isSignedIn && getUserData)
       getUserData()
         .then((responseInfo) => {
           const { data } = responseInfo;
-          // console.log('account ');
-          // console.log({ data });
-          setUserData({ ...user, ...data });
+          console.log('account ');
+          console.log({ data });
+          setUserData({ ...(user || {}), ...data });
         })
         // eslint-disable-next-line no-console
         .catch((err) => console.error(err));
@@ -96,11 +96,11 @@ const Account = () => {
     <StyledAccount>
       <section>
         <h2 style={{ fontSize: 48, fontWeight: 700, textAlign: 'center', marginBottom: 48 }}>
-          Добро пожаловать в личный кабинет!
+          Добро пожаловать в личный кабинет! {user?.isAgent ? 'Агент' : 'Клиент'}
         </h2>
         <Row>
           <Col style={{ display: 'flex', justifyContent: 'center' }}>
-            <ProfileCard profile={profileData} signOut={signOut} />
+            <ProfileCard profile={user} signOut={signOut} />
           </Col>
         </Row>
 

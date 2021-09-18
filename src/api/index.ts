@@ -2,28 +2,23 @@ import { get, post } from '../utilities/helper';
 import { API_URL, DEFAULTS, ORDER_TYPES } from '../utilities/constants';
 import { GetProfileResponseType } from '../utilities/models';
 
-export const getWithdrawals = () => get(API_URL.AGENT.WITHDRAW, {}, true);
+export const getWithdrawals = () => get(API_URL.AGENT.WITHDRAW, {});
 
-export const getApplications = () => get(API_URL.CLIENT.APPLICATIONS, {}, true);
+export const getApplications = () => get(API_URL.CLIENT.APPLICATIONS, {});
 
-export const getDocuments = () => get(API_URL.CLIENT.APPLICATIONS, {}, true);
+export const getDocuments = () => get(API_URL.CLIENT.APPLICATIONS, {});
 
 export const getProfile = (): Promise<GetProfileResponseType> =>
-  get(API_URL.CLIENT.PERSONAL_INFO, {}, true);
+  get(API_URL.CLIENT.PERSONAL_INFO, {});
 
 export const getOffersTypes = (page: number = DEFAULTS.page, size: number = DEFAULTS.pageSize) =>
-  get(API_URL.OFFERS.TYPES, { params: { page: page || 1, size: size || 12 } }, true);
+  get(API_URL.OFFERS.TYPES, { params: { page: page || 1, size: size || 12 } });
 
 export const getOffersByType = (
   offerType: string,
   page: number = DEFAULTS.page,
   size: number = DEFAULTS.pageSize
-) =>
-  get(
-    API_URL.OFFERS.ROOT,
-    { params: { type: offerType, page: page || 1, size: size || 12 } },
-    true
-  );
+) => get(API_URL.OFFERS.ROOT, { params: { type: offerType, page: page || 1, size: size || 12 } });
 
 export const sendDealInfo = (offerType: string, offerData: any) => {
   let id;
@@ -55,6 +50,22 @@ export const sendDealInfo = (offerType: string, offerData: any) => {
   }
   formData.append('offer', id);
   return post(`${API_URL.ORDERS.ROOT}/${offerType}`, formData, {
+    data: formData,
+    headers: { 'Content-Type': 'multipart/form-data' },
+  });
+};
+
+export const saveProfileInfo = (profileData: any) => {
+  const formData = new FormData();
+
+  // eslint-disable-next-line no-restricted-syntax
+  for (const [key, val] of Object.entries(profileData)) {
+    // @ts-ignore
+    if (val) formData.append(key, val);
+  }
+
+  console.log(formData);
+  return post(`${API_URL.CLIENT.PERSONAL_INFO}`, formData, {
     data: formData,
     headers: { 'Content-Type': 'multipart/form-data' },
   });

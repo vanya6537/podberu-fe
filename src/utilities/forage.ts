@@ -1,4 +1,4 @@
-import * as localForage from 'localforage';
+import localForage from 'localforage';
 import { isEmpty } from './helper';
 
 const settings: { forage: any } = {
@@ -39,8 +39,8 @@ const createNewStore = (config: {
  * @param key
  * @returns {Promise<any>}
  */
-const localGet = (key: string) => {
-  return localForage.getItem(key);
+const localGet = <Type>(key: string): Promise<Type | null> => {
+  return localForage.getItem<Type>(key);
 };
 
 /**

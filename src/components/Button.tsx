@@ -60,10 +60,12 @@ const StyledButton = styled.div`
   }
 
   button.outline {
-    background: #ffffff;
+    background: transparent;
     border: 1px solid #2758a2;
-    color: #2758a2;
+    letter-spacing: -0.24px;
 
+    /* main/black */
+    color: #272e3e;
     &.green {
       border: 1px solid #07c47b;
       color: #07c47b;

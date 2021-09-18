@@ -1,8 +1,9 @@
-import { useContext } from 'react';
-import { BrowserRouter as Router, Route, Switch, Redirect } from 'react-router-dom';
+import { useContext, useEffect } from 'react';
+import { BrowserRouter as Router, Route, Switch, Redirect, useHistory } from 'react-router-dom';
 import Container from '../layout/Container';
 import { ROUTES } from '../utilities/constants';
 import { AuthContext } from '../context/AuthContext';
+import { AuthContextType } from '../utilities/models';
 
 const PublicRoute = ({
   component: Component,
@@ -61,7 +62,12 @@ const PrivateRoute = ({
   meta,
   ...rest
 }: any) => {
-  const { isSignedIn }: any = useContext(AuthContext);
+  const { isSignedIn } = useContext<AuthContextType>(AuthContext);
+  const history = useHistory();
+  useEffect(() => {
+    console.log(isSignedIn, 'router');
+    if (!isSignedIn) history.push(ROUTES.SIGN_IN.path);
+  }, [isSignedIn]);
 
   return (
     <Route
