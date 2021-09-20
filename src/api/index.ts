@@ -2,6 +2,8 @@ import { get, post } from '../utilities/helper';
 import { API_URL, DEFAULTS, ORDER_TYPES } from '../utilities/constants';
 import { GetProfileResponseType } from '../utilities/models';
 
+export const logout = () => get(API_URL.LOGOUT, {});
+
 export const getWithdrawals = () => get(API_URL.AGENT.WITHDRAW, {});
 
 export const getApplications = () => get(API_URL.CLIENT.APPLICATIONS, {});

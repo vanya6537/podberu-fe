@@ -4,6 +4,7 @@ import Icon from '../../../components/Icon';
 import Image from '../../../components/Image';
 import ProfileImage from '../../../assets/images/avatar.png';
 import { ProfileDataType } from '../../../utilities/models';
+import { BASE_URL } from '../../../utilities/constants';
 
 const StyledProfileCard = styled.div`
   width: 100% !important;
@@ -55,8 +56,8 @@ const StyledProfileCard = styled.div`
   }
 `;
 
-type ProfileCardProps = { profile: ProfileDataType | null; signOut: () => void };
-const ProfileCard = ({ profile, signOut }: ProfileCardProps) => {
+type ProfileCardProps = { profile: ProfileDataType | null; logout: () => void };
+const ProfileCard = ({ profile, logout }: ProfileCardProps) => {
   return (
     <Card
       style={{
@@ -73,7 +74,7 @@ const ProfileCard = ({ profile, signOut }: ProfileCardProps) => {
         <div>
           <div className="detail">
             <Image
-              src={profile?.photo || ProfileImage}
+              src={profile?.photo ? `${BASE_URL}${profile.photo}` : ProfileImage}
               name={profile?.fullName || 'Укажите своё имя'}
               round
               width={120}
@@ -85,13 +86,7 @@ const ProfileCard = ({ profile, signOut }: ProfileCardProps) => {
             </div>
           </div>
           <div>
-            <Icon
-              name="logout"
-              title="Logout"
-              width={44}
-              margin={[0, 0, 0, 20]}
-              onClick={signOut}
-            />
+            <Icon name="logout" title="Logout" width={44} margin={[0, 0, 0, 20]} onClick={logout} />
           </div>
         </div>
         {/* {user.role === ROLES.CLIENT && ( */}

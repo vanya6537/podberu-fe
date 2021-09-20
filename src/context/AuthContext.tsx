@@ -3,7 +3,7 @@ import { useHistory } from 'react-router-dom';
 import { post } from '../utilities/helper';
 import { API_URL, ROUTES, STORAGE } from '../utilities/constants';
 import { localGet, localRemove, localSet } from '../utilities/forage';
-import { getProfile } from '../api';
+import { getProfile, logout as logoutApiCall } from '../api';
 import { AuthContextType, ProfileDataType } from '../utilities/models';
 
 // isSignedIn: null, used to check know that signed in state has not been checked yet
@@ -13,8 +13,8 @@ const initialState: AuthContextType = {
   isSignedIn: true, // not to reload page on every refresh
   isAgent: false,
   getUserData: getProfile,
-  signOut: () => {},
   setUserData: () => {},
+  logout: logoutApiCall,
 };
 
 const AuthContext = createContext<AuthContextType>(initialState);
@@ -35,11 +35,12 @@ const AuthProvider = ({ children }: any) => {
     });
   }, []);
 
-  function signOut() {
+  const logoutCallback = useCallback(() => {
     localRemove(Object.values(STORAGE));
     setUserData(null);
     history.push(ROUTES.SIGN_IN.path);
-  }
+    logoutApiCall().then(() => history.push(ROUTES.SIGN_IN.path));
+  }, [logoutApiCall]);
 
   const sendAuthCode = ({ phone }: { phone: string }) => {
     // TODO:: Update
@@ -79,10 +80,10 @@ const AuthProvider = ({ children }: any) => {
         ...initialState,
         sendAuthCode,
         completeSignIn,
-        signOut,
         setUserData,
         user,
         ...user,
+        logout: logoutCallback,
       }}
     >
       {children}

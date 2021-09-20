@@ -25,7 +25,7 @@ export type GetProfileResponseType = { data: ProfileDataType; error: string };
 export type AuthContextType = Record<string, any> & {
   user: ProfileDataType | null;
   isSignedIn: boolean | null;
-  signOut: () => void;
+  logout: any;
   getUserData: () => Promise<any>;
   setUserData: Dispatch<SetStateAction<any>>;
 };

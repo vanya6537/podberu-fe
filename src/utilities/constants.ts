@@ -1,26 +1,29 @@
-export const BASE_URL = 'https://api.podberu.su/api/v1';
+export const BASE_URL = 'https://api.podberu.su';
+export const BASE_API_URL = `${BASE_URL}/api/v1`;
 
 export const API_URL = {
-  LOGIN: `${BASE_URL}/auth/login`,
-  SEND_CODE: `${BASE_URL}/auth/send_code`,
+  LOGIN: `${BASE_API_URL}/auth/login`,
+  LOGOUT: `${BASE_API_URL}/auth/logout`,
+
+  SEND_CODE: `${BASE_API_URL}/auth/send_code`,
   CLIENT: {
-    APPLICATIONS: `${BASE_URL}/clients/orders`,
-    INN: `${BASE_URL}/clients/inn`,
-    PASSPORT: `${BASE_URL}/clients/passport`,
-    PERSONAL_INFO: `${BASE_URL}/clients/personal-info`,
-    SNILS: `${BASE_URL}/clients/snils`,
+    APPLICATIONS: `${BASE_API_URL}/clients/orders`,
+    INN: `${BASE_API_URL}/clients/inn`,
+    PASSPORT: `${BASE_API_URL}/clients/passport`,
+    PERSONAL_INFO: `${BASE_API_URL}/clients/personal-info`,
+    SNILS: `${BASE_API_URL}/clients/snils`,
   },
   AGENT: {
-    APPLICATIONS: `${BASE_URL}/agents/order`,
-    WITHDRAW: `${BASE_URL}/agents/withdrawals`,
-    REFERRAL: `${BASE_URL}/agents/referral`,
+    APPLICATIONS: `${BASE_API_URL}/agents/order`,
+    WITHDRAW: `${BASE_API_URL}/agents/withdrawals`,
+    REFERRAL: `${BASE_API_URL}/agents/referral`,
   },
   OFFERS: {
-    ROOT: `${BASE_URL}/offers`,
-    TYPES: `${BASE_URL}/offers/types`,
+    ROOT: `${BASE_API_URL}/offers`,
+    TYPES: `${BASE_API_URL}/offers/types`,
   },
   ORDERS: {
-    ROOT: `${BASE_URL}/orders`,
+    ROOT: `${BASE_API_URL}/orders`,
   },
 };
 

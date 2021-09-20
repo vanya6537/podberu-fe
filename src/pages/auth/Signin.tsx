@@ -47,6 +47,27 @@ const Signin = () => {
   const { isSignedIn, sendAuthCode, completeSignIn }: any = useContext(AuthContext);
   const [stage, setStage] = useState(0);
   const history = useHistory();
+  const phoneMask = [
+    '+',
+    'd',
+    ' ',
+    '(',
+    'd',
+    'd',
+    'd',
+    ')',
+    ' ',
+    'd',
+    'd',
+    ' ',
+    ' ',
+    'd',
+    'd',
+    ' ',
+    'd',
+    'd',
+  ];
+  const [phone, setPhone] = useState<string>('');
 
   useEffect(() => {
     if (isSignedIn) history.push(ROUTES.ACCOUNT.path);

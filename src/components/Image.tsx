@@ -9,8 +9,8 @@ const StyledImage = styled.div.attrs((props: any) => ({ ...props }))`
   overflow: hidden;
 
   img {
-    margin: auto;
-    height: inherit;
+    margin: 0 auto 0 auto;
+    //height: inherit;
     width: inherit;
   }
 `;

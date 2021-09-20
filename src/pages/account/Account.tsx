@@ -44,7 +44,7 @@ const Account = () => {
     user,
     getUserData,
     setUserData,
-    signOut,
+    logout,
     isSignedIn,
   }: AuthContextType = useContext<AuthContextType>(AuthContext);
 
@@ -100,7 +100,7 @@ const Account = () => {
         </h2>
         <Row>
           <Col style={{ display: 'flex', justifyContent: 'center' }}>
-            <ProfileCard profile={user} signOut={signOut} />
+            <ProfileCard profile={user} logout={logout} />
           </Col>
         </Row>
 
