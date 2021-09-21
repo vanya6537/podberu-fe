@@ -7,21 +7,29 @@ export const Form = ({
   initialErrorState = true,
   ...rest
 }: {
-  onSubmit: (data: any) => Promise<any>;
+  onSubmit: (data: any) => Promise<any> | undefined;
   [key: string]: any;
 }) => {
   const [formData, setFormData] = useState<Record<string, any>>(initialDataState);
   const [errors, setErrors]: [{ [key: string]: string | null }, any] = useState({});
   const [errorState, setErrorState]: [boolean, any] = useState(initialErrorState);
 
-  const updateFormData = (data: any) => {
-    setFormData((d: any) => ({ ...d, ...data }));
-  };
+  const updateFormData = useCallback(
+    (data: any) => {
+      setFormData((d: any) => ({ ...d, ...data }));
+    },
+    [setFormData]
+  );
 
-  const handleInputChange = useCallback(({ name, value, error = undefined }: any) => {
-    updateFormData({ [name]: value });
-    setErrors((e: { [key: string]: string | null }) => ({ ...e, [name]: error }));
-  }, []);
+  const handleInputChange = useCallback(
+    ({ name, value, error = undefined }: any) => {
+      updateFormData({ [name]: value });
+      console.log('update form data?');
+      console.log({ name, value });
+      setErrors((e: { [key: string]: string | null }) => ({ ...e, [name]: error }));
+    },
+    [updateFormData, setErrors]
+  );
 
   useEffect(() => {
     if (Object.keys(errors).length > 0) {
@@ -29,13 +37,17 @@ export const Form = ({
     }
   }, [errors]);
 
-  const handleSubmit = (e: any) => {
-    e.preventDefault();
-    if (onSubmit) {
-      updateFormData({ fetching: true });
-      onSubmit(formData).finally(() => updateFormData({ fetching: false }));
-    }
-  };
+  const handleSubmit = useCallback(
+    (e: any) => {
+      e.preventDefault();
+      if (onSubmit) {
+        updateFormData({ fetching: true });
+        // @ts-ignore
+        onSubmit(formData).finally(() => updateFormData({ fetching: false }));
+      }
+    },
+    [onSubmit, formData, updateFormData]
+  );
 
   return (
     <form {...rest} onSubmit={handleSubmit}>

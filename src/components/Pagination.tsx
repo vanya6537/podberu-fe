@@ -1,6 +1,8 @@
 import styled from 'styled-components';
 import { Pagination as BPagination } from 'react-bootstrap';
 
+import { usePagination } from '@material-ui/lab/Pagination';
+
 const StyledPagination = styled.div`
   .page-item {
     margin: 0 5px;
@@ -30,10 +32,28 @@ const StyledPagination = styled.div`
   }
 `;
 
-const Pagination = () => {
+const Pagination = ({ maxPage }: any) => {
+  const { items } = usePagination({ count: maxPage });
   return (
     <StyledPagination>
       <BPagination>
+        {items.map(({ page, type, selected, ...item }, index) => {
+          let children = null;
+
+          if (type === 'start-ellipsis' || type === 'end-ellipsis') {
+            children = <BPagination.Ellipsis />;
+          } else if (type === 'page') {
+            children = <BPagination.Item>{page}</BPagination.Item>;
+          } else {
+            children = (
+              <button type="button" {...item}>
+                {type}
+              </button>
+            );
+          }
+
+          return children;
+        })}
         {/* <BPagination.First />
         <BPagination.Prev /> */}
         <BPagination.Item active>{1}</BPagination.Item>

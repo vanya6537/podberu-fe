@@ -1,11 +1,9 @@
-import { useCallback, useContext, useEffect, useState } from 'react';
+import { useCallback, useContext, useState } from 'react';
 import styled from 'styled-components';
 import { Col, Container, Row } from 'react-bootstrap';
-import { useHistory } from 'react-router-dom';
-import { Form, Input, PasswordInput } from '../../components/inputs';
+import { Form, PasswordInput, PhoneInput } from '../../components/inputs';
 import Button from '../../components/Button';
 import { AuthContext } from '../../context/AuthContext';
-import { ROUTES } from '../../utilities/constants';
 
 const StyledSignin = styled.div`
   section {
@@ -44,34 +42,8 @@ const StyledSignin = styled.div`
 `;
 
 const Signin = () => {
-  const { isSignedIn, sendAuthCode, completeSignIn }: any = useContext(AuthContext);
+  const { sendAuthCode, completeSignIn }: any = useContext(AuthContext);
   const [stage, setStage] = useState(0);
-  const history = useHistory();
-  const phoneMask = [
-    '+',
-    'd',
-    ' ',
-    '(',
-    'd',
-    'd',
-    'd',
-    ')',
-    ' ',
-    'd',
-    'd',
-    ' ',
-    ' ',
-    'd',
-    'd',
-    ' ',
-    'd',
-    'd',
-  ];
-  const [phone, setPhone] = useState<string>('');
-
-  useEffect(() => {
-    if (isSignedIn) history.push(ROUTES.ACCOUNT.path);
-  }, [isSignedIn]);
 
   const handleSubmit = useCallback(
     async (formData) => {
@@ -117,7 +89,7 @@ const Signin = () => {
             <>
               <Row>
                 <Col>
-                  <Input
+                  <PhoneInput
                     // label="Мобильный телефон"
                     placeholder="+7"
                     name="phone"
@@ -128,33 +100,35 @@ const Signin = () => {
                 </Col>
               </Row>
               {stage === 1 && (
-                <Row>
-                  <Col>
-                    <PasswordInput
-                      // label="Код из смс"
-                      placeholder="Код из смс"
-                      validate="required|number(Code should be 4 digits)"
-                      name="code"
-                      pattern=".{4}"
-                      onChange={handleInputChange}
-                    />
-                  </Col>
-                </Row>
+                <>
+                  <Row>
+                    <Col>
+                      <PasswordInput
+                        // label="Код из смс"
+                        placeholder="Код из смс"
+                        validate="required|number(Code should be 4 digits)"
+                        name="code"
+                        pattern=".{4}"
+                        onChange={handleInputChange}
+                      />
+                    </Col>
+                  </Row>
+                  <Row>
+                    <Col
+                      style={{
+                        display: 'flex',
+                        justifyContent: 'flex-end',
+                        marginTop: -10,
+                        marginBottom: -5,
+                      }}
+                    >
+                      <a className="link-out" onClick={() => handleNoAuthCode(formData)}>
+                        Не пришло смс?
+                      </a>
+                    </Col>
+                  </Row>
+                </>
               )}
-              <Row>
-                <Col
-                  style={{
-                    display: 'flex',
-                    justifyContent: 'flex-end',
-                    marginTop: -10,
-                    marginBottom: -5,
-                  }}
-                >
-                  <a className="link-out" onClick={() => handleNoAuthCode(formData)}>
-                    Не пришло смс?
-                  </a>
-                </Col>
-              </Row>
 
               <Row>
                 <Col style={{ display: 'flex', justifyContent: 'center', marginTop: 36 }}>

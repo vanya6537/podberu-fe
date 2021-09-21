@@ -62,12 +62,11 @@ const PrivateRoute = ({
   meta,
   ...rest
 }: any) => {
-  const { isSignedIn } = useContext<AuthContextType>(AuthContext);
+  const { isSignedIn, user } = useContext<AuthContextType>(AuthContext);
   const history = useHistory();
   useEffect(() => {
-    console.log(isSignedIn, 'router');
-    if (!isSignedIn) history.push(ROUTES.SIGN_IN.path);
-  }, [isSignedIn]);
+    if (!isSignedIn && user) history.push(ROUTES.SIGN_IN.path);
+  }, [isSignedIn, user]);
 
   return (
     <Route

@@ -1,11 +1,12 @@
-import { useCallback, useContext, useState } from 'react';
+import { useCallback, useContext, useMemo, useState } from 'react';
 import styled from 'styled-components';
 import { useParams } from 'react-router-dom';
 import Back from '../../../components/Back';
 import Button from '../../../components/Button';
 import { AuthContext } from '../../../context/AuthContext';
 import { sendDealInfo } from '../../../api';
-import { FormDebit } from './FormDebit';
+import { GenericRegisterForm } from './GenericRegisterForm';
+import { getRegisterFormTitle, ORDER_TYPE } from '../../../utilities/constants';
 
 const StyledRegisterDeal = styled.div`
   section {
@@ -54,9 +55,11 @@ const RegisterDeal = () => {
   //   setState('complete');
   // };
   const copyCurrentUrl = useCallback(() => navigator.clipboard.writeText(window.location.href), []);
-  const setStateCallback = useCallback((someStateName: string) => () => setState(someStateName), [
-    setState,
-  ]);
+  const setStateCallback = useCallback(
+    (someStateName: string) => setState(someStateName),
+    [setState]
+  );
+
   const handleSubmit = useCallback((formData) => {
     return sendDealInfo(offerType, formData).then(({ error, ...rest }: any) => {
       if (!error) {
@@ -65,6 +68,10 @@ const RegisterDeal = () => {
       }
     });
   }, []);
+  const title = useMemo(
+    () => `${getRegisterFormTitle(offerType)} ${bankName}`,
+    [offerType, bankName]
+  );
 
   return (
     <StyledRegisterDeal>
@@ -79,7 +86,7 @@ const RegisterDeal = () => {
         >
           <h2>
             <Back />
-            Дебетовая карта {bankName}
+            {title}
           </h2>
           <p>
             <div>Вы можете оформить заявку самостоятельно</div>
@@ -89,7 +96,7 @@ const RegisterDeal = () => {
 
           <Button
             value="Скопировать ссылку"
-            size="lg"
+            size="hlg"
             group="outline"
             margin={[0, 0, 24, 0]}
             onClick={copyCurrentUrl}
@@ -97,7 +104,7 @@ const RegisterDeal = () => {
           <span style={{ fontSize: 18 }}>Или</span>
           <Button
             value="Заполнить данные о клиенте"
-            size="lg"
+            size="hlg"
             margin={[24, 0, 20, 0]}
             onClick={setStateCallback('fill-form')}
           />
@@ -108,10 +115,10 @@ const RegisterDeal = () => {
         <section>
           <h2 style={{ fontSize: 36 }}>
             <Back />
-            Дебетовая карта {bankName}
+            {title}
           </h2>
           <p>Заполните персональную информацию</p>
-          <FormDebit handleSubmit={handleSubmit} />
+          <GenericRegisterForm handleSubmit={handleSubmit} formType={offerType as ORDER_TYPE} />
         </section>
       )}
 
@@ -124,7 +131,7 @@ const RegisterDeal = () => {
             justifyContent: 'center',
           }}
         >
-          <h2>Дебетовая карта ${bankName}</h2>
+          <h2>{title}</h2>
           <p>
             <div>Заявка успешно отправлена!</div>
             <div>Её статус вы можете отследить в своём</div>

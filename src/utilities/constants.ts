@@ -1,4 +1,6 @@
 export const BASE_URL = 'https://api.podberu.su';
+export const getStaticContentUrl = (path: string = '') => `${BASE_URL}${path}`;
+
 export const BASE_API_URL = `${BASE_URL}/api/v1`;
 
 export const API_URL = {
@@ -7,6 +9,7 @@ export const API_URL = {
 
   SEND_CODE: `${BASE_API_URL}/auth/send_code`,
   CLIENT: {
+    ROOT: `${BASE_API_URL}/clients/`,
     APPLICATIONS: `${BASE_API_URL}/clients/orders`,
     INN: `${BASE_API_URL}/clients/inn`,
     PASSPORT: `${BASE_API_URL}/clients/passport`,
@@ -57,7 +60,8 @@ export const DEFAULTS = {
   page: 1,
 };
 
-export const ORDER_TYPES = {
+export type ORDER_TYPE = 'rko' | 'mfo' | 'credit' | 'debit' | 'business_credit';
+export const ORDER_TYPES: Record<string, ORDER_TYPE> = {
   RKO: 'rko',
   MFO: 'mfo',
   CREDIT: 'credit',
@@ -96,6 +100,23 @@ export const getTitle = (offerType: string) => {
       return 'Кредиты';
     case ORDER_TYPES.DEBIT:
       return 'Дебетовые карты';
+    case ORDER_TYPES.BUSINESS_CREDIT:
+      return 'Кредит для бизнеса';
+    default:
+      return 'Все предложения';
+  }
+};
+
+export const getRegisterFormTitle = (offerType: string) => {
+  switch (offerType) {
+    case ORDER_TYPES.RKO:
+      return 'РКО';
+    case ORDER_TYPES.MFO:
+      return 'Микрозайм';
+    case ORDER_TYPES.CREDIT:
+      return 'Кредит';
+    case ORDER_TYPES.DEBIT:
+      return 'Дебетовая карта';
     case ORDER_TYPES.BUSINESS_CREDIT:
       return 'Кредит для бизнеса';
     default:

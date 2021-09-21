@@ -34,17 +34,23 @@ const StyledFooter = styled.footer<{ type: number }>`
 
   .contact {
     display: flex;
-    align-items: center;
+    //align-items: center;
+    color: #fbfcfd;
 
-    > span {
+    align-items: flex-end;
+    letter-spacing: -0.24px;
+    white-space: pre;
+
+    > a {
       font-size: 18px;
       margin: 0 12px;
+      color: #fbfcfd;
     }
-    > span:first-child {
+    > a:first-child {
       margin-left: 0;
     }
 
-    > span:last-child {
+    > a:last-child {
       margin-right: 0;
     }
     .phone {
@@ -98,12 +104,12 @@ const Footer = ({ type = 1 }) => {
             </Col>
           </Row>
           <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: 15 }}>
-            <div className="contact" style={{ alignItems: 'flex-end' }}>
-              <span>О нас</span>
-              <span>Контакты</span>
-              <span>Партнёрская программа</span>
-              <span>Пользовательское соглашение</span>
-              <span>Политика конфиденциальности</span>
+            <div className="contact">
+              <a href="#">О нас</a>
+              <a href="#">Контакты</a>
+              <a href="#">Партнёрская программа</a>
+              <a href="#">Пользовательское соглашение</a>
+              <a href="#">Политика конфиденциальности</a>
             </div>
             <div style={{ display: 'flex', justifyContent: 'flex-end', flexDirection: 'row' }}>
               <Image src={AppStoreImage} name="App Store" height={48} margin={[0, 24, 0, 0]} />

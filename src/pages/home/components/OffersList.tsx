@@ -3,7 +3,7 @@ import { createRef, useCallback, useEffect, useMemo, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import { SmallCard } from '../../../components/Card';
 import { OfferType } from '../../../utilities/models';
-import { ROUTES } from '../../../utilities/constants';
+import { getStaticContentUrl, ROUTES } from '../../../utilities/constants';
 
 export type DebitCard = {
   title: string;
@@ -50,13 +50,14 @@ const OffersList = ({ cards, offerType }: OffersListProps) => {
   return (
     <Row style={{ flexWrap: 'wrap' }}>
       {data &&
-        data.map(({ name, header, description, ref }) => (
+        data.map(({ name, header, description, ref, thumbnail }) => (
           <Col md={4} style={{ marginBottom: 10 }} ref={ref}>
             <SmallCard
               title={name}
               subtitle={header}
               body={description}
-              icon="typography"
+              // icon="typography"
+              src={getStaticContentUrl(thumbnail)}
               button={{
                 value: 'Подробнее',
                 size: 'md',

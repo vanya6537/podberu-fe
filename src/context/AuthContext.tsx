@@ -32,47 +32,50 @@ const AuthProvider = ({ children }: any) => {
         isSignedIn: !!user?.phone || !!userData?.phone,
       };
       setUserData(mergedUserData);
+      console.log({ mergedUserData });
     });
   }, []);
 
   const logoutCallback = useCallback(() => {
-    localRemove(Object.values(STORAGE));
-    setUserData(null);
-    history.push(ROUTES.SIGN_IN.path);
-    logoutApiCall().then(() => history.push(ROUTES.SIGN_IN.path));
+    logoutApiCall()
+      .then(() => {})
+      .finally(() => {
+        localRemove(Object.values(STORAGE));
+        setUserData(null);
+        history.push(ROUTES.SIGN_IN.path);
+      });
   }, [logoutApiCall]);
 
   const sendAuthCode = ({ phone }: { phone: string }) => {
+    const phoneVal = phone.replace(/\D/g, '').slice(0, 11);
+
     // TODO:: Update
-    return post(
-      API_URL.SEND_CODE,
-      null,
-      { params: { phone: phone.replace('+', '').trim() } },
-      true
-    );
+    return post(API_URL.SEND_CODE, null, { params: { phone: phoneVal } }, true);
   };
 
-  const completeSignIn = useCallback(({ phone, code }: { phone: string; code: string }) => {
-    return post(
-      API_URL.LOGIN,
-      null,
-      { params: { phone: phone.replace('+', '').trim(), code } },
-      true
-    ).then(({ error, isAgent }: any) => {
-      if (!error) {
-        const userData = {
-          ...(user || {}),
-          phone: phone.replace('+', '').trim(),
-          isAgent: !!isAgent,
-          isSignedIn: true,
-        };
-        setUserData(userData);
-        localSet({ key: STORAGE.USER, data: userData });
-        // localSet({ key: STORAGE.TOKEN, data: !!code });
-        history.push(ROUTES.HOME.path);
-      }
-    });
-  }, []);
+  const completeSignIn = useCallback(
+    ({ phone, code }: { phone: string; code: string }) => {
+      const phoneVal = phone.replace(/\D/g, '').slice(0, 11);
+
+      return post(API_URL.LOGIN, null, { params: { phone: phoneVal, code } }, true).then(
+        ({ error, isAgent }: any) => {
+          if (!error) {
+            const userData = {
+              ...(user || {}),
+              phone: phoneVal,
+              isAgent: !!isAgent,
+              isSignedIn: true,
+            };
+            setUserData(userData);
+            localSet({ key: STORAGE.USER, data: userData });
+            // localSet({ key: STORAGE.TOKEN, data: !!code });
+            history.push(ROUTES.HOME.path);
+          }
+        }
+      );
+    },
+    [user]
+  );
 
   return (
     <AuthContext.Provider

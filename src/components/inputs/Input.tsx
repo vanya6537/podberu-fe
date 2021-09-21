@@ -18,12 +18,14 @@ import {
   RadioButtonChecked,
   RadioButtonUnchecked,
 } from '@material-ui/icons';
+import ReactInputMask from 'react-input-mask';
 import { validator } from '../../utilities/helper';
 
-const StyledInput = styled.div`
+export const StyledInput = styled.div`
   padding-bottom: 24px;
   font-weight: 300;
   font-size: 24px;
+  cursor: pointer;
 
   label {
     font-size: 24px;
@@ -44,6 +46,7 @@ const StyledInput = styled.div`
 
   input,
   select {
+    cursor: pointer;
     height: 64px;
     font-size: 24px;
     line-height: 64px;
@@ -101,6 +104,7 @@ const StyledInput = styled.div`
   }
   input[type='file'] {
     visibility: hidden;
+    cursor: pointer;
   }
 `;
 
@@ -130,8 +134,8 @@ const Input = ({
   const [value, setValue]: any = useState(defaultValue);
   const [errors, setErrors]: any = useState(null);
 
-  const handleOnChange = (e: SyntheticEvent) => {
-    const { name: n, value: v }: any = e.target;
+  const handleOnChange = (e: any) => {
+    const { name: n, value: v, files }: any = e.target;
     setValue(v);
 
     let errs;
@@ -141,7 +145,12 @@ const Input = ({
     }
 
     if (onChange) {
-      onChange({ name: n, value: v, error: errs });
+      console.log({ files });
+      if (files && files.length) {
+        onChange({ name: n, value: files, error: errs });
+      } else {
+        onChange({ name: n, value: v, error: errs });
+      }
     }
   };
 
@@ -367,4 +376,16 @@ const Checkbox = ({
   );
 };
 
-export { Input, PasswordInput, Select, Checkbox };
+const PhoneInput = ({ value, onChange, ...rest }: any) => (
+  <ReactInputMask
+    mask="+7\ (999) 999 99 99"
+    maskChar=" "
+    value={value}
+    onChange={onChange}
+    {...rest}
+  >
+    {(inputProps: any) => <Input {...inputProps} type="tel" value={value} onChange={onChange} />}
+  </ReactInputMask>
+);
+
+export { PhoneInput, Input, PasswordInput, Select, Checkbox };

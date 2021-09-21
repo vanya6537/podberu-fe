@@ -39,8 +39,8 @@ const Home = () => {
   console.log(user);
   return (
     <StyledHome>
-      {(!isSignedIn || !user.isAgent) && <ClientHome />}
-      {isSignedIn && user.isAgent && <AgentHome />}
+      {(!isSignedIn || !user?.isAgent) && <ClientHome />}
+      {isSignedIn && user?.isAgent && <AgentHome />}
       {/* <AgentHome /> */}
       {/* <ClientHome /> */}
     </StyledHome>

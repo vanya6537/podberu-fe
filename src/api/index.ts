@@ -72,3 +72,25 @@ export const saveProfileInfo = (profileData: any) => {
     headers: { 'Content-Type': 'multipart/form-data' },
   });
 };
+
+export const saveDocument = (documentType: string, formDataPrimary: any) => {
+  const formData = new FormData();
+  const { number, scan } = formDataPrimary;
+  formData.append('number', number);
+  try {
+    formData.append('scan', scan[0]);
+  } catch {
+    formData.append('scan', scan);
+  }
+  console.log(`saveDoc ${documentType}`);
+  console.log({ formDataPrimary, formData });
+  return post(
+    `${API_URL.CLIENT.ROOT}${documentType}`,
+    formData,
+    {
+      data: formData,
+      headers: { 'Content-Type': 'multipart/form-data' },
+    },
+    true
+  );
+};

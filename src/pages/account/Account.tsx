@@ -40,16 +40,11 @@ const StyledAccount = styled.div`
 `;
 
 const Account = () => {
-  const {
-    user,
-    getUserData,
-    setUserData,
-    logout,
-    isSignedIn,
-  }: AuthContextType = useContext<AuthContextType>(AuthContext);
+  const { user, getUserData, setUserData, logout, isSignedIn }: AuthContextType =
+    useContext<AuthContextType>(AuthContext);
 
   useEffect(() => {
-    if (isSignedIn && getUserData)
+    if (getUserData)
       getUserData()
         .then((responseInfo) => {
           const { data } = responseInfo;
@@ -72,7 +67,7 @@ const Account = () => {
         ],
         data: {
           0: <Applications />,
-          1: <Documents />,
+          1: <Documents getUserData={getUserData} user={user} setUserData={setUserData} />,
           2: <Withdraw />,
           3: <Settings />,
         },
@@ -86,7 +81,7 @@ const Account = () => {
       ],
       data: {
         0: <Applications />,
-        1: <Documents />,
+        1: <Documents getUserData={getUserData} user={user} setUserData={setUserData} />,
         3: <Settings />,
       },
     };
@@ -96,7 +91,7 @@ const Account = () => {
     <StyledAccount>
       <section>
         <h2 style={{ fontSize: 48, fontWeight: 700, textAlign: 'center', marginBottom: 48 }}>
-          Добро пожаловать в личный кабинет! {user?.isAgent ? 'Агент' : 'Клиент'}
+          Добро пожаловать в личный кабинет!
         </h2>
         <Row>
           <Col style={{ display: 'flex', justifyContent: 'center' }}>

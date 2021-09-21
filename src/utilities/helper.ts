@@ -179,7 +179,12 @@ export const validator = (value: string, validate = '') => {
       }
 
       if (opt.startsWith('phone_number')) {
-        return isMobilePhone(value) ? null : custom_message || 'Phone number invalid';
+        const telVal = value.replace(/\D/g, '');
+        return telVal.length === 11
+          ? isMobilePhone(telVal)
+            ? null
+            : custom_message || 'Phone number invalid'
+          : null;
       }
 
       if (opt.startsWith('password')) {

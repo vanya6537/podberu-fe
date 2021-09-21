@@ -1,10 +1,11 @@
 import styled from 'styled-components';
+import { useMemo } from 'react';
 import Card from '../../../components/Card';
 import Icon from '../../../components/Icon';
 import Image from '../../../components/Image';
 import ProfileImage from '../../../assets/images/avatar.png';
 import { ProfileDataType } from '../../../utilities/models';
-import { BASE_URL } from '../../../utilities/constants';
+import { getStaticContentUrl } from '../../../utilities/constants';
 
 const StyledProfileCard = styled.div`
   width: 100% !important;
@@ -58,6 +59,10 @@ const StyledProfileCard = styled.div`
 
 type ProfileCardProps = { profile: ProfileDataType | null; logout: () => void };
 const ProfileCard = ({ profile, logout }: ProfileCardProps) => {
+  const photoUrl = useMemo(
+    () => (profile?.photo ? getStaticContentUrl(profile.photo) : ProfileImage),
+    [profile?.photo]
+  );
   return (
     <Card
       style={{
@@ -74,14 +79,14 @@ const ProfileCard = ({ profile, logout }: ProfileCardProps) => {
         <div>
           <div className="detail">
             <Image
-              src={profile?.photo ? `${BASE_URL}${profile.photo}` : ProfileImage}
-              name={profile?.fullName || 'Укажите своё имя'}
+              src={photoUrl}
+              name={profile?.fullName || 'Укажите своё имя.'}
               round
               width={120}
               height={120}
             />
             <div className="name">
-              <h6>{profile?.fullName || 'Укажите своё имя'}.</h6>
+              <h6>{profile?.fullName || 'Укажите своё имя.'}</h6>
               <span>Аккаунт подтверждён</span>
             </div>
           </div>

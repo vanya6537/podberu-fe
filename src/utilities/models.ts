@@ -26,7 +26,7 @@ export type AuthContextType = Record<string, any> & {
   user: ProfileDataType | null;
   isSignedIn: boolean | null;
   logout: any;
-  getUserData: () => Promise<any>;
+  getUserData: () => Promise<GetProfileResponseType>;
   setUserData: Dispatch<SetStateAction<any>>;
 };
 
@@ -36,6 +36,7 @@ export type OfferType = {
   header: string;
   description: string;
   type: string;
+  thumbnail: string;
 };
 
 export type OfferDescriptionType = {

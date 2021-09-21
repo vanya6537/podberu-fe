@@ -1,13 +1,13 @@
-import { useContext, useMemo, useState } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 import styled from 'styled-components';
 import { Col, Row } from 'react-bootstrap';
 import Back from '../../../components/Back';
 import Button from '../../../components/Button';
-import { Input } from '../../../components/inputs';
+import { Form, Input } from '../../../components/inputs';
 import { SmallCard } from '../../../components/Card';
 import { formatDate } from '../../../utilities/helper';
 import { AuthContextType } from '../../../utilities/models';
-import { AuthContext } from '../../../context/AuthContext';
+import { saveDocument } from '../../../api';
 
 const getIsVerifiedLabel = (flag: any): string => (flag ? 'Подтверждён' : 'Не подтверждён');
 const getIconName = (flag: any): string => (flag ? 'docblue' : 'doc');
@@ -126,7 +126,7 @@ const SNILS = ({ back }: any) => {
 
         <Row>
           <Col style={{ display: 'flex', justifyContent: 'center', marginTop: 20 }}>
-            <Button type="submit" value="Сохранить" size="md" width={100} />
+            <Button type="submit" value="Сохранить" size="hlg" />
           </Col>
         </Row>
       </form>
@@ -134,53 +134,70 @@ const SNILS = ({ back }: any) => {
   );
 };
 
-const TINCertificate = ({ back }: any) => {
+const TINCertificate = ({ back, handleSubmit, initialData }: any) => {
   return (
     <>
       <h2 style={{ fontSize: 36 }}>
         <Back onClick={back} />
         Свидетельство ИНН
       </h2>
-      <form style={{ width: 388, margin: 'auto' }}>
-        <Row>
-          <Col>
-            <Input
-              label="Номер ИНН"
-              placeholder="Номер ИНН"
-              name="tin_number"
-              type="text"
-              validate="required"
-            />
-          </Col>
-        </Row>
+      <Form
+        style={{ width: 388, margin: 'auto' }}
+        onSubmit={handleSubmit}
+        initialDataState={initialData}
+        render={({ formData, handleInputChange }: any) => (
+          <>
+            <Row>
+              <Col>
+                <Input
+                  label="Номер ИНН"
+                  placeholder="Номер ИНН"
+                  name="number"
+                  type="text"
+                  // validate="required"
+                  onChange={handleInputChange}
+                />
+              </Col>
+            </Row>
 
-        <Row>
-          <Col>
-            <Input
-              label="Скан свидетельства ИНН"
-              placeholder="Скан свидетельства ИНН"
-              validate="required"
-              type="file"
-              name="tin_scan"
-            />
-          </Col>
-        </Row>
+            <Row>
+              <Col>
+                {/* eslint-disable-next-line jsx-a11y/label-has-associated-control */}
+                <label htmlFor="scan">
+                  <Input
+                    label="Скан свидетельства ИНН"
+                    placeholder="Скан свидетельства ИНН"
+                    // validate="required"
+                    type="file"
+                    name="scan"
+                    id="scan"
+                    // hidden
+                    onChange={handleInputChange}
+                  />
+                </label>
+              </Col>
+            </Row>
 
-        <Row>
-          <Col style={{ display: 'flex', justifyContent: 'center', marginTop: 20 }}>
-            <Button type="submit" value="Сохранить" size="md" width={100} />
-          </Col>
-        </Row>
-      </form>
+            <Row>
+              <Col style={{ display: 'flex', justifyContent: 'center', marginTop: 20 }}>
+                <Button type="submit" value="Сохранить" size="hlg" />
+              </Col>
+            </Row>
+          </>
+        )}
+      />
     </>
   );
 };
 
 // const getStatusText = (flag: boolean) => (flag ? 'Подтверждён' : 'Не подтверждён');
 
-const Documents = () => {
+const Documents = ({
+  getUserData,
+  setUserData,
+  user,
+}: Pick<AuthContextType, 'getUserData' | 'setUserData' | 'user'>) => {
   const [chosenForm, setChosenForm] = useState('');
-  const { user }: AuthContextType = useContext<AuthContextType>(AuthContext);
 
   const goBack = () => {
     setChosenForm('');
@@ -193,7 +210,24 @@ const Documents = () => {
     }),
     [user]
   );
-
+  const handleSubmit = useCallback(
+    (documentType) => (formData: any) => {
+      return saveDocument(documentType, formData).then(({ error, ...rest }: any) => {
+        if (!error) {
+          // console.log(rest.code);
+        }
+        if (getUserData)
+          getUserData()
+            .then((responseInfo) => {
+              const { data } = responseInfo;
+              setUserData({ ...(user || {}), ...data });
+            })
+            // eslint-disable-next-line no-console
+            .catch((err) => console.error(err));
+      });
+    },
+    [getUserData, setUserData, user]
+  );
   return (
     <StyledDocuments>
       {!chosenForm && (
@@ -242,9 +276,17 @@ const Documents = () => {
           </Col>
         </Row>
       )}
-      {chosenForm === 'passport' && <Passport back={goBack} />}
-      {chosenForm === 'snils' && <SNILS back={goBack} />}
-      {chosenForm === 'tin' && <TINCertificate back={goBack} />}
+      {chosenForm === 'passport' && (
+        <Passport back={goBack} handleSubmit={handleSubmit('passport')} />
+      )}
+      {chosenForm === 'snils' && <SNILS back={goBack} handleSubmit={handleSubmit('snils')} />}
+      {chosenForm === 'tin' && (
+        <TINCertificate
+          initialData={{ number: user?.inn?.number || '' }}
+          back={goBack}
+          handleSubmit={handleSubmit('inn')}
+        />
+      )}
     </StyledDocuments>
   );
 };

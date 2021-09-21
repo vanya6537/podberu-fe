@@ -2,12 +2,13 @@ import { useContext, useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { Col, Row } from 'react-bootstrap';
 import Back from '../../../components/Back';
-import Button, { ButtonGroup } from '../../../components/Button';
-import { Checkbox, Input } from '../../../components/inputs';
+import Button from '../../../components/Button';
+import { Checkbox, Form, Input } from '../../../components/inputs';
 import { SmallCard } from '../../../components/Card';
 import Pagination from '../../../components/Pagination';
 import { AuthContext } from '../../../context/AuthContext';
 import { getWithdrawals } from '../../../api';
+import { formatDate } from '../../../utilities/helper';
 
 const StyledWithdraw = styled.div`
   > h2 {
@@ -32,158 +33,170 @@ const StyledWithdraw = styled.div`
   }
 `;
 
-const TransferForm = ({ back, fundsAvailable }: any) => {
+const TransferForm = ({ back, fundsAvailable, handleSubmit }: any) => {
+  const initialData = {
+    full_name: '',
+    birth_date: formatDate(Date.now(), 'YYYY-MM-DD'),
+    city: '',
+    is_additional: false,
+  };
   return (
     <>
       <h2 style={{ fontSize: 36 }}>
         <Back onClick={back} />
         Ваш баланс: {fundsAvailable}₽
       </h2>
-      <p>На расчётный счёт</p>
-      <form style={{ minWidth: 388, margin: 'auto' }}>
-        <Row>
-          <Col>
-            <Input
-              label="БИК (формат: 123456789)"
-              placeholder="БИК (формат: 123456789)"
-              name="bik_format"
-              type="text"
-              validate="required"
-            />
-          </Col>
-        </Row>
-
-        <Row>
-          <Col>
-            <Input
-              label="Банк получателя"
-              placeholder="Банк получателя"
-              validate="required"
-              type="text"
-              name="payee_bank"
-            />
-          </Col>
-        </Row>
-
-        <Row>
-          <Col>
-            <Input
-              label="Корреспондентский счёт"
-              placeholder="Корреспондентский счёт"
-              validate="required"
-              type="text"
-              name="account"
-            />
-          </Col>
-        </Row>
-
-        <Row>
-          <Col>
-            <Input
-              label="Расчётный счёт"
-              placeholder="Расчётный счёт"
-              validate="required"
-              type="text"
-              name="checkin_account"
-            />
-          </Col>
-        </Row>
-
-        <Row>
-          <Col>
-            <Input
-              label="Номер карты"
-              placeholder="Номер карты"
-              validate="required"
-              type="number"
-              name="card_number"
-            />
-          </Col>
-        </Row>
-
-        <Row>
-          <Col>
-            <Input
-              label="Получатель"
-              placeholder="Получатель"
-              validate="required"
-              type="text"
-              name="recipient"
-            />
-          </Col>
-        </Row>
-
-        <Row>
-          <Col style={{ display: 'flex', justifyContent: 'center', marginTop: 20 }}>
-            <Button type="submit" value="Вывести средства" size="md" width={160} />
-          </Col>
-        </Row>
-      </form>
+      <p style={{ fontSize: 24 }}>На расчётный счёт</p>
+      <Form
+        style={{ width: 388, margin: 'auto' }}
+        onSubmit={handleSubmit}
+        initialDataState={initialData}
+        render={({ handleInputChange }: any) => (
+          <>
+            <Row>
+              <Col>
+                <Input
+                  label="БИК (формат: 123456789)"
+                  placeholder="БИК (формат: 123456789)"
+                  name="bik_format"
+                  type="text"
+                  validate="required"
+                />
+              </Col>
+            </Row>
+            <Row>
+              <Col>
+                <Input
+                  label="Банк получателя"
+                  placeholder="Банк получателя"
+                  validate="required"
+                  type="text"
+                  name="payee_bank"
+                />
+              </Col>
+            </Row>
+            <Row>
+              <Col>
+                <Input
+                  label="Корреспондентский счёт"
+                  placeholder="Корреспондентский счёт"
+                  validate="required"
+                  type="text"
+                  name="account"
+                />
+              </Col>
+            </Row>
+            <Row>
+              <Col>
+                <Input
+                  label="Расчётный счёт"
+                  placeholder="Расчётный счёт"
+                  validate="required"
+                  type="text"
+                  name="checkin_account"
+                />
+              </Col>
+            </Row>
+            <Row>
+              <Col>
+                <Input
+                  label="Номер карты"
+                  placeholder="Номер карты"
+                  validate="required"
+                  type="number"
+                  name="card_number"
+                />
+              </Col>
+            </Row>
+            <Row>
+              <Col>
+                <Input
+                  label="Получатель"
+                  placeholder="Получатель"
+                  validate="required"
+                  type="text"
+                  name="recipient"
+                />
+              </Col>
+            </Row>
+            <Row>
+              <Col style={{ display: 'flex', justifyContent: 'center', marginTop: 20 }}>
+                <Button type="submit" value="Вывести средства" size="hlg" />
+              </Col>
+            </Row>
+          </>
+        )}
+      />
     </>
   );
 };
 
-const WithdrawalForm = ({ back, fundsAvailable }: any) => {
+const WithdrawalFormContainer = ({ back, fundsAvailable, handleSubmit }: any) => {
+  const initialData = {
+    full_name: '',
+    birth_date: formatDate(Date.now(), 'YYYY-MM-DD'),
+    city: '',
+    is_additional: false,
+  };
   return (
     <>
-      <h2 style={{ fontSize: 36 }}>Ваш баланс: {fundsAvailable}</h2>
-      <form style={{ width: 388, margin: 'auto' }}>
-        <Row>
-          <Col>
-            <ButtonGroup
-              options={[
-                { value: 'На карту', size: 'md', width: '100%', radius: 0 },
-                { value: 'На р/с', size: 'md', width: '100%', radius: 0 },
-              ]}
-            />
-          </Col>
-        </Row>
-        <Row>
-          <Col>
-            <Input
-              label="Сумма"
-              placeholder="Сумма"
-              name="amount"
-              type="number"
-              validate="required"
-            />
-          </Col>
-        </Row>
+      <h2 style={{ fontSize: 36 }}>
+        <Back onClick={back} />
+        Ваш баланс: {fundsAvailable}
+      </h2>
+      <p style={{ fontSize: 24 }}>Вывести средства на расчётный счёт</p>
 
-        <Row>
-          <Col>
-            <Checkbox
-              label={
-                <>
-                  Я принимаю условия <a className="link">договора об оказании услуг</a>
-                </>
-              }
-              name="terms_of_service"
-              validate="required"
-            />
-          </Col>
-        </Row>
-
-        <Row>
-          <Col>
-            <Checkbox
-              label={
-                <>
-                  Я согласен <a className="link">на обработку персональных данных</a>
-                </>
-              }
-              name="data_processing"
-              validate="required"
-            />
-          </Col>
-        </Row>
-
-        <Row>
-          <Col style={{ display: 'flex', justifyContent: 'center', marginTop: 20 }}>
-            <Button type="submit" value="Вывести средства" size="md" width={160} />
-          </Col>
-        </Row>
-      </form>
+      <Form
+        style={{ width: 388, margin: 'auto' }}
+        onSubmit={handleSubmit}
+        initialDataState={initialData}
+        render={({ handleInputChange }: any) => (
+          <>
+            <Row>
+              <Col>
+                <Input
+                  label="Сумма"
+                  placeholder="Сумма"
+                  name="amount"
+                  type="number"
+                  validate="required"
+                />
+              </Col>
+            </Row>
+            <Row>
+              <Col>
+                <Checkbox
+                  label={
+                    <>
+                      Я принимаю условия <a className="link">договора об оказании услуг</a>
+                    </>
+                  }
+                  name="terms_of_service"
+                  validate="required"
+                />
+              </Col>
+            </Row>
+            <Row>
+              <Col>
+                <Checkbox
+                  label={
+                    <>
+                      Я согласен <a className="link">на обработку персональных данных</a>
+                    </>
+                  }
+                  name="data_processing"
+                  validate="required"
+                />
+              </Col>
+            </Row>
+            <Row>
+              <Col style={{ display: 'flex', justifyContent: 'center', marginTop: 20 }}>
+                <Button type="submit" value="Вывести средства" size="hlg" />
+              </Col>
+            </Row>
+          </>
+        )}
+      />
     </>
   );
 };
@@ -281,14 +294,21 @@ const Withdraw = () => {
           >
             <Pagination />
 
-            <Button value="Вывести средства" size="lg" margin={[40, 0, 20, 0]} />
+            <Button
+              value="Вывести средства"
+              size="hlg"
+              margin={[40, 0, 20, 0]}
+              onClick={() => setChosenForm('transfer')}
+            />
           </div>
         </>
       )}
 
-      {chosenForm === 'transfer' && <TransferForm back={goBack} />}
+      {chosenForm === 'transfer' && (
+        <TransferForm fundsAvailable={user?.fundsAvailable || 0} back={goBack} />
+      )}
       {chosenForm === 'withdrawal' && (
-        <WithdrawalForm back={goBack} fundsAvailable={user?.fundsAvailable || 0} />
+        <WithdrawalFormContainer back={goBack} fundsAvailable={user?.fundsAvailable || 0} />
       )}
     </StyledWithdraw>
   );
