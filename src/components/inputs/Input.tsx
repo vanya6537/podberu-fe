@@ -25,7 +25,6 @@ export const StyledInput = styled.div`
   padding-bottom: 24px;
   font-weight: 300;
   font-size: 24px;
-  cursor: pointer;
 
   label {
     font-size: 24px;
@@ -83,6 +82,10 @@ export const StyledInput = styled.div`
 
   .MuiOutlinedInput-multiline {
     height: auto !important;
+  }
+
+  .MuiOutlinedInput-root {
+    cursor: pointer;
   }
 
   .MuiFormControlLabel-root {
