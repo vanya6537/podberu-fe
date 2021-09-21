@@ -32,15 +32,14 @@ const AgentHome = () => {
   const [offers, setOffers] = useState<OfferType[] | null>(null);
 
   const openOffersByType = useCallback(
-    (offerType, id = null) => (e: any) => {
-      // eslint-disable-next-line no-console
-      // console.log(e.target);
-      history.push({
-        pathname: ROUTES.OFFERS_BY_TYPE.path
-          .replace(':offerType', offerType)
-          .replace(':id', id || ''),
-      });
-    },
+    (offerType, id = null) =>
+      (e: any) => {
+        history.push({
+          pathname: ROUTES.OFFERS_BY_TYPE.path
+            .replace(':offerType', offerType)
+            .replace(':id', id || ''),
+        });
+      },
     []
   );
   useEffect(() => {

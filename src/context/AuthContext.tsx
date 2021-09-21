@@ -40,9 +40,12 @@ const AuthProvider = ({ children }: any) => {
     logoutApiCall()
       .then(() => {})
       .finally(() => {
-        localRemove(Object.values(STORAGE));
-        setUserData(null);
-        history.push(ROUTES.SIGN_IN.path);
+        localRemove(Object.values(STORAGE))
+          .then(() => {})
+          .finally(() => {
+            setUserData(null);
+            history.push(ROUTES.SIGN_IN.path);
+          });
       });
   }, [logoutApiCall]);
 

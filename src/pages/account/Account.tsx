@@ -40,7 +40,7 @@ const StyledAccount = styled.div`
 `;
 
 const Account = () => {
-  const { user, getUserData, setUserData, logout, isSignedIn }: AuthContextType =
+  const { user, getUserData, setUserData, logout }: AuthContextType =
     useContext<AuthContextType>(AuthContext);
 
   useEffect(() => {
