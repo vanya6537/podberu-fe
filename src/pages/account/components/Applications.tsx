@@ -1,13 +1,18 @@
 import styled from 'styled-components';
 import { Col, Row } from 'react-bootstrap';
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useContext, useEffect, useMemo, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import Button from '../../../components/Button';
 import { SmallCard } from '../../../components/Card';
 import Pagination from '../../../components/Pagination';
 import { getApplications } from '../../../api';
-import { ApplicationCardType, ApplicationResponseDataType } from '../../../utilities/models';
+import {
+  ApplicationCardType,
+  ApplicationResponseDataType,
+  AuthContextType,
+} from '../../../utilities/models';
 import { ROUTES } from '../../../utilities/constants';
+import { AuthContext } from '../../../context/AuthContext';
 
 const StyledApplications = styled.div``;
 const defaultSubtitleTextColor = 'rgba(251, 252, 253, 0.6)';
@@ -21,6 +26,11 @@ const defaultSubtitleTextColor = 'rgba(251, 252, 253, 0.6)';
 // };
 
 const Applications = ({ full = false }) => {
+  const defaultPageSize = 6;
+  const [page, setPage] = useState(1);
+  const [maxPage, setMaxPage] = useState(1);
+
+  const { logout } = useContext<AuthContextType>(AuthContext);
   const [applications, setApplications] = useState<ApplicationCardType[]>([]);
   const history = useHistory();
   const newOrderCallback = useCallback(() => {
@@ -50,16 +60,23 @@ const Applications = ({ full = false }) => {
         // eslint-disable-next-line no-console
         console.log(updatedApplicationsList);
         setApplications(updatedApplicationsList);
+        setMaxPage(Math.round(updatedApplicationsList.length / defaultPageSize));
       })
       // eslint-disable-next-line no-console
-      .catch((err) => console.error(err));
+      .catch((err) => {
+        logout();
+        console.error(err);
+      });
   }, []);
-
+  const paginatedApplications = useMemo(
+    () => applications.slice((page - 1) * defaultPageSize, page * defaultPageSize),
+    [page, applications, defaultPageSize]
+  );
   return (
     <StyledApplications>
-      {applications.length ? (
+      {paginatedApplications.length ? (
         <Row>
-          {applications.map(({ title, subtitle }) => (
+          {paginatedApplications.map(({ title, subtitle }) => (
             <Col md={4} style={{ padding: '0 24px 24px 0' }}>
               <SmallCard
                 title={title}
@@ -74,68 +91,7 @@ const Applications = ({ full = false }) => {
         </Row>
       ) : (
         // Mock data
-        <Row>
-          <Col md={4} style={{ padding: '0 24px 24px 0' }}>
-            <SmallCard
-              title="Дебетовая карта"
-              subtitle="24.12.2020"
-              icon="cards-white"
-              group="blue"
-              subtitleTextColor={defaultSubtitleTextColor}
-              styleBody={{ padding: '24px 24px 24px 16px' }}
-            />
-          </Col>
-          <Col md={4} style={{ padding: '0 24px 24px 0' }}>
-            <SmallCard
-              title="Дебетовая карта"
-              subtitle="24.12.2020"
-              icon="cards-white"
-              group="blue"
-              subtitleTextColor={defaultSubtitleTextColor}
-              styleBody={{ padding: '24px 24px 24px 16px' }}
-            />
-          </Col>
-          <Col md={4} style={{ padding: '0 0 24px 0' }}>
-            <SmallCard
-              title="Дебетовая карта"
-              subtitle="24.12.2020"
-              icon="cards-white"
-              group="blue"
-              styleBody={{ padding: '24px 24px 24px 16px' }}
-              subtitleTextColor={defaultSubtitleTextColor}
-            />
-          </Col>
-          <Col md={4} style={{ padding: '0 24px 0 0' }}>
-            <SmallCard
-              title="Дебетовая карта"
-              subtitle="24.12.2020"
-              icon="cards-white"
-              group="blue"
-              styleBody={{ padding: '24px 24px 24px 16px' }}
-              subtitleTextColor={defaultSubtitleTextColor}
-            />
-          </Col>
-          <Col md={4} style={{ padding: '0 24px 0 0' }}>
-            <SmallCard
-              title="Дебетовая карта"
-              subtitle="24.12.2020"
-              icon="cards-white"
-              group="blue"
-              styleBody={{ padding: '24px 24px 24px 16px' }}
-              subtitleTextColor={defaultSubtitleTextColor}
-            />
-          </Col>
-          <Col md={4} style={{ padding: '0 0 0 0' }}>
-            <SmallCard
-              title="Дебетовая карта"
-              subtitle="24.12.2020"
-              icon="cards-white"
-              group="blue"
-              styleBody={{ padding: '24px 24px 24px 16px' }}
-              subtitleTextColor={defaultSubtitleTextColor}
-            />
-          </Col>
-        </Row>
+        <h2>Пусто:)</h2>
       )}
 
       <div
@@ -146,7 +102,7 @@ const Applications = ({ full = false }) => {
           padding: '48px 0',
         }}
       >
-        <Pagination />
+        <Pagination maxPage={maxPage} onPageChange={setPage} />
         <Button
           value="Новая заявка"
           size="hlg"

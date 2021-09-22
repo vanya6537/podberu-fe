@@ -2,6 +2,7 @@ import styled from 'styled-components';
 import { Pagination as BPagination } from 'react-bootstrap';
 
 import { usePagination } from '@material-ui/lab/Pagination';
+import { ReactEventHandler, useCallback, useState } from 'react';
 
 const StyledPagination = styled.div`
   .page-item {
@@ -32,39 +33,70 @@ const StyledPagination = styled.div`
   }
 `;
 
-const Pagination = ({ maxPage }: any) => {
+const Pagination = ({ maxPage = 200, onPageChange }: any) => {
   const { items } = usePagination({ count: maxPage });
+  const [lastPage, setLastPage] = useState(1);
+  const handleClick = useCallback(
+    (onClickFunc: ReactEventHandler) => (e: any) => {
+      const buttonText: string = e.target?.firstChild?.textContent || e.target?.text;
+      onClickFunc(e);
+      switch (buttonText) {
+        case '...':
+          break;
+        case '‹':
+          if (lastPage > 1) {
+            setLastPage(lastPage - 1);
+            if (onPageChange) onPageChange(lastPage - 1);
+          }
+          break;
+        case '›':
+          if (maxPage > lastPage) {
+            setLastPage(lastPage + 1);
+            if (onPageChange) onPageChange(lastPage + 1);
+          }
+          break;
+        default: {
+          setLastPage(+buttonText);
+          if (onPageChange) onPageChange(+buttonText);
+        }
+      }
+    },
+    [lastPage, setLastPage, onPageChange]
+  );
   return (
     <StyledPagination>
       <BPagination>
-        {items.map(({ page, type, selected, ...item }, index) => {
+        {items.map(({ page, type, selected, onClick, ...item }, index) => {
           let children = null;
 
           if (type === 'start-ellipsis' || type === 'end-ellipsis') {
-            children = <BPagination.Ellipsis />;
-          } else if (type === 'page') {
-            children = <BPagination.Item>{page}</BPagination.Item>;
-          } else {
             children = (
-              <button type="button" {...item}>
-                {type}
-              </button>
+              <BPagination.Ellipsis
+                key={type}
+                {...item}
+                onClick={handleClick(onClick)}
+                active={selected}
+              />
             );
+          } else if (type === 'page') {
+            children = (
+              <BPagination.Item
+                key={index}
+                active={selected}
+                onClick={handleClick(onClick)}
+                {...item}
+              >
+                {page}
+              </BPagination.Item>
+            );
+          } else if (type === 'previous') {
+            children = <BPagination.Prev key="prev" {...item} onClick={handleClick(onClick)} />;
+          } else if (type === 'next') {
+            children = <BPagination.Next key="next" {...item} onClick={handleClick(onClick)} />;
           }
 
           return children;
         })}
-        {/* <BPagination.First />
-        <BPagination.Prev /> */}
-        <BPagination.Item active>{1}</BPagination.Item>
-        <BPagination.Item>{2}</BPagination.Item>
-        <BPagination.Item>{3}</BPagination.Item>
-        <BPagination.Ellipsis />
-
-        <BPagination.Item>{24}</BPagination.Item>
-
-        {/* <BPagination.Next />
-        <BPagination.Last /> */}
       </BPagination>
     </StyledPagination>
   );

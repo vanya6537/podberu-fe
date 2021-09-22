@@ -129,6 +129,7 @@ const Input = ({
   size = 'small',
   defaultValue = '',
   multiline = false,
+  multiple,
   rows = 3,
   onChange,
   validate,
@@ -171,6 +172,7 @@ const Input = ({
         aria-label={label}
         aria-describedby={label}
         multiline={multiline}
+        multiple={multiple}
         rows={rows}
         value={value}
         onChange={handleOnChange}

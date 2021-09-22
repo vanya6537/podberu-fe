@@ -38,11 +38,12 @@ const StyledDebitCards = styled.div`
     }
   }
 `;
-// export type OffersPageProps = { cardsType: string | undefined; bankName: string | undefined };
 
 const OffersPage = () => {
-  // const history = useHistory();
-  // const { offerType, id } = useParams<{ offerType: string; id: string }>();
+  const defaultPageSize = 6;
+  const [page, setPage] = useState(1);
+  const [maxPage, setMaxPage] = useState(1);
+
   const { offerType } = useParams<{ offerType: string; id: string }>();
 
   const title = useMemo(() => getTitle(offerType), [offerType]);
@@ -54,17 +55,15 @@ const OffersPage = () => {
   }, [title]);
 
   useEffect(() => {
-    getOffersByType(offerType)
+    getOffersByType(offerType, page, defaultPageSize)
       .then((responseInfo) => {
-        // const { response, message, status, error } = data;
-        const { data }: { data: OfferType[] } = responseInfo;
-        // console.log(response);
-        // eslint-disable-next-line no-console
+        const { data, pages: maxPageNum }: { data: OfferType[]; pages: number } = responseInfo;
+        setMaxPage(Math.max(maxPageNum, maxPage, 1));
         setOffers(data);
       })
       // eslint-disable-next-line no-console
       .catch((err) => console.error(err));
-  }, []);
+  }, [page, maxPage]);
 
   return (
     <StyledDebitCards>
@@ -80,7 +79,7 @@ const OffersPage = () => {
           Показать ещё
         </div>
         <div style={{ display: 'flex', justifyContent: 'center', padding: '30px 0' }}>
-          <Pagination />
+          <Pagination maxPage={maxPage} onPageChange={setPage} />
         </div>
       </section>
     </StyledDebitCards>

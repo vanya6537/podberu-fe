@@ -1,4 +1,4 @@
-import { useCallback, useMemo, useState } from 'react';
+import { useCallback, useContext, useMemo, useState } from 'react';
 import styled from 'styled-components';
 import { Col, Row } from 'react-bootstrap';
 import Back from '../../../components/Back';
@@ -8,6 +8,7 @@ import { SmallCard } from '../../../components/Card';
 import { formatDate } from '../../../utilities/helper';
 import { AuthContextType } from '../../../utilities/models';
 import { saveDocument } from '../../../api';
+import { AuthContext } from '../../../context/AuthContext';
 
 const getIsVerifiedLabel = (flag: any): string => (flag ? 'Подтверждён' : 'Не подтверждён');
 const getIconName = (flag: any): string => (flag ? 'docblue' : 'doc');
@@ -29,107 +30,140 @@ const StyledDocuments = styled.div`
   }
 `;
 
-const Passport = ({ back }: any) => {
+const Passport = ({ back, handleSubmit, initialData }: any) => {
   return (
     <>
       <h2 style={{ fontSize: 36 }}>
         <Back onClick={back} />
         Паспорт
       </h2>
-      <form style={{ width: 388, margin: 'auto' }}>
-        <Row>
-          <Col>
-            <Input label="ФИО" name="full_name" type="text" validate="required" />
-          </Col>
-        </Row>
-        <Row>
-          <Col>
-            <Input label="Серия и номер" name="serial_number" type="text" validate="required" />
-          </Col>
-        </Row>
-        <Row>
-          <Col>
-            <Input label="Кем выдан" name="issued_by" type="text" validate="required" />
-          </Col>
-        </Row>
-        <Row>
-          <Col>
-            <Input
-              label="Дата выдачи"
-              name="date_of_issue"
-              type="date"
-              defaultValue={formatDate(Date.now(), 'YYYY-MM-DD')}
-              validate="required"
-            />
-          </Col>
-        </Row>
-        <Row>
-          <Col>
-            <Input label="Скан паспорта" validate="required" type="file" name="passport_scan" />
-          </Col>
-        </Row>
-        <Row>
-          <Col
-            style={{
-              display: 'flex',
-              justifyContent: 'center',
-              fontSize: 18,
-              textAlign: 'center',
-              letterSpacing: '-0.24px',
-              opacity: 0.75,
-            }}
-          >
-            2,3 страница + страница с актуальной регистрацией
-          </Col>
-        </Row>
-        <Row>
-          <Col style={{ display: 'flex', justifyContent: 'center', marginTop: 48 }}>
-            <Button type="submit" value="Сохранить" size="hlg" />
-          </Col>
-        </Row>
-      </form>
+      <Form
+        style={{ width: 388, margin: 'auto' }}
+        onSubmit={handleSubmit}
+        initialDataState={initialData}
+        render={({ formData, handleInputChange }: any) => (
+          <>
+            <Row>
+              <Col>
+                <Input label="ФИО" name="name" type="text" onChange={handleInputChange} />
+              </Col>
+            </Row>
+            <Row>
+              <Col>
+                <Input
+                  label="Серия и номер"
+                  name="number"
+                  type="text"
+                  onChange={handleInputChange}
+                />
+              </Col>
+            </Row>
+            <Row>
+              <Col>
+                <Input label="Кем выдан" name="issuer" type="text" onChange={handleInputChange} />
+              </Col>
+            </Row>
+            <Row>
+              <Col>
+                <Input
+                  label="Дата выдачи"
+                  name="issue_date"
+                  type="date"
+                  defaultValue={formatDate(Date.now(), 'YYYY-MM-DD')}
+                  onChange={handleInputChange}
+                />
+              </Col>
+            </Row>
+            <Row>
+              <Col>
+                <label htmlFor="passport_scan">
+                  <Input
+                    label="Скан паспорта"
+                    onChange={handleInputChange}
+                    type="file"
+                    name="passport_scan"
+                    multiple
+                    id="passport_scan"
+                  />
+                </label>
+              </Col>
+            </Row>
+            <Row>
+              <Col
+                style={{
+                  display: 'flex',
+                  justifyContent: 'center',
+                  fontSize: 18,
+                  textAlign: 'center',
+                  letterSpacing: '-0.24px',
+                  opacity: 0.75,
+                }}
+              >
+                2,3 страница + страница с актуальной регистрацией
+              </Col>
+            </Row>
+            <Row>
+              <Col style={{ display: 'flex', justifyContent: 'center', marginTop: 48 }}>
+                <Button type="submit" value="Сохранить" size="hlg" />
+              </Col>
+            </Row>
+          </>
+        )}
+      />
     </>
   );
 };
 
-const SNILS = ({ back }: any) => {
+const SNILS = ({ back, handleSubmit, initialData }: any) => {
   return (
     <>
       <h2 style={{ fontSize: 36 }}>
         <Back onClick={back} />
         СНИЛС
       </h2>
-      <form style={{ width: 388, margin: 'auto' }}>
-        <Row>
-          <Col>
-            <Input
-              label="Номер СНИЛС"
-              placeholder="Номер СНИЛС"
-              name="snils_number"
-              type="text"
-              validate="required"
-            />
-          </Col>
-        </Row>
+      <Form
+        style={{ width: 388, margin: 'auto' }}
+        onSubmit={handleSubmit}
+        initialDataState={initialData}
+        render={({ formData, handleInputChange }: any) => (
+          <>
+            <Row>
+              <Col>
+                <Input
+                  label="Номер СНИЛС"
+                  placeholder="Номер СНИЛС"
+                  name="number"
+                  type="text"
+                  // validate="required"
+                  onChange={handleInputChange}
+                />
+              </Col>
+            </Row>
 
-        <Row>
-          <Col>
-            <Input
-              label="Скан СНИЛС"
-              placeholder="Скан СНИЛС"
-              validate="required"
-              type="file"
-              name="snils_scan"
-            />
-          </Col>
-        </Row>
+            <Row>
+              <Col>
+                <label htmlFor="snils_scan">
+                  <Input
+                    label="Скан СНИЛС"
+                    placeholder="Скан СНИЛС"
+                    // validate="required"
+                    type="file"
+                    name="scan"
+                    id="snils_scan"
+                    onChange={handleInputChange}
+                  />
+                </label>
+              </Col>
+            </Row>
 
-        <Row>
-          <Col style={{ display: 'flex', justifyContent: 'center', marginTop: 20 }}>
-            <Button type="submit" value="Сохранить" size="hlg" />
-          </Col>
-        </Row>
-      </form>
+            <Row>
+              <Col style={{ display: 'flex', justifyContent: 'center', marginTop: 20 }}>
+                <Button type="submit" value="Сохранить" size="hlg" />
+              </Col>
+            </Row>
+          </>
+        )}
+      />
     </>
   );
 };
@@ -197,6 +231,8 @@ const Documents = ({
   setUserData,
   user,
 }: Pick<AuthContextType, 'getUserData' | 'setUserData' | 'user'>) => {
+  const { logout } = useContext<AuthContextType>(AuthContext);
+
   const [chosenForm, setChosenForm] = useState('');
 
   const goBack = () => {
@@ -223,10 +259,13 @@ const Documents = ({
               setUserData({ ...(user || {}), ...data });
             })
             // eslint-disable-next-line no-console
-            .catch((err) => console.error(err));
+            .catch((err) => {
+              logout();
+              console.error(err);
+            });
       });
     },
-    [getUserData, setUserData, user]
+    [getUserData, setUserData, user, logout]
   );
   return (
     <StyledDocuments>

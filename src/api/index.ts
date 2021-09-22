@@ -62,8 +62,13 @@ export const saveProfileInfo = (profileData: any) => {
 
   // eslint-disable-next-line no-restricted-syntax
   for (const [key, val] of Object.entries(profileData)) {
-    // @ts-ignore
-    if (val) formData.append(key, val);
+    if (key.includes('photo')) {
+      try {
+        formData.append(key, (val as any)[0]);
+      } catch {
+        formData.append(key, val as any);
+      }
+    } else if (val) formData.append(key, val as any);
   }
 
   console.log(formData);

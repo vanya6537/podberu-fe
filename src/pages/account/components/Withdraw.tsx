@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from 'react';
+import { useContext, useEffect, useMemo, useState } from 'react';
 import styled from 'styled-components';
 import { Col, Row } from 'react-bootstrap';
 import Back from '../../../components/Back';
@@ -9,6 +9,7 @@ import Pagination from '../../../components/Pagination';
 import { AuthContext } from '../../../context/AuthContext';
 import { getWithdrawals } from '../../../api';
 import { formatDate } from '../../../utilities/helper';
+import { AuthContextType } from '../../../utilities/models';
 
 const StyledWithdraw = styled.div`
   > h2 {
@@ -202,19 +203,36 @@ const WithdrawalFormContainer = ({ back, fundsAvailable, handleSubmit }: any) =>
 };
 
 const Withdraw = () => {
-  const [chosenForm, setChosenForm] = useState('');
+  const defaultPageSize = 6;
+  const [page, setPage] = useState(1);
+  const [maxPage, setMaxPage] = useState(1);
+
+  const { logout } = useContext<AuthContextType>(AuthContext);
+
+  const [chosenForm, setChosenForm] = useState<'transfer' | 'withdrawal' | ''>('');
   const { user } = useContext(AuthContext);
-  const [, setCards] = useState([]);
+  const [withdrawals, setWithdrawals] = useState([]);
   const goBack = () => {
     setChosenForm('');
   };
   useEffect(() => {
-    getWithdrawals().then((responseInfo) => {
-      const { data } = responseInfo;
-      setCards(data);
-    });
+    getWithdrawals()
+      .then((responseInfo) => {
+        const { data } = responseInfo;
+        setWithdrawals(data);
+        setMaxPage(Math.round(data.length / defaultPageSize));
+      })
+      // eslint-disable-next-line no-console
+      .catch((err) => {
+        logout();
+        console.error(err);
+      });
   }, []);
-
+  const paginatedData = useMemo(
+    () => withdrawals.slice((page - 1) * defaultPageSize, page * defaultPageSize),
+    [page, withdrawals, defaultPageSize]
+  );
+  console.log(paginatedData);
   return (
     <StyledWithdraw>
       {!chosenForm && (
@@ -226,7 +244,7 @@ const Withdraw = () => {
                 subtitle="24.12.2020"
                 icon="hand-white"
                 group="blue"
-                onClick={() => setChosenForm('transfer')}
+                // onClick={() => setChosenForm('transfer')}
                 subtitleTextColor="rgba(251, 252, 253, 0.6)"
               />
             </Col>
@@ -236,7 +254,7 @@ const Withdraw = () => {
                 subtitle="24.12.2020"
                 icon="hand-white"
                 group="blue"
-                onClick={() => setChosenForm('withdrawal')}
+                // onClick={() => setChosenForm('withdrawal')}
                 subtitleTextColor="rgba(251, 252, 253, 0.6)"
               />
             </Col>
@@ -246,7 +264,7 @@ const Withdraw = () => {
                 subtitle="24.12.2020"
                 icon="hand-white"
                 group="blue"
-                onClick={() => setChosenForm('withdrawal')}
+                // onClick={() => setChosenForm('withdrawal')}
                 subtitleTextColor="rgba(251, 252, 253, 0.6)"
               />
             </Col>
@@ -258,7 +276,7 @@ const Withdraw = () => {
                 subtitle="24.12.2020"
                 icon="hand-white"
                 group="blue"
-                onClick={() => setChosenForm('withdrawal')}
+                // onClick={() => setChosenForm('withdrawal')}
                 subtitleTextColor="rgba(251, 252, 253, 0.6)"
               />
             </Col>
@@ -268,7 +286,7 @@ const Withdraw = () => {
                 subtitle="24.12.2020"
                 icon="hand-white"
                 group="blue"
-                onClick={() => setChosenForm('withdrawal')}
+                // onClick={() => setChosenForm('withdrawal')}
                 subtitleTextColor="rgba(251, 252, 253, 0.6)"
               />
             </Col>
@@ -278,7 +296,7 @@ const Withdraw = () => {
                 subtitle="24.12.2020"
                 icon="hand-white"
                 group="blue"
-                onClick={() => setChosenForm('withdrawal')}
+                // onClick={() => setChosenForm('withdrawal')}
                 subtitleTextColor="rgba(251, 252, 253, 0.6)"
               />
             </Col>
@@ -292,13 +310,13 @@ const Withdraw = () => {
               padding: '20px 0',
             }}
           >
-            <Pagination />
+            <Pagination maxPage={maxPage} onPageChange={setPage} />
 
             <Button
               value="Вывести средства"
               size="hlg"
               margin={[40, 0, 20, 0]}
-              onClick={() => setChosenForm('transfer')}
+              onClick={() => setChosenForm('withdrawal')}
             />
           </div>
         </>

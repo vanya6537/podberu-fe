@@ -1,7 +1,9 @@
 import styled from 'styled-components';
-import { useCallback } from 'react';
+import { useCallback, useContext } from 'react';
 import { saveProfileInfo } from '../../../api';
 import { SettingsForm } from './SettingsForm';
+import { AuthContextType } from '../../../utilities/models';
+import { AuthContext } from '../../../context/AuthContext';
 
 const StyledSettings = styled.div`
   > h2 {
@@ -21,19 +23,28 @@ const StyledSettings = styled.div`
 `;
 
 const Settings = ({ user }: any) => {
-  const handleSubmit = useCallback((formData) => {
-    return saveProfileInfo(formData).then((data: any) => {
-      if (!data.error) {
-        console.log(data);
-        console.log('save completed');
-
-        // setState('complete');
-      } else {
-        console.log('save completed with error');
-        console.log(data);
-      }
-    });
-  }, []);
+  const { logout } = useContext<AuthContextType>(AuthContext);
+  const handleSubmit = useCallback(
+    (formData) => {
+      return saveProfileInfo(formData)
+        .then((data: any) => {
+          if (!data.error) {
+            console.log(data);
+            console.log('save completed');
+            window.location.reload();
+            // setState('complete');
+          } else {
+            console.log('save completed with error');
+            console.log(data);
+          }
+        }) // eslint-disable-next-line no-console
+        .catch((err) => {
+          logout();
+          console.error(err);
+        });
+    },
+    [logout]
+  );
 
   const initialData = {
     full_name: user?.fullName || '',

@@ -37,13 +37,17 @@ export const SettingsForm = ({ handleSubmit, initialData }: FormProps) => {
           </Row>
           <Row>
             <Col>
-              <Input
-                label="Изменить фото"
-                placeholder="Изменить фото"
-                type="file"
-                name="photo"
-                onChange={handleInputChange}
-              />
+              <label htmlFor="change_photo">
+                <Input
+                  label="Изменить фото"
+                  placeholder="Изменить фото"
+                  type="file"
+                  name="photo"
+                  id="change_photo"
+                  onChange={handleInputChange}
+                  helperText={formData?.photo ? 'Фото выбрано' : ''}
+                />
+              </label>
             </Col>
           </Row>
           <Row>
