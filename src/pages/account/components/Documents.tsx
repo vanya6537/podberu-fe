@@ -30,7 +30,7 @@ const StyledDocuments = styled.div`
   }
 `;
 
-const Passport = ({ back, handleSubmit, initialData }: any) => {
+const PassportFormContainer = ({ back, handleSubmit, initialData }: any) => {
   return (
     <>
       <h2 style={{ fontSize: 36 }}>
@@ -114,7 +114,7 @@ const Passport = ({ back, handleSubmit, initialData }: any) => {
   );
 };
 
-const SNILS = ({ back, handleSubmit, initialData }: any) => {
+const SnilsFormContainer = ({ back, handleSubmit, initialData }: any) => {
   return (
     <>
       <h2 style={{ fontSize: 36 }}>
@@ -168,7 +168,7 @@ const SNILS = ({ back, handleSubmit, initialData }: any) => {
   );
 };
 
-const TINCertificate = ({ back, handleSubmit, initialData }: any) => {
+const InnFormContainer = ({ back, handleSubmit, initialData }: any) => {
   return (
     <>
       <h2 style={{ fontSize: 36 }}>
@@ -309,18 +309,20 @@ const Documents = ({
                 size: 'md',
                 margin: [28, 0, 12, 0],
                 padding: [0, 20],
-                onClick: () => setChosenForm('tin'),
+                onClick: () => setChosenForm('inn'),
               }}
             />
           </Col>
         </Row>
       )}
       {chosenForm === 'passport' && (
-        <Passport back={goBack} handleSubmit={handleSubmit('passport')} />
+        <PassportFormContainer back={goBack} handleSubmit={handleSubmit('passport')} />
       )}
-      {chosenForm === 'snils' && <SNILS back={goBack} handleSubmit={handleSubmit('snils')} />}
-      {chosenForm === 'tin' && (
-        <TINCertificate
+      {chosenForm === 'snils' && (
+        <SnilsFormContainer back={goBack} handleSubmit={handleSubmit('snils')} />
+      )}
+      {chosenForm === 'inn' && (
+        <InnFormContainer
           initialData={{ number: user?.inn?.number || '' }}
           back={goBack}
           handleSubmit={handleSubmit('inn')}
