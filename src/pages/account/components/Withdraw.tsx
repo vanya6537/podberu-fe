@@ -1,4 +1,4 @@
-import { useContext, useEffect, useMemo, useState } from 'react';
+import { useCallback, useContext, useEffect, useMemo, useState } from 'react';
 import styled from 'styled-components';
 import { Col, Row } from 'react-bootstrap';
 import Back from '../../../components/Back';
@@ -34,13 +34,19 @@ const StyledWithdraw = styled.div`
   }
 `;
 
-const TransferForm = ({ back, fundsAvailable, handleSubmit }: any) => {
-  const initialData = {
-    full_name: '',
-    birth_date: formatDate(Date.now(), 'YYYY-MM-DD'),
-    city: '',
-    is_additional: false,
-  };
+const TransferForm = ({ back, fundsAvailable, handleSubmit, amount }: any) => {
+  const initialData = useMemo(
+    () => ({
+      amount,
+      bik_format: '',
+      payee_bank: '',
+      account: '',
+      checkin_account: '',
+      card_number: '',
+      recipient: '',
+    }),
+    [amount]
+  );
   return (
     <>
       <h2 style={{ fontSize: 36 }}>
@@ -62,6 +68,7 @@ const TransferForm = ({ back, fundsAvailable, handleSubmit }: any) => {
                   name="bik_format"
                   type="text"
                   validate="required"
+                  onChange={handleInputChange}
                 />
               </Col>
             </Row>
@@ -73,6 +80,7 @@ const TransferForm = ({ back, fundsAvailable, handleSubmit }: any) => {
                   validate="required"
                   type="text"
                   name="payee_bank"
+                  onChange={handleInputChange}
                 />
               </Col>
             </Row>
@@ -84,6 +92,7 @@ const TransferForm = ({ back, fundsAvailable, handleSubmit }: any) => {
                   validate="required"
                   type="text"
                   name="account"
+                  onChange={handleInputChange}
                 />
               </Col>
             </Row>
@@ -95,6 +104,7 @@ const TransferForm = ({ back, fundsAvailable, handleSubmit }: any) => {
                   validate="required"
                   type="text"
                   name="checkin_account"
+                  onChange={handleInputChange}
                 />
               </Col>
             </Row>
@@ -106,6 +116,7 @@ const TransferForm = ({ back, fundsAvailable, handleSubmit }: any) => {
                   validate="required"
                   type="number"
                   name="card_number"
+                  onChange={handleInputChange}
                 />
               </Col>
             </Row>
@@ -117,6 +128,7 @@ const TransferForm = ({ back, fundsAvailable, handleSubmit }: any) => {
                   validate="required"
                   type="text"
                   name="recipient"
+                  onChange={handleInputChange}
                 />
               </Col>
             </Row>
@@ -134,10 +146,7 @@ const TransferForm = ({ back, fundsAvailable, handleSubmit }: any) => {
 
 const WithdrawalFormContainer = ({ back, fundsAvailable, handleSubmit }: any) => {
   const initialData = {
-    full_name: '',
-    birth_date: formatDate(Date.now(), 'YYYY-MM-DD'),
-    city: '',
-    is_additional: false,
+    amount: fundsAvailable,
   };
   return (
     <>
@@ -151,7 +160,7 @@ const WithdrawalFormContainer = ({ back, fundsAvailable, handleSubmit }: any) =>
         style={{ width: 388, margin: 'auto' }}
         onSubmit={handleSubmit}
         initialDataState={initialData}
-        render={({ handleInputChange }: any) => (
+        render={({ formData, handleInputChange }: any) => (
           <>
             <Row>
               <Col>
@@ -161,6 +170,8 @@ const WithdrawalFormContainer = ({ back, fundsAvailable, handleSubmit }: any) =>
                   name="amount"
                   type="number"
                   validate="required"
+                  onChange={handleInputChange}
+                  value={formData?.amount}
                 />
               </Col>
             </Row>
@@ -212,6 +223,7 @@ const Withdraw = () => {
   const [chosenForm, setChosenForm] = useState<'transfer' | 'withdrawal' | ''>('');
   const { user } = useContext(AuthContext);
   const [withdrawals, setWithdrawals] = useState([]);
+  const [amount, setAmount] = useState(user?.fundsAvailable || 0);
   const goBack = () => {
     setChosenForm('');
   };
@@ -232,7 +244,12 @@ const Withdraw = () => {
     () => withdrawals.slice((page - 1) * defaultPageSize, page * defaultPageSize),
     [page, withdrawals, defaultPageSize]
   );
-  console.log(paginatedData);
+  console.log({ paginatedData });
+  // eslint-disable-next-line no-shadow
+  const nextStepCallback = useCallback(({ amount }: any) => {
+    setAmount(amount);
+    setChosenForm('transfer');
+  }, []);
   return (
     <StyledWithdraw>
       {!chosenForm && (
@@ -323,10 +340,14 @@ const Withdraw = () => {
       )}
 
       {chosenForm === 'transfer' && (
-        <TransferForm fundsAvailable={user?.fundsAvailable || 0} back={goBack} />
+        <TransferForm fundsAvailable={user?.fundsAvailable || 0} back={goBack} amount={amount} />
       )}
       {chosenForm === 'withdrawal' && (
-        <WithdrawalFormContainer back={goBack} fundsAvailable={user?.fundsAvailable || 0} />
+        <WithdrawalFormContainer
+          back={goBack}
+          fundsAvailable={user?.fundsAvailable || 0}
+          handleSubmit={nextStepCallback}
+        />
       )}
     </StyledWithdraw>
   );

@@ -25,7 +25,7 @@ const defaultSubtitleTextColor = 'rgba(251, 252, 253, 0.6)';
 //   business_credit: 'Кредитная карта (бизнес)',
 // };
 
-const Applications = ({ full = false }) => {
+const Applications = () => {
   const defaultPageSize = 6;
   const [page, setPage] = useState(1);
   const [maxPage, setMaxPage] = useState(1);
@@ -47,7 +47,7 @@ const Applications = ({ full = false }) => {
         const updatedApplicationsList: ApplicationCardType[] = Object.entries(
           updatedApplicationsData
         ).reduce(
-          (accum, [applicationType, applicationList]) => [
+          (accum, [_, applicationList]) => [
             ...accum,
             ...applicationList.map(({ offer, createdAt }) => ({
               // title: CARD_TITLES[applicationType!],
@@ -60,7 +60,11 @@ const Applications = ({ full = false }) => {
         // eslint-disable-next-line no-console
         console.log(updatedApplicationsList);
         setApplications(updatedApplicationsList);
-        setMaxPage(Math.round(updatedApplicationsList.length / defaultPageSize));
+        console.log({ len: updatedApplicationsList.length });
+        const nextMaxPageNum =
+          Math.floor(updatedApplicationsList.length / defaultPageSize) +
+          +!!(updatedApplicationsList.length % defaultPageSize);
+        setMaxPage(nextMaxPageNum);
       })
       // eslint-disable-next-line no-console
       .catch((err) => {

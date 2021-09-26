@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { useCallback, useContext } from 'react';
+import { useCallback, useContext, useMemo } from 'react';
 import { saveProfileInfo } from '../../../api';
 import { SettingsForm } from './SettingsForm';
 import { AuthContextType } from '../../../utilities/models';
@@ -46,11 +46,12 @@ const Settings = ({ user }: any) => {
     [logout]
   );
 
-  const initialData = {
-    full_name: user?.fullName || '',
-    email: user?.email || '',
-    photo: user?.photo || '',
-  };
+  const initialData = useMemo(() => {
+    return {
+      full_name: user?.fullName || '',
+      email: user?.email || '',
+    };
+  }, [user]);
 
   return (
     <StyledSettings>

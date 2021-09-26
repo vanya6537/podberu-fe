@@ -42,6 +42,8 @@
       }
     ],
     "prettier/prettier": "error",
+    "no-restricted-syntax": 0,
+    "no-param-reassign": 0,
     // "max-len": ["error", { "code": 300 }],
     // "prefer-promise-reject-errors": [1, { "extensions": [".js", ".jsx"] }],
     "react/jsx-filename-extension": [0],

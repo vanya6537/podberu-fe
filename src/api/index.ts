@@ -1,4 +1,4 @@
-import { get, post } from '../utilities/helper';
+import { get, getFormDataFromObject, post } from '../utilities/helper';
 import { API_URL, DEFAULTS, ORDER_TYPES } from '../utilities/constants';
 import { GetProfileResponseType } from '../utilities/models';
 
@@ -58,42 +58,21 @@ export const sendDealInfo = (offerType: string, offerData: any) => {
 };
 
 export const saveProfileInfo = (profileData: any) => {
-  const formData = new FormData();
-
-  // eslint-disable-next-line no-restricted-syntax
-  for (const [key, val] of Object.entries(profileData)) {
-    if (key.includes('photo')) {
-      try {
-        formData.append(key, (val as any)[0]);
-      } catch {
-        formData.append(key, val as any);
-      }
-    } else if (val) formData.append(key, val as any);
-  }
-
-  console.log(formData);
-  return post(`${API_URL.CLIENT.PERSONAL_INFO}`, formData, {
-    data: formData,
+  const body = getFormDataFromObject(profileData);
+  return post(`${API_URL.CLIENT.PERSONAL_INFO}`, body, {
+    data: body,
     headers: { 'Content-Type': 'multipart/form-data' },
   });
 };
 
 export const saveDocument = (documentType: string, formDataPrimary: any) => {
-  const formData = new FormData();
-  const { number, scan } = formDataPrimary;
-  formData.append('number', number);
-  try {
-    formData.append('scan', scan[0]);
-  } catch {
-    formData.append('scan', scan);
-  }
-  console.log(`saveDoc ${documentType}`);
-  console.log({ formDataPrimary, formData });
+  const body = getFormDataFromObject(formDataPrimary);
+
   return post(
     `${API_URL.CLIENT.ROOT}${documentType}`,
-    formData,
+    body,
     {
-      data: formData,
+      data: body,
       headers: { 'Content-Type': 'multipart/form-data' },
     },
     true

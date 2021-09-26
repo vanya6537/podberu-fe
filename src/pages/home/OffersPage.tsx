@@ -58,7 +58,7 @@ const OffersPage = () => {
     getOffersByType(offerType, page, defaultPageSize)
       .then((responseInfo) => {
         const { data, pages: maxPageNum }: { data: OfferType[]; pages: number } = responseInfo;
-        setMaxPage(Math.max(maxPageNum, maxPage, 1));
+        setMaxPage(Math.max(maxPageNum + 1, maxPage, 1));
         setOffers(data);
       })
       // eslint-disable-next-line no-console

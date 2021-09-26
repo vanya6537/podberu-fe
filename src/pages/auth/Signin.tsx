@@ -96,6 +96,7 @@ const Signin = () => {
                     type="text"
                     validate="required|phone_number"
                     onChange={handleInputChange}
+                    value={formData.phone}
                   />
                 </Col>
               </Row>
@@ -110,6 +111,7 @@ const Signin = () => {
                         name="code"
                         pattern=".{4}"
                         onChange={handleInputChange}
+                        value={formData.code}
                       />
                     </Col>
                   </Row>

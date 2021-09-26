@@ -20,6 +20,7 @@ export const SettingsForm = ({ handleSubmit, initialData }: FormProps) => {
                 name="full_name"
                 type="text"
                 onChange={handleInputChange}
+                value={formData?.full_name}
               />
             </Col>
           </Row>
@@ -32,6 +33,7 @@ export const SettingsForm = ({ handleSubmit, initialData }: FormProps) => {
                 type="email"
                 name="email"
                 onChange={handleInputChange}
+                value={formData?.email}
               />
             </Col>
           </Row>

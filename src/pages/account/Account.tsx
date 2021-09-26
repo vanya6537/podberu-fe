@@ -69,7 +69,7 @@ const Account = () => {
           0: <Applications />,
           1: <Documents getUserData={getUserData} user={user} setUserData={setUserData} />,
           2: <Withdraw />,
-          3: <Settings />,
+          3: <Settings user={user} />,
         },
       };
     }
@@ -82,10 +82,10 @@ const Account = () => {
       data: {
         0: <Applications />,
         1: <Documents getUserData={getUserData} user={user} setUserData={setUserData} />,
-        3: <Settings />,
+        3: <Settings user={user} />,
       },
     };
-  }, [user?.isAgent]);
+  }, [user]);
 
   return (
     <StyledAccount>

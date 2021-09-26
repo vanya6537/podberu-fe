@@ -45,7 +45,13 @@ const PassportFormContainer = ({ back, handleSubmit, initialData }: any) => {
           <>
             <Row>
               <Col>
-                <Input label="ФИО" name="name" type="text" onChange={handleInputChange} />
+                <Input
+                  label="ФИО"
+                  name="name"
+                  type="text"
+                  onChange={handleInputChange}
+                  value={formData.name}
+                />
               </Col>
             </Row>
             <Row>
@@ -55,12 +61,19 @@ const PassportFormContainer = ({ back, handleSubmit, initialData }: any) => {
                   name="number"
                   type="text"
                   onChange={handleInputChange}
+                  value={formData.number?.toString()}
                 />
               </Col>
             </Row>
             <Row>
               <Col>
-                <Input label="Кем выдан" name="issuer" type="text" onChange={handleInputChange} />
+                <Input
+                  label="Кем выдан"
+                  name="issuer"
+                  type="text"
+                  onChange={handleInputChange}
+                  value={formData.issuer?.toString()}
+                />
               </Col>
             </Row>
             <Row>
@@ -69,21 +82,36 @@ const PassportFormContainer = ({ back, handleSubmit, initialData }: any) => {
                   label="Дата выдачи"
                   name="issue_date"
                   type="date"
-                  defaultValue={formatDate(Date.now(), 'YYYY-MM-DD')}
+                  defaultValue={null}
                   onChange={handleInputChange}
+                  value={formData.issue_date}
                 />
               </Col>
             </Row>
             <Row>
               <Col>
-                <label htmlFor="passport_scan">
+                <label htmlFor="front_page_scan">
                   <Input
-                    label="Скан паспорта"
+                    label="Скан паспорта 2 стр"
                     onChange={handleInputChange}
                     type="file"
-                    name="passport_scan"
-                    multiple
-                    id="passport_scan"
+                    name="front_page_scan"
+                    id="front_page_scan"
+                    // value={formData.front_page_scan?.toString()}
+                  />
+                </label>
+              </Col>
+            </Row>
+            <Row>
+              <Col>
+                <label htmlFor="second_page_scan">
+                  <Input
+                    label="Скан паспорта 3 стр"
+                    onChange={handleInputChange}
+                    type="file"
+                    name="second_page_scan"
+                    id="second_page_scan"
+                    // value={formData.second_page_scan?.toString()}
                   />
                 </label>
               </Col>
@@ -136,6 +164,7 @@ const SnilsFormContainer = ({ back, handleSubmit, initialData }: any) => {
                   type="text"
                   // validate="required"
                   onChange={handleInputChange}
+                  value={formData.number}
                 />
               </Col>
             </Row>
@@ -151,6 +180,7 @@ const SnilsFormContainer = ({ back, handleSubmit, initialData }: any) => {
                     name="scan"
                     id="snils_scan"
                     onChange={handleInputChange}
+                    // value={formData?.scan?.toString()}
                   />
                 </label>
               </Col>
@@ -179,46 +209,50 @@ const InnFormContainer = ({ back, handleSubmit, initialData }: any) => {
         style={{ width: 388, margin: 'auto' }}
         onSubmit={handleSubmit}
         initialDataState={initialData}
-        render={({ formData, handleInputChange }: any) => (
-          <>
-            <Row>
-              <Col>
-                <Input
-                  label="Номер ИНН"
-                  placeholder="Номер ИНН"
-                  name="number"
-                  type="text"
-                  // validate="required"
-                  onChange={handleInputChange}
-                />
-              </Col>
-            </Row>
-
-            <Row>
-              <Col>
-                {/* eslint-disable-next-line jsx-a11y/label-has-associated-control */}
-                <label htmlFor="scan">
+        render={({ formData, handleInputChange }: any) => {
+          return (
+            <>
+              <Row>
+                <Col>
                   <Input
-                    label="Скан свидетельства ИНН"
-                    placeholder="Скан свидетельства ИНН"
+                    label="Номер ИНН"
+                    placeholder="Номер ИНН"
+                    name="number"
+                    type="text"
                     // validate="required"
-                    type="file"
-                    name="scan"
-                    id="scan"
-                    // hidden
+                    value={formData.number}
                     onChange={handleInputChange}
                   />
-                </label>
-              </Col>
-            </Row>
+                </Col>
+              </Row>
 
-            <Row>
-              <Col style={{ display: 'flex', justifyContent: 'center', marginTop: 20 }}>
-                <Button type="submit" value="Сохранить" size="hlg" />
-              </Col>
-            </Row>
-          </>
-        )}
+              <Row>
+                <Col>
+                  {/* eslint-disable-next-line jsx-a11y/label-has-associated-control */}
+                  <label htmlFor="scan">
+                    <Input
+                      label="Скан свидетельства ИНН"
+                      placeholder="Скан свидетельства ИНН"
+                      // validate="required"
+                      type="file"
+                      name="scan"
+                      id="scan"
+                      // hidden
+                      // value={formData.scan?.toString()}
+                      onChange={handleInputChange}
+                    />
+                  </label>
+                </Col>
+              </Row>
+
+              <Row>
+                <Col style={{ display: 'flex', justifyContent: 'center', marginTop: 20 }}>
+                  <Button type="submit" value="Сохранить" size="hlg" />
+                </Col>
+              </Row>
+            </>
+          );
+        }}
       />
     </>
   );
@@ -238,6 +272,7 @@ const Documents = ({
   const goBack = () => {
     setChosenForm('');
   };
+  console.log({ user });
   const documents = useMemo(
     () => ({
       passport: !!(user?.passport && user?.passport?.isVerified),
@@ -246,9 +281,31 @@ const Documents = ({
     }),
     [user]
   );
+  const snilsInitialData = useMemo(() => ({ number: user?.snils?.number || '' }), [user]);
+  const innInitialData = useMemo(() => {
+    console.log({ user });
+    return { number: user?.inn?.number || '' };
+  }, [user]);
+  const passportInitialData = useMemo(
+    () => ({
+      name: user?.passport?.name || user?.fullName || '',
+      number: user?.passport?.number || '',
+      issuer: user?.passport?.issuer || '',
+      issue_date: user?.passport?.issueDate
+        ? user?.passport?.issueDate.split('.').reverse().join('-')
+        : null,
+    }),
+    [user]
+  );
+
   const handleSubmit = useCallback(
-    (documentType) => (formData: any) => {
-      return saveDocument(documentType, formData).then(({ error, ...rest }: any) => {
+    (documentType: string) => (formData: any) => {
+      for (const [key, val] of Object.entries(formData)) {
+        if (key.indexOf('date') !== -1) {
+          formData[key] = formatDate(`${val}`, 'DD-MM-YYYY');
+        }
+      }
+      return saveDocument(documentType, formData).then(({ error }: any) => {
         if (!error) {
           // console.log(rest.code);
         }
@@ -316,14 +373,22 @@ const Documents = ({
         </Row>
       )}
       {chosenForm === 'passport' && (
-        <PassportFormContainer back={goBack} handleSubmit={handleSubmit('passport')} />
+        <PassportFormContainer
+          back={goBack}
+          initialData={passportInitialData}
+          handleSubmit={handleSubmit('passport')}
+        />
       )}
       {chosenForm === 'snils' && (
-        <SnilsFormContainer back={goBack} handleSubmit={handleSubmit('snils')} />
+        <SnilsFormContainer
+          back={goBack}
+          initialData={snilsInitialData}
+          handleSubmit={handleSubmit('snils')}
+        />
       )}
       {chosenForm === 'inn' && (
         <InnFormContainer
-          initialData={{ number: user?.inn?.number || '' }}
+          initialData={innInitialData}
           back={goBack}
           handleSubmit={handleSubmit('inn')}
         />

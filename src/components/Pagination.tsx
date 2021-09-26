@@ -68,8 +68,9 @@ const Pagination = ({ maxPage = 200, onPageChange }: any) => {
       <BPagination>
         {items.map(({ page, type, selected, onClick, ...item }, index) => {
           let children = null;
-
-          if (type === 'start-ellipsis' || type === 'end-ellipsis') {
+          if (maxPage < 1) {
+            children = null;
+          } else if (type === 'start-ellipsis' || type === 'end-ellipsis') {
             children = (
               <BPagination.Ellipsis
                 key={type}

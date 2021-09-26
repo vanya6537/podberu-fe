@@ -1,12 +1,12 @@
 import { useCallback, useContext, useMemo, useState } from 'react';
 import styled from 'styled-components';
-import { useParams } from 'react-router-dom';
+import { useHistory, useParams } from 'react-router-dom';
 import Back from '../../../components/Back';
 import Button from '../../../components/Button';
 import { AuthContext } from '../../../context/AuthContext';
 import { sendDealInfo } from '../../../api';
 import { GenericRegisterForm } from './GenericRegisterForm';
-import { getRegisterFormTitle, ORDER_TYPE } from '../../../utilities/constants';
+import { getRegisterFormTitle, ORDER_TYPE, ROUTES } from '../../../utilities/constants';
 
 const StyledRegisterDeal = styled.div`
   section {
@@ -26,7 +26,7 @@ const StyledRegisterDeal = styled.div`
       font-weight: 600;
       font-size: 48px;
       line-height: 58px;
-      margin-bottom: 34px;
+      margin-bottom: 24px;
       text-align: center;
       position: relative;
       width: 100%;
@@ -48,7 +48,10 @@ const StyledRegisterDeal = styled.div`
 
 const RegisterDeal = () => {
   const { user }: any = useContext(AuthContext);
-  const [state, setState] = useState(user && user.isAgent ? 'initial' : 'fill-form');
+  const history = useHistory();
+  // const [state, setState] = useState(user && user.isAgent ? 'initial' : 'fill-form');
+  const [state, setState] = useState('complete');
+
   const { offerType, bankName } = useParams<{ offerType: string; bankName: string }>();
   // const handleSubmit = (e: any) => {
   //   e.preventDefault();
@@ -59,6 +62,10 @@ const RegisterDeal = () => {
     (someStateName: string) => setState(someStateName),
     [setState]
   );
+
+  const goHomeCallback = useCallback(() => {
+    history.push(ROUTES.HOME.path);
+  }, [history]);
 
   const handleSubmit = useCallback((formData) => {
     return sendDealInfo(offerType, formData).then(({ error, ...rest }: any) => {
@@ -137,7 +144,12 @@ const RegisterDeal = () => {
             <div>Её статус вы можете отследить в своём</div>
             <div>личном кабинете.</div>
           </p>
-          <Button value="Вернуться на главную страницу" size="hlg" width={212} margin={[20, 0]} />
+          <Button
+            value="Вернуться на главную страницу"
+            size="hlg"
+            margin={[20, 0]}
+            onClick={goHomeCallback}
+          />
         </section>
       )}
     </StyledRegisterDeal>

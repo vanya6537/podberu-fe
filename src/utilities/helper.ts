@@ -216,3 +216,20 @@ export const getIcon = (typeName: string) => {
       return 'cards';
   }
 };
+
+export const getFormDataFromObject = (obj: any) => {
+  const formData = new FormData();
+  // eslint-disable-next-line no-restricted-syntax
+  for (const [key, val] of Object.entries(obj || {})) {
+    if (key.includes('photo') || key.includes('scan')) {
+      if (val) {
+        try {
+          formData.append(key, (val as any)[0]);
+        } catch {
+          formData.append(key, val as any);
+        }
+      }
+    } else if (val) formData.append(key, val as any);
+  }
+  return formData;
+};

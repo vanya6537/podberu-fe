@@ -24,13 +24,14 @@ export const Form = ({
   const handleInputChange = useCallback(
     ({ name, value, error = undefined }: any) => {
       updateFormData({ [name]: value });
-      // console.log('update form data?');
-      // console.log({ name, value, type: typeof value, fileList: value instanceof FileList });
-      // if (value instanceof FileList)
       setErrors((e: { [key: string]: string | null }) => ({ ...e, [name]: error }));
     },
     [updateFormData, setErrors]
   );
+
+  useEffect(() => {
+    updateFormData(initialDataState);
+  }, [updateFormData]);
 
   useEffect(() => {
     if (Object.keys(errors).length > 0) {

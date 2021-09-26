@@ -36,6 +36,14 @@ const AuthProvider = ({ children }: any) => {
     });
   }, []);
 
+  const setUserDataCallback = useCallback(
+    (data: any) => {
+      const mergedData = { ...user, ...data };
+      setUserData(mergedData);
+      localSet({ key: STORAGE.USER, data: mergedData });
+    },
+    [user]
+  );
   const logoutCallback = useCallback(() => {
     logoutApiCall()
       .then(() => {})
@@ -61,13 +69,14 @@ const AuthProvider = ({ children }: any) => {
       const phoneVal = phone.replace(/\D/g, '').slice(0, 11);
 
       return post(API_URL.LOGIN, null, { params: { phone: phoneVal, code } }, true).then(
-        ({ error, isAgent }: any) => {
+        ({ error, isAgent, ...rest }: any) => {
           if (!error) {
             const userData = {
               ...(user || {}),
               phone: phoneVal,
               isAgent: !!isAgent,
               isSignedIn: true,
+              ...rest,
             };
             setUserData(userData);
             localSet({ key: STORAGE.USER, data: userData });
@@ -77,7 +86,7 @@ const AuthProvider = ({ children }: any) => {
         }
       );
     },
-    [user]
+    [user, setUserData]
   );
 
   return (
@@ -86,7 +95,7 @@ const AuthProvider = ({ children }: any) => {
         ...initialState,
         sendAuthCode,
         completeSignIn,
-        setUserData,
+        setUserData: setUserDataCallback,
         user,
         ...user,
         logout: logoutCallback,
