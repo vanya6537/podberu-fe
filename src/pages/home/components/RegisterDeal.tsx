@@ -49,14 +49,9 @@ const StyledRegisterDeal = styled.div`
 const RegisterDeal = () => {
   const { user }: any = useContext(AuthContext);
   const history = useHistory();
-  // const [state, setState] = useState(user && user.isAgent ? 'initial' : 'fill-form');
-  const [state, setState] = useState('complete');
+  const [state, setState] = useState(user && user.isAgent ? 'initial' : 'fill-form');
 
   const { offerType, bankName } = useParams<{ offerType: string; bankName: string }>();
-  // const handleSubmit = (e: any) => {
-  //   e.preventDefault();
-  //   setState('complete');
-  // };
   const copyCurrentUrl = useCallback(() => navigator.clipboard.writeText(window.location.href), []);
   const setStateCallback = useCallback(
     (someStateName: string) => setState(someStateName),

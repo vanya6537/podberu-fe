@@ -8,7 +8,6 @@ import { SmallCard } from '../../../components/Card';
 import Pagination from '../../../components/Pagination';
 import { AuthContext } from '../../../context/AuthContext';
 import { getWithdrawals } from '../../../api';
-import { formatDate } from '../../../utilities/helper';
 import { AuthContextType } from '../../../utilities/models';
 
 const StyledWithdraw = styled.div`
