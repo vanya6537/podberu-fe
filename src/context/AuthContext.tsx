@@ -10,7 +10,7 @@ import { AuthContextType, ProfileDataType } from '../utilities/models';
 
 const initialState: AuthContextType = {
   user: null,
-  isSignedIn: true, // not to reload page on every refresh
+  isSignedIn: false, // not to reload page on every refresh
   isAgent: false,
   getUserData: getProfile,
   setUserData: () => {},

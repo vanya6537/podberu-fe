@@ -334,7 +334,7 @@ const Documents = ({
               subtitle={getIsVerifiedLabel(documents.passport)}
               icon={getIconName(documents.passport)}
               button={{
-                value: 'Изменить',
+                value: user?.passport ? 'Изменить' : 'Добавить',
                 size: 'md',
                 margin: [28, 0, 12, 0],
                 padding: [0, 20],
@@ -348,7 +348,7 @@ const Documents = ({
               subtitle={getIsVerifiedLabel(documents.snils)}
               icon={getIconName(documents.snils)}
               button={{
-                value: 'Добавить',
+                value: user?.snils ? 'Изменить' : 'Добавить',
                 size: 'md',
                 margin: [28, 0, 12, 0],
                 padding: [0, 20],
@@ -362,7 +362,7 @@ const Documents = ({
               subtitle={getIsVerifiedLabel(documents.inn)}
               icon={getIconName(documents.inn)}
               button={{
-                value: 'Добавить',
+                value: user?.inn ? 'Изменить' : 'Добавить',
                 size: 'md',
                 margin: [28, 0, 12, 0],
                 padding: [0, 20],

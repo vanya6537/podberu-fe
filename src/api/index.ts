@@ -4,7 +4,7 @@ import { GetProfileResponseType } from '../utilities/models';
 
 export const logout = () => get(API_URL.LOGOUT, {});
 
-export const getWithdrawals = () => get(API_URL.AGENT.WITHDRAW, {});
+export const getWithdrawals = () => get(API_URL.AGENT.WITHDRAWALS, {});
 
 export const getApplications = () => get(API_URL.CLIENT.APPLICATIONS, {});
 
@@ -70,6 +70,20 @@ export const saveDocument = (documentType: string, formDataPrimary: any) => {
 
   return post(
     `${API_URL.CLIENT.ROOT}${documentType}`,
+    body,
+    {
+      data: body,
+      headers: { 'Content-Type': 'multipart/form-data' },
+    },
+    true
+  );
+};
+
+export const postWithdraw = (formDataPrimary: any) => {
+  const body = getFormDataFromObject(formDataPrimary);
+
+  return post(
+    API_URL.AGENT.WITHDRAW,
     body,
     {
       data: body,

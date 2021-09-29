@@ -7,8 +7,9 @@ import { Checkbox, Form, Input } from '../../../components/inputs';
 import { SmallCard } from '../../../components/Card';
 import Pagination from '../../../components/Pagination';
 import { AuthContext } from '../../../context/AuthContext';
-import { getWithdrawals } from '../../../api';
+import { getWithdrawals, postWithdraw } from '../../../api';
 import { AuthContextType } from '../../../utilities/models';
+import { formatDate } from '../../../utilities/helper';
 
 const StyledWithdraw = styled.div`
   > h2 {
@@ -37,12 +38,12 @@ const TransferForm = ({ back, fundsAvailable, handleSubmit, amount }: any) => {
   const initialData = useMemo(
     () => ({
       amount,
-      bik_format: '',
-      payee_bank: '',
-      account: '',
-      checkin_account: '',
+      bik: '',
+      receiver_bank: '',
+      correspondent_account: '',
+      checking_account: '',
       card_number: '',
-      recipient: '',
+      receiver: '',
     }),
     [amount]
   );
@@ -64,7 +65,7 @@ const TransferForm = ({ back, fundsAvailable, handleSubmit, amount }: any) => {
                 <Input
                   label="БИК (формат: 123456789)"
                   placeholder="БИК (формат: 123456789)"
-                  name="bik_format"
+                  name="bik"
                   type="text"
                   validate="required"
                   onChange={handleInputChange}
@@ -78,7 +79,7 @@ const TransferForm = ({ back, fundsAvailable, handleSubmit, amount }: any) => {
                   placeholder="Банк получателя"
                   validate="required"
                   type="text"
-                  name="payee_bank"
+                  name="receiver_bank"
                   onChange={handleInputChange}
                 />
               </Col>
@@ -90,7 +91,7 @@ const TransferForm = ({ back, fundsAvailable, handleSubmit, amount }: any) => {
                   placeholder="Корреспондентский счёт"
                   validate="required"
                   type="text"
-                  name="account"
+                  name="correspondent_account"
                   onChange={handleInputChange}
                 />
               </Col>
@@ -102,7 +103,7 @@ const TransferForm = ({ back, fundsAvailable, handleSubmit, amount }: any) => {
                   placeholder="Расчётный счёт"
                   validate="required"
                   type="text"
-                  name="checkin_account"
+                  name="checking_account"
                   onChange={handleInputChange}
                 />
               </Col>
@@ -126,7 +127,7 @@ const TransferForm = ({ back, fundsAvailable, handleSubmit, amount }: any) => {
                   placeholder="Получатель"
                   validate="required"
                   type="text"
-                  name="recipient"
+                  name="receiver"
                   onChange={handleInputChange}
                 />
               </Col>
@@ -249,6 +250,21 @@ const Withdraw = () => {
     setAmount(amount);
     setChosenForm('transfer');
   }, []);
+  const handleSubmit = useCallback(
+    (formData: any) => {
+      for (const [key, val] of Object.entries(formData)) {
+        if (key.indexOf('date') !== -1) {
+          formData[key] = formatDate(`${val}`, 'DD-MM-YYYY');
+        }
+      }
+      return postWithdraw(formData).then(({ error }: any) => {
+        if (!error) {
+          // console.log(rest.code);
+        }
+      });
+    },
+    [user, logout]
+  );
   return (
     <StyledWithdraw>
       {!chosenForm && (
@@ -339,7 +355,12 @@ const Withdraw = () => {
       )}
 
       {chosenForm === 'transfer' && (
-        <TransferForm fundsAvailable={user?.fundsAvailable || 0} back={goBack} amount={amount} />
+        <TransferForm
+          fundsAvailable={user?.fundsAvailable || 0}
+          back={goBack}
+          amount={amount}
+          handleSubmit={handleSubmit}
+        />
       )}
       {chosenForm === 'withdrawal' && (
         <WithdrawalFormContainer

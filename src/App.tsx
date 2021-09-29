@@ -30,10 +30,10 @@ function App() {
             <Switch>
               <PublicRoute exact component={Home} {...ROUTES.HOME} />
               <PrivateRoute exact component={Account} {...ROUTES.ACCOUNT} />
-              <PublicRoute component={RegisterDeal} {...ROUTES.REGISTER} />
+              <PrivateRoute component={RegisterDeal} {...ROUTES.REGISTER} />
               <PublicRoute exact component={Landing} {...ROUTES.LANDING} />
               <AuthRoute exact component={Signin} {...ROUTES.SIGN_IN} />
-              <PrivateRoute exact component={Signin} {...ROUTES.NOT_FOUND} />
+              <PublicRoute exact component={Signin} {...ROUTES.NOT_FOUND} />
               <PublicRoute component={OffersPage} {...ROUTES.OFFERS_BY_TYPE} />
               <PublicRoute component={OffersPage} {...ROUTES.OFFERS_GENERAL} />
               <PublicRoute exact component={OffersPage} {...ROUTES.ALL_OFFERS} />

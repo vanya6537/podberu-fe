@@ -18,7 +18,8 @@ export const API_URL = {
   },
   AGENT: {
     APPLICATIONS: `${BASE_API_URL}/agents/order`,
-    WITHDRAW: `${BASE_API_URL}/agents/withdrawals`,
+    WITHDRAWALS: `${BASE_API_URL}/agents/withdrawals`,
+    WITHDRAW: `${BASE_API_URL}/agents/withdraw`,
     REFERRAL: `${BASE_API_URL}/agents/referral`,
   },
   OFFERS: {
