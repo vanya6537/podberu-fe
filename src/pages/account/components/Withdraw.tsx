@@ -11,6 +11,7 @@ import { getWithdrawals, postWithdraw } from '../../../api';
 import { AuthContextType } from '../../../utilities/models';
 import { formatDate } from '../../../utilities/helper';
 
+const defaultSubtitleTextColor = 'rgba(251, 252, 253, 0.6)';
 const StyledWithdraw = styled.div`
   > h2 {
     font-size: 28px;
@@ -53,7 +54,7 @@ const TransferForm = ({ back, fundsAvailable, handleSubmit, amount }: any) => {
         <Back onClick={back} />
         Ваш баланс: {fundsAvailable}₽
       </h2>
-      <p style={{ fontSize: 24 }}>На расчётный счёт</p>
+      <p style={{ fontSize: 24 }}>Вывести средства на расчётный счёт</p>
       <Form
         style={{ width: 388, margin: 'auto' }}
         onSubmit={handleSubmit}
@@ -223,7 +224,7 @@ const Withdraw = () => {
   const [chosenForm, setChosenForm] = useState<'transfer' | 'withdrawal' | ''>('');
   const { user } = useContext(AuthContext);
   const [withdrawals, setWithdrawals] = useState([]);
-  const [amount, setAmount] = useState(user?.fundsAvailable || 0);
+  const [withdrawAmount, setWithdrawAmount] = useState(user?.fundsAvailable || 0);
   const goBack = () => {
     setChosenForm('');
   };
@@ -231,8 +232,9 @@ const Withdraw = () => {
     getWithdrawals()
       .then((responseInfo) => {
         const { data } = responseInfo;
-        setWithdrawals(data);
+        if (data) setWithdrawals(data);
         setMaxPage(Math.round(data.length / defaultPageSize));
+        setPage(1);
       })
       // eslint-disable-next-line no-console
       .catch((err) => {
@@ -241,13 +243,18 @@ const Withdraw = () => {
       });
   }, []);
   const paginatedData = useMemo(
-    () => withdrawals.slice((page - 1) * defaultPageSize, page * defaultPageSize),
+    () =>
+      withdrawals
+        .slice((page - 1) * defaultPageSize, page * defaultPageSize)
+        .map(({ amount, createdAt }) => ({
+          amount,
+          createdAt,
+        })),
     [page, withdrawals, defaultPageSize]
   );
-  console.log({ paginatedData });
   // eslint-disable-next-line no-shadow
   const nextStepCallback = useCallback(({ amount }: any) => {
-    setAmount(amount);
+    setWithdrawAmount(amount);
     setChosenForm('transfer');
   }, []);
   const handleSubmit = useCallback(
@@ -269,71 +276,27 @@ const Withdraw = () => {
     <StyledWithdraw>
       {!chosenForm && (
         <>
-          <Row>
-            <Col md={4} style={{ marginBottom: 10 }}>
-              <SmallCard
-                title="Вывод: 78 475 ₽"
-                subtitle="24.12.2020"
-                icon="hand-white"
-                group="blue"
-                // onClick={() => setChosenForm('transfer')}
-                subtitleTextColor="rgba(251, 252, 253, 0.6)"
-              />
-            </Col>
-            <Col md={4} style={{ marginBottom: 10 }}>
-              <SmallCard
-                title="Вывод: 78 475 ₽"
-                subtitle="24.12.2020"
-                icon="hand-white"
-                group="blue"
-                // onClick={() => setChosenForm('withdrawal')}
-                subtitleTextColor="rgba(251, 252, 253, 0.6)"
-              />
-            </Col>
-            <Col md={4} style={{ marginBottom: 10 }}>
-              <SmallCard
-                title="Вывод: 78 475 ₽"
-                subtitle="24.12.2020"
-                icon="hand-white"
-                group="blue"
-                // onClick={() => setChosenForm('withdrawal')}
-                subtitleTextColor="rgba(251, 252, 253, 0.6)"
-              />
-            </Col>
-          </Row>
-          <Row>
-            <Col md={4} style={{ marginBottom: 10 }}>
-              <SmallCard
-                title="Вывод: 78 475 ₽"
-                subtitle="24.12.2020"
-                icon="hand-white"
-                group="blue"
-                // onClick={() => setChosenForm('withdrawal')}
-                subtitleTextColor="rgba(251, 252, 253, 0.6)"
-              />
-            </Col>
-            <Col md={4} style={{ marginBottom: 10 }}>
-              <SmallCard
-                title="Вывод: 78 475 ₽"
-                subtitle="24.12.2020"
-                icon="hand-white"
-                group="blue"
-                // onClick={() => setChosenForm('withdrawal')}
-                subtitleTextColor="rgba(251, 252, 253, 0.6)"
-              />
-            </Col>
-            <Col md={4} style={{ marginBottom: 10 }}>
-              <SmallCard
-                title="Вывод: 78 475 ₽"
-                subtitle="24.12.2020"
-                icon="hand-white"
-                group="blue"
-                // onClick={() => setChosenForm('withdrawal')}
-                subtitleTextColor="rgba(251, 252, 253, 0.6)"
-              />
-            </Col>
-          </Row>
-
+          {paginatedData.length ? (
+            <Row>
+              {paginatedData.map(({ amount, createdAt }) => (
+                <Col md={4} style={{ padding: '0 24px 24px 0' }}>
+                  <SmallCard
+                    title={`Вывод: ${parseFloat(amount)
+                      .toLocaleString('en')
+                      .replaceAll(',', ' ')} ₽`}
+                    subtitle={formatDate(createdAt, 'DD.MM.YYYY')}
+                    icon="hand-white"
+                    group="blue"
+                    subtitleTextColor={defaultSubtitleTextColor}
+                    styleBody={{ padding: '24px 24px 24px 16px' }}
+                  />
+                </Col>
+              ))}
+            </Row>
+          ) : (
+            // Mock data
+            <h2>Пусто:)</h2>
+          )}
           <div
             style={{
               display: 'flex',
@@ -358,7 +321,7 @@ const Withdraw = () => {
         <TransferForm
           fundsAvailable={user?.fundsAvailable || 0}
           back={goBack}
-          amount={amount}
+          amount={withdrawAmount}
           handleSubmit={handleSubmit}
         />
       )}
