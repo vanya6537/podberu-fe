@@ -11,7 +11,7 @@ import { saveDocument } from '../../../api';
 import { AuthContext } from '../../../context/AuthContext';
 
 const getIsVerifiedLabel = (flag: any): string => (flag ? 'Подтверждён' : 'Не подтверждён');
-const getIconName = (flag: any): string => (flag ? 'docblue' : 'doc');
+const getIconName = (flag: any): string => (flag ? 'docblue' : 'docgrey');
 
 const StyledDocuments = styled.div`
   > h2 {
@@ -275,9 +275,9 @@ const Documents = ({
   console.log({ user });
   const documents = useMemo(
     () => ({
-      passport: !!(user?.passport && user?.passport?.isVerified),
-      snils: !!(user?.snils && user?.snils?.isVerified),
-      inn: !!(user?.inn && user?.inn?.isVerified),
+      passport: !!user?.passport,
+      snils: !!user?.snils,
+      inn: !user?.inn,
     }),
     [user]
   );
