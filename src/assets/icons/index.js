@@ -15,6 +15,7 @@ import credits from './credits.svg';
 import finance from './finance.svg';
 import justice from './justice.svg';
 import docblue from './doc-blue.svg';
+import docgrey from './doc-grey.svg';
 import facebook from './facebook.svg';
 import moneybag from './money-bag.svg';
 import microzaim from './microzaim.svg';
@@ -42,6 +43,7 @@ export {
   finance,
   justice,
   docblue,
+  docgrey,
   facebook,
   moneybag,
   microzaim,
