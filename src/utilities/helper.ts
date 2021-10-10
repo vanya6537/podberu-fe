@@ -143,9 +143,13 @@ export const upload = (url: string, body: any, config = {}, show = false) => {
     .catch((x) => errorHandler(x, show));
 };
 
-export const formatDate = (date: string | number, format = 'ddd MMM D YYYY h:ma') => {
+export const formatDate = (
+  date: any,
+  format = 'ddd MMM D YYYY h:ma',
+  initialFormat = 'DD-MM-YYYY'
+): string => {
   if (date) {
-    return moment(date).format(format);
+    return moment(date, initialFormat).format(format);
   }
 
   return date;
