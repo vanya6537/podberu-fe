@@ -13,6 +13,7 @@ import {
 } from '../../../utilities/models';
 import { ROUTES } from '../../../utilities/constants';
 import { AuthContext } from '../../../context/AuthContext';
+import { formatDate } from '../../../utilities/helper';
 
 const StyledApplications = styled.div``;
 const defaultSubtitleTextColor = 'rgba(251, 252, 253, 0.6)';
@@ -52,9 +53,10 @@ const Applications = () => {
             ...applicationList.map(({ offer, createdAt }) => ({
               // title: CARD_TITLES[applicationType!],
               title: offer.type,
-              subtitle: createdAt,
+              subtitle: formatDate(createdAt, 'DD.MM.YYYY'),
             })),
           ],
+
           [] as ApplicationCardType[]
         );
         // eslint-disable-next-line no-console
@@ -65,6 +67,7 @@ const Applications = () => {
           Math.floor(updatedApplicationsList.length / defaultPageSize) +
           +!!(updatedApplicationsList.length % defaultPageSize);
         setMaxPage(nextMaxPageNum);
+        setPage(1);
       })
       // eslint-disable-next-line no-console
       .catch((err) => {
