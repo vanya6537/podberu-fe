@@ -7,7 +7,7 @@ export const Form = ({
   initialErrorState = true,
   ...rest
 }: {
-  onSubmit: (data: any) => Promise<any> | undefined;
+  onSubmit: (data: any) => Promise<any>;
   [key: string]: any;
 }) => {
   const [formData, setFormData] = useState<Record<string, any>>(initialDataState);
@@ -40,12 +40,17 @@ export const Form = ({
   }, [errors]);
 
   const handleSubmit = useCallback(
-    (e: any) => {
+    async (e: any) => {
       e.preventDefault();
+      console.log({ onSubmit, formData });
       if (onSubmit) {
         updateFormData({ fetching: true });
-        // @ts-ignore
-        onSubmit(formData).finally(() => updateFormData({ fetching: false }));
+        try {
+          await onSubmit(formData);
+        } catch (err) {
+          console.error(err);
+        }
+        updateFormData({ fetching: false });
       }
     },
     [onSubmit, formData, updateFormData]
