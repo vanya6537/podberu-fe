@@ -59,7 +59,8 @@ const OffersPage = () => {
       .then((responseInfo) => {
         const { data, pages: maxPageNum }: { data: OfferType[]; pages: number } = responseInfo;
         setMaxPage(Math.max(maxPageNum + 1, maxPage, 1));
-        setOffers(data);
+        setPage(1);
+        if (data) setOffers(data);
       })
       // eslint-disable-next-line no-console
       .catch((err) => console.error(err));
